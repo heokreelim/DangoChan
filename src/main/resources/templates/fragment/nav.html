@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div th:fragment="nav" class="nav">
+        <div class="nav-bg">
+            <div class="logo">로고</div>
+            <div class="profile-wrap">
+                <div class="profile-picture">
+                    <a href="#void" id="changePictureBtn" class="changePictureBtn">
+                    프로필 사진이 출력됩니다.
+                    <!-- <img src="" alt="profile picture" id="profile"> -->
+                    </a>
+                </div> <!-- profile-picture end -->
+                <div class="nickname">
+                    <p class="userName" id="userName">
+                        유저 닉네임이 출력됩니다.
+                        <!-- [[${#authentication.userName}]] -->
+                    </p>
+                </div> <!-- nickname end -->
+            </div> <!-- profile-wrap end -->
+            <div class="statistics-wrap">
+
+            </div>
+            <div class="calendar-wrap">
+                    <div id="currentMonth" class="currentMonth"></div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>일</th>
+                                <th>월</th>
+                                <th>화</th>
+                                <th>수</th>
+                                <th>목</th>
+                                <th>금</th>
+                                <th>토</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarBody"></tbody>
+                    </table>
+            </div> <!-- calendar-wrap end -->
+            <div class="authentication">
+                <th:block sec:authorize="isAnonymous()">
+                    <div><a th:href="@{/user/login}">로그인</a></div>
+                </th:block>
+                <th:block sec:authorize="isAuthenticated()">
+                    <div><a th:href="@{/user/logout}">로그아웃</a></div>
+                </th:block>
+            </div><!-- authentication end -->
+        </div><!-- nav-bg end -->
+    </div>
+</body>
+</html>
