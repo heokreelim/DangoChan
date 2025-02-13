@@ -151,58 +151,8 @@
 <body>
     <h2>당고쨩 커뮤니티</h2>
 
-    <!-- 실제 게시글이 나오는 부분의 코드-->
-    <div class="content">
-        <div class="top">
-            <p>게시글 개수: <span></span></p>
-        </div>
-        <!-- 게시글 검색 -->
-        <div class="search">
-            <form action="" method="get" id="searchForm">
-
-            </form>
-        </div> <!-- end .search-->
-
-    </div> <!-- end .top-->
-
     <!-- 실제 게시글이 출력되는 부분-->
-    <div class="head">
-        <th:block th:if="${list.isEmpty()} == true">
-            <p style="text-align: center;">등록된 글이 없습니다.</p>
-        </th:block>
-        <th:block th:unless="${list.isEmpty()} == true">
-            <table>
-                <tr>
-                    <th class="no">번호</th>
-                    <th class="title">제목</th>
-                    <th class="writer">작성자</th>
-                    <th class="likeCount">좋아요</th>
-                    <th class="modified_date">수정된 날짜</th>
-                </tr>
-                <!-- 게시글 반복 구간 -->
-                <tr th:each="board, status : ${list}">
-                    <td th:text="${status.count + (navi.page -1) * 10}"></td>
-                    <td>
-                        <a th:href="@{/board/boardDetail(boardSeq=${board.boardSeq}, searchItem=${searchItem}, searchWord=${searchWord})}" th:text="${board.boardTitle}">공부를 잘해</a>
-                        <th:block th:if="${board.replyCount != 0}">
-                            <span style="color: darkred"; font-weight="bold">([[${board.replyCount}]])</span>
-                        </th:block>
-                            
 
-                           <!-- 첨부파일이 있으면 클립표시 -->
-                           <th:block th:if="${board.originalFileName != null}">
-                               <i class="fa-solid fa-paperclip" style="color:red;"></i>
-                           </th:block>
-                    </td>
-                    <td th:text="${board.boardWriter}">이몽룡</td>
-                    <td th:text="${board.likeCount}">1</td>
-                    <td th:text="${#temporals.format(board.modified_Date, 'yyyy-MM-dd HH:mm')}">20211228</td>
-                </tr>
-            </table>
-        </th:block>
-    </div><!-- end .head-->
-</div> <!-- end .content-->
-    
-
+ 
 </body>
 </html>
