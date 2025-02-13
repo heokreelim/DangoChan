@@ -1,0 +1,70 @@
+/* 공통적용 */
+/* 여백제거 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* li 장식 제거 */
+li {
+    list-style: none;
+}
+
+/* a 밑줄 제거, 색상 */
+a {
+    text-decoration: none;
+    color: #121511;
+}
+
+/* img는 글자와 기본 위치가 달라서 위아래 위치가 다름 */
+/* img 설정 별도 지정 */
+img,
+video {
+    vertical-align: middle;
+    border: none;
+}
+
+/* 제목 숨기기 */
+.blind {
+    position: absolute;
+    top: -99999px;
+}
+
+/* iframe */
+iframe {
+    border: 0;
+}
+
+/* 기울기 */
+i,
+em,
+address {
+    font-style: normal;
+}
+
+/* float을 쓸경우 부모 찾기 */
+.clearFix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.inner {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* 폰트 */
+/* import Noto Sans KR */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* 텍스트에 Noto Sans KR 글꼴 적용 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 16px;
+    color: #252525;
+    word-break: keep-all;
+    max-width: 1920px;
+    margin: 0 auto;
+}
