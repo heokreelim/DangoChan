@@ -10,7 +10,7 @@ CREATE TABLE `users` (
 	user_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	email	VARCHAR(50)	NOT NULL UNIQUE,
 	user_name	VARCHAR(50)	NOT NULL UNIQUE,
-	auth_type	VARCHAR(50)	check(auth_type in ('LOCAL', 'GOOGLE', 'APPLE', 'LINE', 'GUEST')),
+	auth_type	VARCHAR(50) NOT NULL check(auth_type in ('LOCAL', 'GOOGLE', 'APPLE', 'LINE', 'GUEST')),
 	password	VARCHAR(50)	NOT NULL,
 	provider_id	VARCHAR(255),
 	created_at	DATETIME DEFAULT CURRENT_TIMESTAMP
