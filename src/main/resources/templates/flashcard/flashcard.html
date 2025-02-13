@@ -5,158 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>플래시 카드</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-        }
-
-        .container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .timer {
-            background-color: #fdf4f1;
-            padding: 5px 15px;
-            border-radius: 5px;
-            font-size: 48px;
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .study-timer {
-            background-color: #fdf4f1;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 32px;
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            transition: color 0.1s ease-in-out;
-        }
-
-        .study-timer.red {
-            color: red;
-        }
-
-        .close {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 48px;
-            font-weight: bold;
-            background: none;
-            border: none;
-            outline: none;
-            padding: 0;
-        }
-
-        .flashcard {
-            background-color: #e6ecc8;
-            padding: 100px;
-            font-size: 108px;
-            font-weight: bold;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .buttons {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-
-        .cardBtn,
-        .answerBtn {
-            background-color: #fdf4f1;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 32px;
-            cursor: pointer;
-            border: none;
-        }
-
-        .center {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
-
-    <script>
-        function goHome() {
-            window.location.href = "home.html"; // 홈 화면으로 이동
-        }
-
-        function startTimer(timerId) {
-            let totalSeconds = 0;
-            const timerElement = document.getElementById(timerId);
-
-            setInterval(() => {
-                totalSeconds++;
-                let min = Math.floor(totalSeconds / 60);
-                let sec = totalSeconds % 60;
-                let formattedTime = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-                timerElement.innerText = formattedTime;
-
-                // 1:00이 되는 순간 빨간색으로 변경
-                if (timerId === "studyTimer" && formattedTime === "01:00") {
-                    timerElement.classList.add("red");
-                }
-            }, 1000);
-        }
-
-        window.onload = function () {
-            startTimer("mainTimer"); // 메인 타이머 시작
-            startTimer("studyTimer"); // 공부 타이머 시작
-        };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../../static/css/flashcard.css">
+    <script src="../../static/js/flashcard.js"></script>
 </head>
 
 <body>
     <div class="container">
         <div class="timer" id="mainTimer">00:00</div>
         <button class="close" type="button" onclick="goHome()">&#10006;</button>
-        <div class="flashcard">学生</div>
-        <!-- <div class="flashcard-wrap">
+        <div class="flashcard-wrap">
             <div class="front">
-        
+                <input type="text" name="word" value="学生">
             </div>
             <div class="back">
-        
+                <input type="text" name="word" id="word" value="学生">
+                <input type="text" name="pos" id="pos" value="명사">
+                <input type="text" name="meaning" id="meaning" value="학생">
+                <input type="text" name="example" id="example" value="学生が学校に行きます">
             </div>
-        </div> -->
+        </div>
         <div class="buttons">
             <button class="cardBtn" type="button">편집</button>
-            <button class="answerBtn center" type="button">정답 보기</button>
+            <div class="frontBtn">
+                <button class="answerBtn center" type="button" onclick="showAnswer()">정답 보기</button>
+            </div>
+            <div class="backBtn">
+                <button class="circleBtn" type="button">&#9675;</button>
+                <button class="triangleBtn" type="button">&#9651;</button>
+                <button class="xBtn" type="button">&#10006;</button>
+            </div>
+
         </div>
         <div class="study-timer" id="studyTimer">00:00</div>
     </div>
-
-
 </body>
 
 </html>
