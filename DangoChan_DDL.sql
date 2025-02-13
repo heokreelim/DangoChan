@@ -1,9 +1,7 @@
 -- 2025-02-13
 -- 데이터베이스 사용 : scit
-use scit;
 create database DangoChan;
 use DangoChan;
-
 
 -- 유저 정보 테이블
 DROP TABLE IF EXISTS users;
