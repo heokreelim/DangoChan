@@ -1,0 +1,143 @@
+/**************************
+* 게시글 목록
+*************************** */
+@charset "UTF-8";
+@import "main.css";
+
+/**************************
+* 페이지 전체 폭
+*************************** */
+div.content {
+    width: 1000px;
+    margin: 0 auto;
+}
+/**************************
+* 글 개수, 검색창
+*************************** */
+div.content>div.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.search {
+    width: 500px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: right;
+
+}
+
+div.search select {
+    width: 140px;
+    height: 32px;
+    border: 0px;
+    outline: 1px solid rgb(0, 100, 255);
+    border-radius: 10px;
+}
+
+div.search input[type="text"] {
+    width: 250px;
+    height: 35px;
+}
+
+/**************************
+* 게시글 목록 테이블
+*************************** */
+.head {
+    margin-top: 20px;
+}
+.no, .writer, .hitcount {
+    width: 100px;
+}
+.create_date {
+    width: 180px;
+}
+
+/**************************
+* 글쓰기 버튼
+*************************** */
+div.write {
+    width: 1000px;
+    margin: 20px auto;
+    text-align: right;
+}
+/**************************
+* 페이지 내비게이션(pagination: 페이지네이션)
+*************************** */
+nav.pagination {
+    width: 1000px;
+    margin: 20px auto;
+    text-align: center;
+
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .page-no {
+    display: inline-block;
+    width: 20px;
+    height: 30px;
+    padding: 0.4rem;
+    margin: 0 2px;
+
+    font-size: 1.2rem;
+}
+
+.current {
+    color: red;
+    font-weight: bold;
+
+}
+
+*/
+
+.page-no.current {
+    background-color: #007bAA;
+    color: #fff;
+    border: 1px solid #007bBB;
+    pointer-events: none;
+}
+
+.page-no.disabled {
+    color: #000;
+    border-color: #ddd;
+    pointer-events: none;
+}
+
+/* 아이콘 스타일 */
+.page-no i {
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+/* 화살표 버튼 스타일 */
+.page-no:first-child,
+.page-no:last-child {
+    font-size: 16px;
+    padding: 8px;
+}
+
+/* 오빤 강남스타일이 아니고 숫자 스타일*/
+.pageNumberList:hover {
+    color:red;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .pagination {
+        gap: 4px;
+    }
+
+    .page-no {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .page-no i {
+        font-size: 14px;
+    }
+}
