@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.scit.DangoChan.entity.CommunityEntity;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +25,7 @@ public class CommunityDTO {
 	private Long userId;
 	private Integer wordCount;
 	private Integer views;
+	private String boardContent;
 	private String upload;
 	private LocalDateTime createDate;
 	private LocalDateTime modifyDate;
@@ -34,9 +36,23 @@ public class CommunityDTO {
 	
 	private String savedFileName;
 	
+	// 댓글 개수(BoardEntity에서 @Formula를 이용해서 조회)
 	private int replyCount;
 	
 	//entity -> DTO
-	
+	public static CommunityDTO toDTO(CommunityEntity communityEntity) {
+		return CommunityDTO.builder()
+				.boardId(communityEntity.getBoardId())
+				.userId(communityEntity.getUserId())
+				.wordCount(communityEntity.getWordCount())
+				.views(communityEntity.getViews())
+				.boardContent(communityEntity.getBoardContent())
+				.createDate(communityEntity.getCreateDate())
+				.modifyDate(communityEntity.getModifyDate())
+				.originalFileName(communityEntity.getOriginalFileName())
+				.savedFileName(communityEntity.getSavedFileName())
+				.replyCount(communityEntity.getReplyCount())
+				.build();
+	}
 	
 }
