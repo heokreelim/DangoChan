@@ -1,45 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>flashcard</title>
-    <style>
-        .modal{
-            position:absolute;
-            display:none;
-            
-            justify-content: center;
-            top:0;
-            left:0;
-
-            width:100%;
-            height:100%;
-
-            
-
-            background-color: rgba(0,0,0,0.4);
-        }
-    </style>
+    <title>플래시 카드</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/flashcard.css">
+    <script src="../../static/js/flashcard.js"></script>
 </head>
+
 <body>
-
-flashcardflashcardflashcardflashcard
-flashcard
-    <div class="modal">
-        <div class="modal_body">
-            <h2>모달창 제목</h2>
-            <p>모달창 내용 </p>
+    <div class="container">
+        <div class="timer" id="mainTimer">00:00</div>
+        <button class="close" type="button" onclick="goHome()">&#10006;</button>
+        <div class="flashcard-wrap">
+            <div class="front">
+                <input type="text" name="word" value="学生">
+            </div>
+            <div class="back">
+                <input type="text" name="word" id="word" value="学生">
+                <input type="text" name="pos" id="pos" value="명사">
+                <input type="text" name="meaning" id="meaning" value="학생">
+                <input type="text" name="example" id="example" value="学生が学校に行きます">
+            </div>
         </div>
-    </div>
-    <button class="btn-open-modal">Modal열기</button>
-    <script>
-        const modal = document.querySelector('.modal');
-        const btnOpenModal=document.querySelector('.btn-open-modal');
+        <div class="buttons">
+            <button class="cardBtn" type="button">편집</button>
+            <div class="frontBtn">
+                <button class="answerBtn center" type="button" onclick="showAnswer()">정답 보기</button>
+            </div>
+            <div class="backBtn">
+                <button class="circleBtn" type="button">&#9675;</button>
+                <button class="triangleBtn" type="button">&#9651;</button>
+                <button class="xBtn" type="button">&#10006;</button>
+            </div>
 
-        btnOpenModal.addEventListener("click", ()=>{
-            modal.style.display="flex";
-        });
-    </script>
+        </div>
+        <div class="study-timer" id="studyTimer">00:00</div>
+    </div>
 </body>
+
 </html>
