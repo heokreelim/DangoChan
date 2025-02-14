@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://thymeleaf.org">
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+   <div th:replace="fragment/head"></div>
+    <title>마이페이지</title>
+    <script th:src="@{/js/calendar.js}"></script>
 </head>
 <body>
-    <h1>여기는 마이 페이지 화면입니다</h1>
+<div class="page-wrap">
+    <div  class="header" >
+        <div th:replace="/fragment/header.html :: header"></div>
+    </div>
+    <div class="inner">
+        <div class="profile-wrap"></div>
+        <div class="achievement-wrap"></div>
+        <div class="calendar-wrap">
+            <div id="currentMonth" class="mypage-currentMonth"></div>
+            <table class="nav-calendar">
+                <thead>
+                    <tr>
+                        <th>일</th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                        <th>토</th>
+                    </tr>
+                </thead>
+                <tbody id="calendarBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>
