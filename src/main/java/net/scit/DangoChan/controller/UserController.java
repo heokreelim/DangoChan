@@ -7,15 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.scit.DangoChan.service.UserService;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-	// public declaration start
+	// public memberVariable start
 	
-	// public declaration end
+	// public memberVariable end
+	
+	// private memberVariable start
+	private final UserService userService;
+	// private memberVariable end
 	
 	// PJB start
 	
@@ -48,4 +53,8 @@ public class UserController {
 	}
 	
 	// PJB end
+	
+	// LHR start
+	
+	// LHR end
 }
