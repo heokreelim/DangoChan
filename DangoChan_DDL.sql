@@ -49,10 +49,10 @@ CREATE TABLE `card` (
     `category_id` BIGINT NOT NULL,
     `user_id` BIGINT NOT NULL,
     `word` VARCHAR(100) NOT NULL,
-    `furigana` VARCHAR(100),
     `pos` VARCHAR(50),
     `meaning` VARCHAR(255),
-    `example` VARCHAR(500),
+    `example_jp` VARCHAR(500),
+    `example_kr` VARCHAR(500),
     `study_level` INT,
     PRIMARY KEY (`card_id`),
     FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`),
@@ -144,9 +144,9 @@ INSERT INTO `deck` (`deck_id`, `category_id`, `user_id`, `deck_name`) VALUES
 (2, 2, 2, 'Business Expressions');
 
 -- card 테이블 데이터 삽입
-INSERT INTO `card` (`card_id`, `deck_id`, `category_id`, `user_id`, `word`, `furigana`, `pos`, `meaning`, `example`, `study_level`) VALUES
-(1, 1, 1, 1, '挑戦', 'ちょうせん', '名詞', '도전', '新しい仕事に挑戦する。', 3),
-(2, 2, 2, 2, '契約', 'けいやく', '名詞', '계약', '新しい契約を締結する。', 2);
+INSERT INTO `card` (`card_id`, `deck_id`, `category_id`, `user_id`, `word`, `pos`, `meaning`, `example_jp`, `example_kr`, `study_level`) VALUES
+(1, 1, 1, 1, '挑戦', '名詞', '도전', '新しい仕事に挑戦する。', '마ㅏ', 3),
+(2, 2, 2, 2, '契約', '名詞', '계약', '新しい契約を締結する。', '아아', 2);
 
 -- deckStudyTime 테이블 데이터 삽입
 INSERT INTO `deckStudyTime` (`studyTime_id`, `deck_id`, `user_id`, `study_time`, `date`) VALUES
