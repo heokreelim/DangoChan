@@ -56,15 +56,114 @@ address {
 }
 
 /* 폰트 */
-/* import Noto Sans KR */
+/* import Noto Sans KR, Shippori Mincho B1 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap');
+
+/* 고령딸기체 - 타이틀용 */
+@font-face {
+    font-family: 'GoryeongStrawberry';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/GoryeongStrawberry.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 
 /* 텍스트에 Noto Sans KR 글꼴 적용 */
 body {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Noto Sans KR', 'Shippori Mincho B1',sans-serif;
     font-size: 16px;
-    color: #252525;
+    color: #121511;
     word-break: keep-all;
     max-width: 1920px;
     margin: 0 auto;
+}
+
+
+/* 기본 레이아웃 */
+.inner {
+    width: 1280px;
+}
+
+/* nav */
+.nav-bg {
+    background-color: #ccc;
+}
+
+.logo {
+    height: 125px;
+}
+
+.profile-wrap > .profile-picture {
+    width: 225px;
+    height: 225px;
+    border-radius: 50%;
+    background-color: #FF9EBE;
+}
+.profile-wrap > .nickname {
+    width: 255px;
+    height: auto;
+    background-color: #B4D8E4;
+}
+
+.profile-wrap>.nickname .userName {
+    font-size: 1.15em;
+    font-weight: 600;
+}
+
+/* header */
+/* nav 가 없는 페이지에 header 는 .header  */
+.header {
+    width: 100%;
+    height: 150px;
+}
+.header-bg{
+    background-color: #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gnb-list {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-right: 36px;
+}
+.gnb-list>li>a>i {
+    font-size: 1.75em;
+}
+.gnb-list>li>a>i:hover {
+    color : #FF9EBE;
+    transition: 0.5s;
+}
+/* nav 가 있는 페이지에 header 는 .right-wrap   */
+
+/* 캘린더 디자인 */
+/* 공통 */
+.mypage-currentMonth {
+    font-family:  "GoryeongStrawberry";
+    font-size: 1.85em;
+    text-align: center;
+    align-items: center;
+    margin: 30px auto;
+}
+
+.nav-calendar,
+.mypage-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.nav-calendar th,
+.nav-calendar td,
+.mypage-calendar th,
+.mypage-calendar td {
+    border: 1px solid #FF9EBE;
+    padding: 12px;
+}
+
+.nav-calendar th,
+.mypage-calendar th {
+    background-color: #FDF4F1;
 }
