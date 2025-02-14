@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>플래시 카드</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/flashcard.css">
-    <script src="../../static/js/flashcard.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/css/flashcard.css" th:href="@{/css/flashcard.css}">
+    <script src="../../static/js/flashcard.js" th:src="@{/js/flashcard.js}"></script>
 </head>
 
 <body>
@@ -34,7 +34,6 @@
                 <button class="triangleBtn" type="button">&#9651;</button>
                 <button class="xBtn" type="button">&#10006;</button>
             </div>
-
         </div>
         <div class="study-timer" id="studyTimer">00:00</div>
     </div>

@@ -1,3 +1,4 @@
+/* 기본 스타일 초기화 */
 * {
     margin: 0;
     padding: 0;
@@ -24,6 +25,7 @@ body {
     position: relative;
 }
 
+/* 타이머 */
 .timer {
     background-color: #fdf4f1;
     padding: 5px 15px;
@@ -35,6 +37,7 @@ body {
     transform: translateX(-50%);
 }
 
+/* 공부 타이머 */
 .study-timer {
     background-color: #fdf4f1;
     padding: 10px 20px;
@@ -50,6 +53,7 @@ body {
     color: red;
 }
 
+/* 닫기 버튼 */
 .close {
     position: absolute;
     top: 5px;
@@ -63,15 +67,7 @@ body {
     padding: 0;
 }
 
-/* .flashcard {
-    background-color: #e6ecc8;
-    padding: 100px;
-    font-size: 108px;
-    font-weight: bold;
-    border-radius: 10px;
-    text-align: center;
-} */
-
+/* 플래시카드 영역 */
 .flashcard-wrap {
     width: 400px;
     height: 300px;
@@ -79,8 +75,8 @@ body {
     text-align: center;
 }
 
-.front,
-.back {
+/* 앞면 카드 */
+.front, .back {
     width: 100%;
     height: 100%;
     display: flex;
@@ -97,8 +93,7 @@ body {
     background-color: #e6ecc8;
 }
 
-.back {}
-
+/* 입력 필드 스타일 */
 input {
     border: none;
     background: transparent;
@@ -107,21 +102,23 @@ input {
     font-weight: bold;
 }
 
+/* 뒷면 카드 */
 .back {
     display: none;
     flex-direction: column;
 }
 
+/* 버튼 컨테이너 */
 .buttons {
     position: absolute;
     bottom: 20px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
+    justify-content: center;
+    gap: 20px;
 }
 
-.cardBtn,
+/* 정답 보기 버튼 */
 .answerBtn {
     background-color: #fdf4f1;
     padding: 10px 20px;
@@ -131,12 +128,44 @@ input {
     border: none;
 }
 
-.center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+/* ○ △ X 버튼 그룹 (초기에는 숨김) */
+.backBtn {
+    display: none;
+    gap: 10px;
 }
 
+.flashcard-wrap.show-answer ~ .buttons .frontBtn {
+    display: none;
+}
+
+.flashcard-wrap.show-answer ~ .buttons .backBtn {
+    display: flex;
+}
+
+/* ○ △ X 개별 버튼 스타일 */
+.circleBtn, .triangleBtn, .xBtn {
+    background-color: #fdf4f1;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 32px;
+    cursor: pointer;
+    border: none;
+}
+
+/* "편집" 버튼 */
+.cardBtn {
+    background-color: #fdf4f1;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 32px;
+    cursor: pointer;
+    border: none;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+}
+
+/* 정답 확인 시 앞면 숨기고 뒷면 표시 */
 .flashcard-wrap.show-answer .front {
     display: none;
 }
