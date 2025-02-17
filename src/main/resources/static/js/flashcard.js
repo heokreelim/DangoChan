@@ -18,6 +18,8 @@ function startTimer(timerId) {
 
 function showAnswer() {
     document.querySelector(".flashcard-wrap").classList.add("show-answer");
+    document.getElementById("answerBtn").style.display = "none"; // 정답 보기 버튼 숨김
+    document.getElementById("backBtn").style.display = "flex"; // ○ △ X 버튼 표시
 }
 
 window.onload = function () {
