@@ -1,10 +1,11 @@
-/* 기본 스타일 초기화 */
+/* ✅ 기본 스타일 초기화 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ✅ 전체 레이아웃 설정 */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -13,8 +14,10 @@ body {
     width: 100vw;
     height: 100vh;
     position: relative;
+    background-color: #f8f8f8;
 }
 
+/* ✅ 컨테이너 */
 .container {
     width: 100%;
     height: 100%;
@@ -25,7 +28,7 @@ body {
     position: relative;
 }
 
-/* 타이머 */
+/* ✅ 타이머 */
 .timer {
     background-color: #fdf4f1;
     padding: 5px 15px;
@@ -37,7 +40,7 @@ body {
     transform: translateX(-50%);
 }
 
-/* 공부 타이머 */
+/* ✅ 공부 타이머 */
 .study-timer {
     background-color: #fdf4f1;
     padding: 10px 20px;
@@ -53,7 +56,7 @@ body {
     color: red;
 }
 
-/* 닫기 버튼 */
+/* ✅ 닫기 버튼 */
 .close {
     position: absolute;
     top: 5px;
@@ -67,33 +70,47 @@ body {
     padding: 0;
 }
 
-/* 플래시카드 영역 */
+/* ✅ 플래시카드 영역 */
 .flashcard-wrap {
     width: 400px;
     height: 300px;
     position: relative;
     text-align: center;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
 }
 
-/* 앞면 카드 */
+/* ✅ 카드 앞면과 뒷면 */
 .front, .back {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-radius: 10px;
     position: absolute;
     top: 0;
     left: 0;
-    transition: opacity 0.3s ease-in-out;
+    backface-visibility: hidden; /* 텍스트 반전 방지 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
+/* ✅ 앞면 카드 (한자 + 후리가나) */
 .front {
     background-color: #e6ecc8;
+    z-index: 2;
 }
 
-/* 입력 필드 스타일 */
+.word-box {
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #e6ecc8;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* ✅ 입력 필드 스타일 */
 input {
     border: none;
     background: transparent;
@@ -102,13 +119,51 @@ input {
     font-weight: bold;
 }
 
-/* 뒷면 카드 */
+/* ✅ 뒷면 카드 */
 .back {
-    display: none;
+    background-color: #e6ecc8;
+    transform: rotateY(180deg);
+    z-index: 1;
+    padding: 15px;
+    display: flex;
     flex-direction: column;
+    justify-content: space-around; /* 요소들이 고르게 배치되도록 설정 */
+    align-items: center;
+    gap: 10px; /* 요소들 사이 간격 */
 }
 
-/* 버튼 컨테이너 */
+/* ✅ 품사, 의미, 예문 스타일 */
+.pos-box, .meaning-box, .example-jp-box, .example-kr-box {
+    background-color: #fdf4f1;
+    border-radius: 5px;
+    padding: 10px;
+    width: 90%;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* ✅ 품사 스타일 */
+.pos-box {
+    font-size: 20px;
+}
+
+/* ✅ 예문 스타일 */
+.example-jp-box, .example-kr-box {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+/* ✅ 애니메이션 효과 */
+.flashcard-wrap.show-answer {
+    transform: rotateY(180deg);
+}
+
+.flashcard-wrap.hide-answer {
+    transform: rotateY(0deg);
+}
+
+/* ✅ 버튼 컨테이너 */
 .buttons {
     position: absolute;
     bottom: 20px;
@@ -118,7 +173,7 @@ input {
     gap: 20px;
 }
 
-/* 정답 보기 버튼 */
+/* ✅ 정답 보기 버튼 */
 .answerBtn {
     background-color: #fdf4f1;
     padding: 10px 20px;
@@ -128,7 +183,7 @@ input {
     border: none;
 }
 
-/* ○ △ X 버튼 그룹 (초기에는 숨김) */
+/* ✅ ○ △ X 버튼 그룹 (초기에는 숨김) */
 .backBtn {
     display: none;
     gap: 10px;
@@ -142,7 +197,7 @@ input {
     display: flex;
 }
 
-/* ○ △ X 개별 버튼 스타일 */
+/* ✅ ○ △ X 개별 버튼 스타일 */
 .circleBtn, .triangleBtn, .xBtn {
     background-color: #fdf4f1;
     padding: 10px 20px;
@@ -152,7 +207,7 @@ input {
     border: none;
 }
 
-/* "편집" 버튼 */
+/* ✅ "편집" 버튼 */
 .cardBtn {
     background-color: #fdf4f1;
     padding: 10px 20px;
@@ -165,11 +220,18 @@ input {
     bottom: 20px;
 }
 
-/* 정답 확인 시 앞면 숨기고 뒷면 표시 */
-.flashcard-wrap.show-answer .front {
-    display: none;
+/* ✅ 플래시카드 회전 애니메이션 */
+.flashcard-wrap.show-answer {
+    transform: rotateY(180deg);
 }
 
-.flashcard-wrap.show-answer .back {
-    display: flex;
+.flashcard-wrap.hide-answer {
+    transform: rotateY(0deg);
+}
+
+/* ✅ ⭕ 버튼 비활성화 스타일 */
+.circleBtn:disabled, .circleBtn.disabled-btn {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
 }

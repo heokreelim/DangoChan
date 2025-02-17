@@ -35,11 +35,11 @@ public class CardDTO {
 				.categoryId(cardEntity.getCategoryId())
 				.deckId(cardEntity.getDeckId())
 				.word(cardEntity.getWord())
-				.pos(cardEntity.getPos())				
-				.meaning(cardEntity.getMeaning())				
-				.exampleJp(cardEntity.getExampleJp())				
-				.exampleKr(cardEntity.getExampleKr())				
-				.studyLevel(cardEntity.getStudyLevel())				
+				.pos(cardEntity.getPos())
+				.meaning(cardEntity.getMeaning())
+				.exampleJp(cardEntity.getExampleJp())
+				.exampleKr(cardEntity.getExampleKr())
+				.studyLevel(cardEntity.getStudyLevel())
 				.build();
     }
 }
