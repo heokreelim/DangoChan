@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>채팅방</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/chatRoom.css}"/>
+</head>
+<!-- 아래에서 th:attr를 사용하여 roomId 값을 치환 -->
+<body th:attr="data-roomid=${roomId}">
+<div class="container">
+    <!-- 중앙 채팅 영역 -->
+    <div class="chat-area">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <!-- 파일 첨부: 파일 선택 시 onchange 이벤트로 sendFile() 호출 -->
+            <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()"/>
+            <!-- 메시지 입력창 -->
+            <input type="text" id="chatInput" placeholder="메시지 입력"/>
+            <!-- 전송 버튼 (텍스트 메시지 전송) -->
+            <button onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+    <!-- 우측 사용자 목록 및 나가기 버튼 -->
+    <div class="user-list">
+        <div class="user-list-header">
+            <h3>현재 사용자</h3>
+        </div>
+        <div class="user-list-content" id="userList"></div>
+        <div class="user-list-footer">
+            <button class="leave-button" onclick="leaveRoom()">나가기</button>
+        </div>
+    </div>
+</div>
+
+<!-- SockJS와 STOMP를 로컬에서 로드 (Thymeleaf 사용) -->
+<script th:src="@{/js/lib/sockjs.min.js}"></script>
+<script th:src="@{/js/lib/stomp.min.js}"></script>
+<!-- 외부 JS 파일 -->
+<script th:src="@{/js/chatRoom.js}"></script>
+</body>
+</html>
