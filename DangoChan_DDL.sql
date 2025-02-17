@@ -1,6 +1,9 @@
 -- 2025-02-13
 -- 데이터베이스 사용 : scit
 create database DangoChan;
+
+drop database DangoChan;
+
 use DangoChan;
 
 -- 유저 정보 테이블
@@ -13,6 +16,7 @@ CREATE TABLE `users` (
 	auth_type	VARCHAR(50) NOT NULL check(auth_type in ('LOCAL', 'GOOGLE', 'APPLE', 'LINE', 'GUEST')),
 	password	VARCHAR(50)	NOT NULL,
 	provider_id	VARCHAR(255),
+	roles    varchar(50) DEFAULT 'ROLE_USER' check(roles in ('ROLE_USER', 'ROLE_ADMIN')),
 	created_at	DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
