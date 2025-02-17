@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.scit.DangoChan.dto.DeckDTO;
 
 @Entity
 @NoArgsConstructor
@@ -43,5 +44,14 @@ public class DeckEntity {
 
     
  // DTO --> Entity
-
+    public static DeckEntity toEntity(DeckDTO deckDTO) {
+		return DeckEntity.builder()
+				.deckId(deckDTO.getDeckId())
+				//	임시값 : 1
+				.categoryId(1L)
+				//	임시값 : 1
+				.userId(1L)
+				.deckName(deckDTO.getDeckName())
+				.build();
+    }
 }
