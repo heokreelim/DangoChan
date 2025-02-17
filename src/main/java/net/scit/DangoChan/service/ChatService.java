@@ -1,36 +1,56 @@
 package net.scit.DangoChan.service;
 
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.RequiredArgsConstructor;
+import net.scit.DangoChan.dto.ChatMessage;
+import net.scit.DangoChan.dto.ChatRoom;
+import net.scit.DangoChan.repository.ChatRoomRepository;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 @Service
+@RequiredArgsConstructor
 public class ChatService {
-    private static final String CHAT_ROOMS = "chat:rooms";
-    private final RedisTemplate<String, Object> redisTemplate;
-    private final HashOperations<String, String, String> hashOperations;
 
-    public ChatService(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-        this.hashOperations = redisTemplate.opsForHash(); // ★ 여기서 바로 초기화!
+    private final ChatRoomRepository chatRoomRepository;
+    private final SimpMessageSendingOperations messagingTemplate;
+
+    // 일반 채팅 메시지 전송
+    public void sendChatMessage(ChatMessage chatMessage) {
+        ChatRoom room = chatRoomRepository.findRoomById(chatMessage.getRoomId());
+        if (room == null) return;
+
+        // 메시지 저장 없이, 바로 WebSocket으로 브로드캐스트
+        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
-    // 채팅방 생성
-    public String createRoom(String name) {
-        String roomId = UUID.randomUUID().toString();
-        hashOperations.put(CHAT_ROOMS, roomId, name);
-        return roomId;
+    // 파일 메시지 전송
+    public void sendFileMessage(ChatMessage chatMessage) {
+        ChatRoom room = chatRoomRepository.findRoomById(chatMessage.getRoomId());
+        if (room == null) return;
+
+        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
-    // 채팅방 목록 조회
-    public Map<String, String> findAllRooms() {
-        return hashOperations.entries(CHAT_ROOMS);
+    // 유저가 방에 들어옴
+    public void enterUser(String sessionId, String roomId) {
+        ChatRoom room = chatRoomRepository.findRoomById(roomId);
+        if (room != null) {
+            room.getUserSet().add(sessionId);
+            chatRoomRepository.updateChatRoom(room);
+        }
     }
 
-    // 채팅방 삭제
-    public void deleteRoom(String roomId) {
-        hashOperations.delete(CHAT_ROOMS, roomId);
+    // 유저가 방을 나감
+    // 방에 사람이 아무도 없으면 삭제
+    public void leaveUser(String sessionId, String roomId) {
+        ChatRoom room = chatRoomRepository.findRoomById(roomId);
+        if (room != null) {
+            room.getUserSet().remove(sessionId);
+            if (room.getUserSet().isEmpty()) {
+                chatRoomRepository.deleteChatRoom(roomId);
+            } else {
+                chatRoomRepository.updateChatRoom(room);
+            }
+        }
     }
 }

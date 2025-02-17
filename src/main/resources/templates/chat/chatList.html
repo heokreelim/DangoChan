@@ -1,29 +1,21 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>채팅방 목록</title>
+    <meta charset="UTF-8"/>
+    <title>채팅방 리스트</title>
+    <link rel="stylesheet" th:href="@{/css/chatList.css}"/>
 </head>
 <body>
-<h1>채팅방 목록</h1>
+<div class="container">
+    <h1>채팅방 리스트</h1>
+    <div class="room-list" id="roomList"></div>
 
-<!-- 채팅방 생성 폼 -->
-<form action="/chat/room" method="post">
-    <input type="text" name="name" placeholder="채팅방 이름" required>
-    <button type="submit">채팅방 생성</button>
-</form>
+    <div class="create-room">
+        <input type="text" id="roomName" placeholder="방 이름 입력"/>
+        <button onclick="createRoom()">방 생성</button>
+    </div>
+</div>
 
-<ul>
-    <th:block th:each="room : ${rooms}">
-        <li>
-            <a th:href="@{/chat/detail/{roomId}(roomId=${room.key})}" th:text="${room.value}">채팅방 이름</a>
-            <form th:action="@{/chat/room/{roomId}(roomId=${room.key})}" method="post">
-                <input type="hidden" name="_method" value="delete">
-                <button type="submit">삭제</button>
-            </form>
-        </li>
-    </th:block>
-</ul>
+<script th:src="@{/js/chatList.js}"></script>
 </body>
 </html>
