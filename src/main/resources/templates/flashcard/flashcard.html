@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>플래시 카드</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/flashcard.css" th:href="@{/css/flashcard.css}">
-    <script src="../../static/js/flashcard.js" th:src="@{/js/flashcard.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/flashcard.css}">
+    <script th:src="@{/js/jQuery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/flashcard.js}"></script>
+
 </head>
 
 <body>
@@ -14,22 +16,31 @@
         <div class="timer" id="mainTimer">00:00</div>
         <button class="close" type="button" onclick="goHome()">&#10006;</button>
         <div class="flashcard-wrap">
+            <!-- 앞면 (한자 + 후리가나 포함) -->
             <div class="front">
-                <input type="text" name="word" value="学生">
+                <div class="word-box">
+                    <ruby>
+                        <span id="wordText" th:text="${flashcard.word}"></span>
+                        <rt id="furigana" th:text="${flashcard.furigana}"></rt>
+                    </ruby>
+                </div>
             </div>
+
+            <!-- 뒷면 (품사 + 의미 + 예문) -->
             <div class="back">
-                <input type="text" name="word" id="word" value="学生">
-                <input type="text" name="pos" id="pos" value="명사">
-                <input type="text" name="meaning" id="meaning" value="학생">
-                <input type="text" name="example" id="example" value="学生が学校に行きます">
+                <div class="pos-box" id="pos"  th:text="${flashcard.pos}">명사</div> <!-- 품사 -->
+                <div class="meaning-box" id="meaning" th:text="${flashcard.meaning}">학생</div> <!-- 의미 -->
+                <div class="example-jp-box" id="example_jp" th:text="${flashcard.exampleJp}">学生が学校に行きます</div> <!-- 일본어 예문 -->
+                <div class="example-kr-box" id="example_kr" th:text="${flashcard.exampleKr}">학생이 학교에 갑니다</div> <!-- 한국어 예문 -->
             </div>
         </div>
+
         <div class="buttons">
             <button class="cardBtn" type="button">편집</button>
             <div class="frontBtn">
                 <button class="answerBtn center" type="button" onclick="showAnswer()">정답 보기</button>
             </div>
-            <div class="backBtn">
+            <div class="backBtn" style="display: none;">
                 <button class="circleBtn" type="button">&#9675;</button>
                 <button class="triangleBtn" type="button">&#9651;</button>
                 <button class="xBtn" type="button">&#10006;</button>
