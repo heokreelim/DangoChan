@@ -14,7 +14,8 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth
 				// WebSocket 및 채팅 관련, 정적 리소스 허용
-				.requestMatchers("/ws-stomp/**", "/chat/**", "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**").permitAll()
+//				.requestMatchers("/ws-stomp/**", "/chat/**", "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**").permitAll()
+				.requestMatchers("/**").permitAll()
 				// 그 외 모든 요청은 인증 필요 (원하는 대로 설정)
 				.anyRequest().authenticated()
 		);

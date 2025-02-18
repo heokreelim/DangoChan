@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,6 +44,9 @@ public class CommunityEntity {
 	@Column(name="user_id", nullable = false)
 	private Long userId;
 	
+	@Column(name="title", nullable = false)
+	private String title;
+	
 	@Column(name="word_count")
 	private Integer wordCount;
 	
@@ -68,7 +70,7 @@ public class CommunityEntity {
 	@LastModifiedDate
 	private LocalDateTime modifyDate;
 	
-	@Formula("(SELECT count(1) from reply r where board_id = r.board_id")
+	@Formula("(SELECT count(1) from reply r where board_id = r.board_id)")
 	private int replyCount;
 
 	//DTO -> entity
@@ -76,6 +78,7 @@ public class CommunityEntity {
 		return CommunityEntity.builder()
 				.boardId(communityDTO.getBoardId())
 				.userId(communityDTO.getUserId())
+				.title(communityDTO.getTitle())
 				.wordCount(communityDTO.getWordCount())
 				.views(communityDTO.getViews())
 				.boardContent(communityDTO.getBoardContent())
