@@ -1,5 +1,6 @@
 package net.scit.DangoChan.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -72,16 +73,25 @@ public class FlashCardController {
 	//AYH end
 	
 	//SYH start
-	@GetMapping("/flashcard")
+	// ✅ 플래시카드 페이지 (HTML 렌더링)
+	@GetMapping("/flashcard") // ❗ 변경: /flashcard/flashcard 로 맞춤
 	public String flashcard(@RequestParam(required = false) Long deckId, Model model) {
 		if (deckId == null) {
 			deckId = 1L; // 기본 덱 ID 설정
 		}
-
-		// 덱 ID 기반으로 카드 데이터 가져오기
 		CardDTO card = flashCardService.getCardByDeckId(deckId);
 		model.addAttribute("flashcard", card);
-		return "flashcard/flashcard";
+		return "flashcard/flashcard"; // ✅ 템플릿: src/main/resources/templates/flashcard/flashcard.html
+	}
+
+	// ✅ AJAX 요청 (랜덤 단어 반환)
+	@GetMapping(value = "/json", produces = "application/json")
+	public ResponseEntity<CardDTO> getRandomFlashcard(@RequestParam(required = false) Long deckId) {
+		if (deckId == null) {
+			deckId = 1L; // 기본 덱 ID 설정
+		}
+		CardDTO card = flashCardService.getCardByDeckId(deckId);
+		return ResponseEntity.ok(card);
 	}
 	//SYH end
 	

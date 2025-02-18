@@ -42,4 +42,21 @@ public class CardDTO {
 				.studyLevel(cardEntity.getStudyLevel())
 				.build();
     }
+
+	// 한자 추출 (대괄호 제거)
+	public String getKanji() {
+		return word.replaceAll("\\[[^\\]]*\\]", ""); // [] 안의 히라가나 제거
+	}
+
+	// 히라가나 추출 ([] 안의 글자만 가져오기)
+	public String getFurigana() {
+		StringBuilder furigana = new StringBuilder();
+		java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\[(.*?)\\]").matcher(word);
+		while (matcher.find()) {
+			furigana.append(matcher.group(1)); // [] 안의 히라가나 추출
+		}
+		return furigana.toString();
+	}
+
+
 }
