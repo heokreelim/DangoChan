@@ -84,6 +84,7 @@ public class CommunityController {
 	 * */
 	@PostMapping("/communityWrite")
 	public String communityWrite(@ModelAttribute CommunityDTO communityDTO) {
+		
 		communityService.insertBoard(communityDTO);
 		
 		return "redirect:/community/communityBoardList";
