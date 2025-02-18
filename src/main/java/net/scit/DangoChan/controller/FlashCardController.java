@@ -1,19 +1,17 @@
 package net.scit.DangoChan.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.scit.DangoChan.dto.CardDTO;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.service.FlashCardService;
-
-import net.scit.DangoChan.service.FlashCardService;
-import net.scit.DangoChan.dto.CardDTO;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/flashcard")
@@ -31,7 +29,7 @@ public class FlashCardController {
 	
 
 	/**
-	 *
+	 *	카테고리 등록 요청
 	 * @param categoryDTO
 	 * @return
 	 */
@@ -45,6 +43,20 @@ public class FlashCardController {
 		return "redirect:/";
 	}
 
+	/**
+	 *	카테고리 수정 요청
+	 * @param categoryDTO
+	 * @return
+	 */
+	@GetMapping("/updateCategory")
+	public String updateCategory(@ModelAttribute CategoryDTO categoryDTO) {
+		flashCardService.updateCategory(categoryDTO);
+		
+		return "redirect:/";
+	}
+
+
+	
 	//AYH end
 	
 	//PJB start
