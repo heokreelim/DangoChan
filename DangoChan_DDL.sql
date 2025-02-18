@@ -86,6 +86,7 @@ DROP TABLE IF EXISTS `board`;
 CREATE TABLE `board` (
     `board_id` INT AUTO_INCREMENT NOT NULL,
     `user_id` BIGINT NOT NULL,
+    `title` varchar(255) not null,
     `word_count` INT,
     `views` INT default 0,
     `board_content` VARCHAR(500),
@@ -158,9 +159,9 @@ INSERT INTO `deckStudyTime` (`studyTime_id`, `deck_id`, `user_id`, `study_time`,
 (2, 2, 2, NOW(), CURDATE());
 
 -- board 테이블 데이터 삽입
-INSERT INTO `board` (`board_id`, `user_id`, `word_count`, `views`, `original_file_name`, `create_date`, `modify_date`) VALUES
-(1, 1, 500, 100, 'study_notes.pdf', NOW(), NOW()),
-(2, 2, 300, 50, 'kanji_tips.pdf', NOW(), NOW());
+INSERT INTO `board` (`board_id`, `user_id`, `title`, `word_count`, `views`, `original_file_name`, `create_date`, `modify_date`) VALUES
+(1, 1, '스터디노트', 500, 100, 'study_notes.pdf', NOW(), NOW()),
+(2, 2, '한자 외우기 팁', 300, 50, 'kanji_tips.pdf', NOW(), NOW());
 
 -- boardLikes 테이블 데이터 삽입
 INSERT INTO `boardLikes` (`boardLike_id`, `board_id`, `user_id`) VALUES
