@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.scit.DangoChan.entity.DeckEntity;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +21,13 @@ public class DeckDTO {
     private Long userId;
     private String deckName;
 	
-	// Entity --> DTO
-	
+ // Entity --> DTO
+    public static DeckDTO toDTO(DeckEntity deckEntity) {
+		return DeckDTO.builder()
+				.deckId(deckEntity.getDeckId())
+				.categoryId(deckEntity.getCategoryId())
+				.userId(deckEntity.getUserId())
+				.deckName(deckEntity.getDeckName())
+				.build();
+    }
 }

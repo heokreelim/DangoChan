@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.scit.DangoChan.dto.CardDTO;
 
 @Entity
 @NoArgsConstructor
@@ -45,21 +46,37 @@ public class CardEntity {
     @Column(name = "word", nullable = false)
     private String word;
 
-    @Column(name = "furigana")
-    private String furigana;
-
     @Column(name = "pos")
     private String pos;
 
     @Column(name = "meaning")
     private String meaning;
 
-    @Column(name = "example")
-    private String example;
+    @Column(name = "example_jp")
+    private String exampleJp;
 
+    @Column(name = "example_kr")
+    private String exampleKr;
+    
     @Column(name = "study_level")
     private Integer studyLevel;
     
 // DTO --> Entity
-
+    public static CardEntity toEntity(CardDTO cardDTO) {
+		return CardEntity.builder()
+				.cardId(cardDTO.getCardId())
+				//	임시값 : 1
+				.userId(1L)
+				//	임시값 : 1
+				.categoryId(1L)
+				//	임시값 : 1
+				.deckId(1L)
+				.word(cardDTO.getWord())
+				.pos(cardDTO.getPos())				
+				.meaning(cardDTO.getMeaning())				
+				.exampleJp(cardDTO.getExampleJp())				
+				.exampleKr(cardDTO.getExampleKr())				
+				.studyLevel(cardDTO.getStudyLevel())				
+				.build();
+	}
 }

@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.scit.DangoChan.dto.CategoryDTO;
 
 @Entity
 @NoArgsConstructor
@@ -37,7 +38,16 @@ public class CategoryEntity {
     @Column(nullable = false, length = 50)
     private String categoryName;
 
+	
     
- // DTO --> Entity
+    // DTO --> Entity
+    public static CategoryEntity toEntity(CategoryDTO categoryDTO) {
+		return CategoryEntity.builder()
+				.categoryId(categoryDTO.getCategoryId())
+//				임시값
+				.userId(1L)
+				.categoryName(categoryDTO.getCategoryName())
+				.build();
+	}
 
 }

@@ -1,28 +1,42 @@
-function startTimer(timerId) {
-    let totalSeconds = 0;
-    const timerElement = document.getElementById(timerId);
+$(document).ready(function () {
+    function startTimer(timerId) {
+        let totalSeconds = 0;
+        const $timerElement = $("#" + timerId);
 
-    setInterval(() => {
-        totalSeconds++;
-        let min = Math.floor(totalSeconds / 60);
-        let sec = totalSeconds % 60;
-        let formattedTime = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-        timerElement.innerText = formattedTime;
+        setInterval(() => {
+            totalSeconds++;
+            let min = Math.floor(totalSeconds / 60);
+            let sec = totalSeconds % 60;
+            let formattedTime = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+            $timerElement.text(formattedTime);
 
-        // 1:00이 되는 순간 빨간색으로 변경
-        if (timerId === "studyTimer" && formattedTime === "01:00") {
-            timerElement.classList.add("red");
-        }
-    }, 1000);
-}
+            if (timerId === "studyTimer" && formattedTime === "01:00") {
+                $timerElement.addClass("red");
+                $(".circleBtn").prop("disabled", true).addClass("disabled-btn");
+            }
+        }, 1000);
+    }
 
-function showAnswer() {
-    document.querySelector(".flashcard-wrap").classList.add("show-answer");
-    document.getElementById("answerBtn").style.display = "none"; // 정답 보기 버튼 숨김
-    document.getElementById("backBtn").style.display = "flex"; // ○ △ X 버튼 표시
-}
+    // ✅ 정답 보기 (카드 뒤집기)
+    window.showAnswer = function () {
+        $(".flashcard-wrap").addClass("show-answer").removeClass("hide-answer");
+        $(".answerBtn").hide();
+        $(".backBtn").css("display", "flex");
+    };
 
-window.onload = function () {
-    startTimer("mainTimer"); // 메인 타이머 시작
-    startTimer("studyTimer"); // 공부 타이머 시작
-};
+    // 🔄 프론트 화면으로 돌아가기
+    window.hideAnswer = function () {
+        $(".flashcard-wrap").removeClass("show-answer").addClass("hide-answer");
+        $(".answerBtn").show();
+        $(".backBtn").css("display", "none");
+    };
+
+    // 🎯 ○ △ X 버튼 클릭 시 hideAnswer() 실행
+    $(".circleBtn, .triangleBtn, .xBtn").click(function () {
+        hideAnswer();
+    });
+
+    // 타이머 실행
+    startTimer("mainTimer");
+    startTimer("studyTimer");
+});

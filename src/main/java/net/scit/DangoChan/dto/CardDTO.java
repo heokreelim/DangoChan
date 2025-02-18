@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.scit.DangoChan.entity.CardEntity;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,12 +21,25 @@ public class CardDTO {
     private Long categoryId;
     private Long userId;
     private String word;
-    private String furigana;
     private String pos;
     private String meaning;
-    private String example;
+    private String exampleJp;
+    private String exampleKr;
     private Integer studyLevel;
 	
     // Entity --> DTO
-	
+    public static CardDTO toDTO(CardEntity cardEntity) {
+		return CardDTO.builder()
+				.cardId(cardEntity.getCardId())
+				.userId(cardEntity.getUserId())
+				.categoryId(cardEntity.getCategoryId())
+				.deckId(cardEntity.getDeckId())
+				.word(cardEntity.getWord())
+				.pos(cardEntity.getPos())
+				.meaning(cardEntity.getMeaning())
+				.exampleJp(cardEntity.getExampleJp())
+				.exampleKr(cardEntity.getExampleKr())
+				.studyLevel(cardEntity.getStudyLevel())
+				.build();
+    }
 }
