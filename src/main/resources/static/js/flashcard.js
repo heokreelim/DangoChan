@@ -24,16 +24,47 @@ $(document).ready(function () {
         $(".backBtn").css("display", "flex");
     };
 
-    // 🔄 프론트 화면으로 돌아가기
+    // 🔄 플래시카드 앞면으로 전환
     window.hideAnswer = function () {
         $(".flashcard-wrap").removeClass("show-answer").addClass("hide-answer");
         $(".answerBtn").show();
         $(".backBtn").css("display", "none");
     };
 
-    // 🎯 ○ △ X 버튼 클릭 시 hideAnswer() 실행
+    // ✅ 새로운 랜덤 단어 가져와서 업데이트하는 함수
+    function loadNewWord() {
+        $.ajax({
+            url: "/flashcard/json", // 랜덤 단어를 가져오는 API
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log("새로운 단어 로드됨:", data); // ✅ 디버깅용 로그
+
+                if (data.kanji && data.furigana && data.pos && data.meaning) {
+                    // ✅ 한자 + 후리가나 업데이트
+                    $("#word").html(`<ruby><rb>${data.kanji}</rb><rt>${data.furigana}</rt></ruby>`);
+
+                    // ✅ 품사 & 의미 & 예문 업데이트
+                    $("#pos").text(data.pos);
+                    $("#meaning").text(data.meaning);
+                    $("#example_jp").text(data.exampleJp);
+                    $("#example_kr").text(data.exampleKr);
+                } else {
+                    console.error("데이터 필드가 일부 없음:", data);
+                }
+
+                // ✅ 카드 앞면으로 전환
+                hideAnswer();
+            },
+            error: function () {
+                alert("새로운 단어를 불러오는 중 오류가 발생했습니다.");
+            }
+        });
+    }
+
+    // 🎯 ○ △ X 버튼 클릭 시 새로운 단어 불러오기
     $(".circleBtn, .triangleBtn, .xBtn").click(function () {
-        hideAnswer();
+        loadNewWord();
     });
 
     // 타이머 실행

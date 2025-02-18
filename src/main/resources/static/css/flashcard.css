@@ -72,8 +72,8 @@ body {
 
 /* ✅ 플래시카드 영역 */
 .flashcard-wrap {
-    width: 400px;
-    height: 300px;
+    width: 500px;
+    height: 350px;
     position: relative;
     text-align: center;
     transform-style: preserve-3d;
@@ -124,7 +124,7 @@ input {
     background-color: #e6ecc8;
     transform: rotateY(180deg);
     z-index: 1;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-around; /* 요소들이 고르게 배치되도록 설정 */
@@ -132,26 +132,79 @@ input {
     gap: 10px; /* 요소들 사이 간격 */
 }
 
-/* ✅ 품사, 의미, 예문 스타일 */
-.pos-box, .meaning-box, .example-jp-box, .example-kr-box {
+/* ✅ 플래시카드 뒷면 레이아웃 */
+.content {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 단어와 정보 사이 간격 */
+}
+
+/* ✅ 한자 + 히라가나 + 품사 + 의미를 포함하는 컨테이너 */
+.word-container {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center;
+    justify-content: center;
+    background-color: #fdf4f1;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 200px;
+}
+
+/* ✅ ruby 태그 정렬 (한자 & 히라가나) */
+ruby {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 50px;
+}
+
+/* ✅ 히라가나 스타일 */
+rt {
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+/* ✅ 품사 & 의미를 한자 아래에 가로로 배치 */
+.pos-meaning-container {
+    display: flex;
+    flex-direction: row; /* 가로 정렬 */
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px; /* 한자 아래 여백 추가 */
+}
+
+/* ✅ 품사 & 의미 스타일 */
+.pos-box, .meaning-box {
     background-color: #fdf4f1;
     border-radius: 5px;
     padding: 10px;
-    width: 90%;
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-}
-
-/* ✅ 품사 스타일 */
-.pos-box {
-    font-size: 20px;
+    width: auto; /* 내용에 맞게 크기 조정 */
+    min-width: 80px;
 }
 
 /* ✅ 예문 스타일 */
+.example-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
 .example-jp-box, .example-kr-box {
+    background-color: #fdf4f1;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
     font-size: 18px;
     font-weight: normal;
+    width: auto;
+    min-width: 200px;
 }
 
 /* ✅ 애니메이션 효과 */
@@ -218,15 +271,6 @@ input {
     position: absolute;
     left: 20px;
     bottom: 20px;
-}
-
-/* ✅ 플래시카드 회전 애니메이션 */
-.flashcard-wrap.show-answer {
-    transform: rotateY(180deg);
-}
-
-.flashcard-wrap.hide-answer {
-    transform: rotateY(0deg);
 }
 
 /* ✅ ⭕ 버튼 비활성화 스타일 */
