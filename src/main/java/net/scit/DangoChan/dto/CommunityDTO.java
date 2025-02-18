@@ -23,6 +23,7 @@ public class CommunityDTO {
 	
 	private Integer boardId;
 	private Long userId;
+	private String title;
 	private Integer wordCount;
 	private Integer views;
 	private String boardContent;
@@ -44,6 +45,7 @@ public class CommunityDTO {
 		return CommunityDTO.builder()
 				.boardId(communityEntity.getBoardId())
 				.userId(communityEntity.getUserId())
+				.title(communityEntity.getTitle())
 				.wordCount(communityEntity.getWordCount())
 				.views(communityEntity.getViews())
 				.boardContent(communityEntity.getBoardContent())
