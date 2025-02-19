@@ -11,8 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface CardRepository extends JpaRepository<CardEntity, Long> {
-    // 덱 ID에 해당하는 카드 중 랜덤으로 하나 가져오기
+    // ✅ 덱 ID에 해당하는 카드 중 랜덤으로 하나 가져오기 (Entity를 반환해야 함!)
     @Query("SELECT c FROM CardEntity c WHERE c.deckId = :deckId ORDER BY RAND() LIMIT 1")
     Optional<CardEntity> findCardByDeckId(Long deckId);
-
 }
