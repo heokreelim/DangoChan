@@ -17,6 +17,16 @@ $(document).ready(function () {
         }, 1000);
     }
 
+    // ✅ 새 단어 데이터를 비동기적으로 가져오는 함수
+    function fetchNewFlashcard(deckId) {
+        return $.ajax({
+            url: "/flashcard/json", // 🔥 랜덤 단어 API 호출
+            type: "GET",
+            data: { deckId: deckId },
+            dataType: "json"
+        });
+    }
+
     // ✅ 정답 보기 (카드 뒤집기)
     window.showAnswer = function () {
         $(".flashcard-wrap").addClass("show-answer").removeClass("hide-answer");
@@ -24,47 +34,48 @@ $(document).ready(function () {
         $(".backBtn").css("display", "flex");
     };
 
-    // 🔄 플래시카드 앞면으로 전환
-    window.hideAnswer = function () {
+    // 🔄 새로운 단어로 변경하는 함수
+    function updateFlashcard(data) {
+        // ✅ 앞면(Front) 한자 업데이트 (즉시 변경)
+        $(".word-box span").text(data.kanji);
+
+        // ✅ 500ms 후에 뒷면 데이터 업데이트 (부드러운 전환)
+        setTimeout(() => {
+            $("#wordText").text(data.kanji);
+            $("#wordFurigana").text(data.furigana);
+
+            // ✅ 뒷면의 한자 + 후리가나 업데이트 (각 한자 위에 후리가나 적용)
+            //$(".word-container").html(data.formattedRuby);
+
+            $("#pos").text(data.pos);
+            $("#meaning").text(data.meaning);
+            $("#example_jp").text(data.exampleJp);
+            $("#example_kr").text(data.exampleKr);
+        }, 500);
+    }
+
+    // ✅ ○ △ X 버튼 클릭 시 새로운 단어 가져오기 + 앞면 전환
+    $(".circleBtn, .triangleBtn, .xBtn").click(function () {
         $(".flashcard-wrap").removeClass("show-answer").addClass("hide-answer");
         $(".answerBtn").show();
         $(".backBtn").css("display", "none");
-    };
 
-    // ✅ 새로운 랜덤 단어 가져와서 업데이트하는 함수
-    function loadNewWord() {
-        $.ajax({
-            url: "/flashcard/json", // 랜덤 단어를 가져오는 API
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                console.log("새로운 단어 로드됨:", data); // ✅ 디버깅용 로그
+        // 🔥 데이터를 미리 가져와서 한자를 즉시 변경
+        fetchNewFlashcard(1) // 🔥 deckId=1 예시
+            .done((data) => {
+                console.log("🔄 새 단어 데이터:", data);
 
-                if (data.kanji && data.furigana && data.pos && data.meaning) {
-                    // ✅ 한자 + 후리가나 업데이트
-                    $("#word").html(`<ruby><rb>${data.kanji}</rb><rt>${data.furigana}</rt></ruby>`);
+                // ✅ 먼저 앞면 한자만 변경 (전환 애니메이션과 동시에 보이도록)
+                $(".word-box span").text(data.kanji);
 
-                    // ✅ 품사 & 의미 & 예문 업데이트
-                    $("#pos").text(data.pos);
-                    $("#meaning").text(data.meaning);
-                    $("#example_jp").text(data.exampleJp);
-                    $("#example_kr").text(data.exampleKr);
-                } else {
-                    console.error("데이터 필드가 일부 없음:", data);
-                }
-
-                // ✅ 카드 앞면으로 전환
-                hideAnswer();
-            },
-            error: function () {
-                alert("새로운 단어를 불러오는 중 오류가 발생했습니다.");
-            }
-        });
-    }
-
-    // 🎯 ○ △ X 버튼 클릭 시 새로운 단어 불러오기
-    $(".circleBtn, .triangleBtn, .xBtn").click(function () {
-        loadNewWord();
+                // ✅ 500ms 후에 나머지 데이터 업데이트 (뒷면 애니메이션 후 변경)
+                setTimeout(() => {
+                    updateFlashcard(data);
+                }, 500);
+            })
+            .fail((error) => {
+                console.error("❌ 단어 로드 실패:", error);
+            });
     });
 
     // 타이머 실행

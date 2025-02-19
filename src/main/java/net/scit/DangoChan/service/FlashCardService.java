@@ -68,23 +68,23 @@ public void insertCategory(CategoryDTO categoryDTO) {
 		//AYH end
 		
 		//SYH start
-        // 덱 ID를 기반으로 랜덤 카드 가져오기
-        public CardDTO getCardByDeckId(Long deckId) {
-            Optional<CardEntity> cardOpt = cardRepository.findCardByDeckId(deckId);
+		// ✅ Entity에서 데이터를 가져와 DTO로 변환
+		public CardDTO getCardByDeckId(Long deckId) {
+			// ✅ DB에서 `CardEntity` 가져오기
+			CardEntity cardEntity = cardRepository.findCardByDeckId(deckId)
+					.orElseThrow(() -> new RuntimeException("해당 덱에 카드가 없습니다."));
 
-            return cardOpt.map(card -> new CardDTO(
-                    card.getCardId(),
-                    card.getDeckId(),
-                    card.getCategoryId(),
-                    card.getUserId(),
-                    card.getWord(),
-                    card.getPos(),
-                    card.getMeaning(),
-                    card.getExampleJp(),
-                    card.getExampleKr(),
-                    card.getStudyLevel()
-            )).orElse(null);
-        }
+			// ✅ 디버깅 로그 추가
+			System.out.println("🔥 [DEBUG] 랜덤으로 가져온 CardEntity: " + cardEntity);
+
+			// ✅ Entity → DTO 변환 (CardDTO의 toDTO() 메서드 활용)
+			CardDTO cardDTO = CardDTO.toDTO(cardEntity);
+
+			// ✅ DTO로 변환된 데이터 확인
+			System.out.println("🔥 [DEBUG] 변환된 CardDTO: " + cardDTO);
+
+			return cardDTO;
+		}
 		//SYH end
 	
 	//card end
