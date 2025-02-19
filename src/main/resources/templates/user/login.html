@@ -6,6 +6,7 @@
     <title>로그인 페이지</title>
 </head>
 <body>
+	<div th:replace="fragment/head"></div>
     <div class="page-wrap">
         <div class="left-wrap">
             <div class="inner">
@@ -13,7 +14,7 @@
                     <b>だんごちゃん</b>
                 </h2>
                 <div class="form-wrap">
-                    <form action="">
+                    <form th:action="@{/user/loginProc}" method="POST">
                         <ul class="login">
                             <li class="label-line">
                                 <label for="email">Email</label>

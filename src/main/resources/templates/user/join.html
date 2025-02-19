@@ -5,6 +5,39 @@
 <title>Insert title here</title>
 </head>
 <body>
-    <h1>여기는 회원가입 화면입니다</h1>
+	<div th:replace="fragment/head"></div>
+    <div class="page-wrap">
+        <div class="left-wrap">
+            <div class="inner">
+                <h2 class="title">
+                    <b>회원가입</b>
+                </h2>
+                <div class="form-wrap">
+                    <form th:action="@{/user/joinProc}" method="POST">
+                        <label for="userId">ID:</label>
+                        <input type="text" name="email" id="userId">
+                        <input type="button" id="idDuplCheckBtn" value="ID중복검사">
+                        <br>
+                        <label for="password">비밀번호:</label>
+                        <input type="password" name="password" id="password">
+                        <br>
+                        <label for="passwordCheck">비밀번호 확인:</label>
+                        <input type="password" name="passwordCheck" id="passwordCheck">
+                        <br>
+                        <label for="userName">닉네임:</label>
+                        <input type="text" name="userName" id="userName">
+                        <br>
+                        <br>
+                        <input type="submit" id="registerBtn" value="회원가입">
+                        <input type="button" id="cancelBtn" value="취소">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="right-wrap">
+            <!-- 해당 부분은 그림 고정보단 여유가 있을 시, 배너로 활용해도 좋을 듯 합니다 -->
+                
+        </div>
+    </div>
 </body>
 </html>
