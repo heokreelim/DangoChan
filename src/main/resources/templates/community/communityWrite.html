@@ -6,7 +6,8 @@
     <title>나의 덱 공유하기</title>
 </head>
 <body>
-    <h2>나의 덱 공유하기</h2>
+    <!-- fragment 적용 -->
+    <div class="container" th:replace="fragment/header(title='나의 덱 공유하기')"></div>
     <!-- 게시글 쓰기 화면 -->
     <div class="content">
         <form th:action="@{/community/communityWrite}" method="POST" enctype="multipart/form-data">
@@ -14,7 +15,7 @@
                 <tr>
                     <th>덱 제목</th>
                     <td>
-                        <input type="text" name="boardTitle" id="boardTitle" placeholder="제목을 입력하세요" required>
+                        <input type="text" name="title" id="title" placeholder="제목을 입력하세요" required>
                     </td>
                 </tr>
                 <tr>
@@ -48,8 +49,8 @@
                 </tr>     
                 <tr>
                     <th colspan="2">
-                        <input type="submit" value="글 등록" class="btn btn-primary">
-                        <input type="reset" value="초기화" class="btn btn-danger">
+                        <input type="submit" value="덱 공유하기" class="btn btn-primary">
+                        <input type="reset" value="목록 보기" class="btn btn-danger">
                     </th>
                 </tr>                    
             </table>

@@ -17,15 +17,141 @@
         <script defer th:src="@{/js/paging.js}"></script>    
 </head>
 <body>
-    <h2>당고쨩 커뮤니티</h2>
+    <!-- fragment 적용 -->
+    <div class="container" th:replace="fragment/header(title='당고쨩 커뮤니티')"></div>
+
+    <!-- 실제 게시글이 나오는 부분의 코드야!-->
+    <div class="content">
+        <div class="top">
+            <!-- 전체 글 개수-->
+            <div class="count">
+                <p>게시글 개수: <span th:text="${list.TotalElements != 0 ? list.TotalElements : 0}"></span>개</p>
+            </div>
+            <!--검색창-->
+            <div class="search">
+                <form th:action="@{/community/communityBoardList}" method="GET" id="searchForm">
+                    <input type="hidden" name="page" value="" id="requestPage">
+                    <select name="searchItem" id="searchItem">
+                        <option value="title" th:selected="${searchItem == 'title'}">글제목</option>
+                        <!-- <option value="boardWriter" th:selected="${searchItem == 'boardWriter'}">작성자</option> -->
+                        <option value="boardContent" th:selected="${searchItem == 'boardContent'}">글내용</option>
+                    </select>
+                    <input type="text" name="searchWord" th:value="${searchWord}">
+                    <input type="submit" value="검색" id="search" class="btn btn-primary">
+                </form>
+            </div><!-- end .search-->
+        </div><!-- end .top-->
 
     <!-- 실제 게시글이 출력되는 부분-->
+    <div class="head">
+        <th:block th:if="${list.isEmpty()} == true">
+            <p style="text-align: center;">등록된 글이 없습니다.</p>
+        </th:block>
+        <th:block th:unless="${list.isEmpty()} == true">
+            <table>
+                <tr>
+                    <th class="no">번호</th>
+                    <th class="title">제목</th>
+                    <th class="writer">작성자</th>
+                    <th class="views">조회수</th>
+                    <th class="modify_date">수정된 날짜</th>
+                </tr>
+                <!-- 게시글 반복 구간 -->
+                <tr th:each="community, status : ${list}">
+                    <td th:text="${status.count + (navi.page -1) * 10}"></td>
+                    <td>
+                        <a th:href="@{/community/communityDetail(boardId=${community.boardId}, searchItem=${searchItem}, searchWord=${searchWord})}" th:text="${community.title}">공부를 잘해</a>
+                        <th:block th:if="${community.replyCount != 0}">
+                            <span style="color: darkred"; font-weight="bold">([[${community.replyCount}]])</span>
+                        </th:block>
+                            
 
+                           <!-- 첨부파일이 있으면 클립표시 -->
+                           <th:block th:if="${community.originalFileName != null}">
+                               <i class="fa-solid fa-paperclip" style="color:red;"></i>
+                           </th:block>
+                    </td>
+                    <td th:text="${community.userId}">이몽룡</td>
+                    <td th:text="${community.views != 0 ? community.views : 0}">1</td>
+                    <td th:text="${#temporals.format(community.createDate, 'yyyy-MM-dd HH:mm')}">20211228</td>
+                </tr>
+            </table>
+        </th:block>
+
+    </div>
     <!-- 글쓰기 버튼 -->
     <div class="write">
         <a href="./communityWrite.html" th:href="@{/community/communityWrite}" class="btn btn-primary">덱 공유하기</a>
     </div>
 
+    <!-- 페이지 내비게이션(pagination) -->
+    <nav class="pagination">
+        
+        <!-- 앞 그룹 가기 left arrow-->        
+        <th:block th:if="${navi.startPageGroup > 1}">
+            <a th:href="|javascript:pageFormSubmit(${navi.startPageGroup-1})|" class="page-no">
+                <span class="page-no">
+                    <i class="fa-solid fa-backward"></i>
+                </span>
+            </a>
+        </th:block>
+        <th:block th:unless="${navi.startPageGroup > 1}" >
+            <span class="page-no">
+                <i class="fa-solid fa-backward"></i>
+            </span>
+        </th:block>
+
+        <!-- 앞 페이지 가기 left single arrow-->
+        <th:block th:if="${(navi.page - 1) != 0}">
+            <a th:href="|javascript:pageFormSubmit(${navi.page - 1})|" class="page-no">
+                <i class="fa-solid fa-caret-left"></i>
+            </a>
+        </th:block>
+        <th:block th:unless="${(navi.page - 1) != 0}">
+            <span class="page-no">
+                <i class="fa-solid fa-caret-left"></i>
+            </span>
+        </th:block>
+
+        <!-- 페이지 반복구간-->
+        <span class="pageNumberList" th:each = "count: ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+            
+            <!-- 현재 페이지가 아닌 페이지-->
+            <th:block th:if="${navi.page != count}">
+                <a th:href="|javascript:pageFormSubmit(${count})|" th:text="${count}" class="page-no"></a>&nbsp;
+            </th:block>
+
+            <!-- 요청한 페이지 -->
+            <th:block th:unless="${navi.page != count}">
+                <span th:text="${count}" class="page-no current"></span>&nbsp;
+            </th:block>
+        </span>
+
+        <!-- 뒷페이지 right single arrow-->
+        <th:block th:if="${(navi.page) != navi.totalPages}">
+            <a th:href="|javascript:pageFormSubmit(${navi.page + 1})|" class="page-no">
+                <i class="fa-solid fa-caret-right"></i>
+            </a>
+        </th:block>
+        <th:block th:unless="${(navi.page) != navi.totalPages}">
+            <span class="page-no">
+                <i class="fa-solid fa-caret-right"></i>
+            </span>
+        </th:block>
+        <!-- 뒷그룹 right arrow-->
+        <th:block th:if="${(navi.totalGroupCount) > (navi.currentGroup)}">
+            <a th:href="|javascript:pageFormSubmit(${(navi.endPageGroup) + 1})|">
+                <span class="page-no">
+                    <i class="fa-solid fa-forward"></i>
+                </span>
+            </a>    
+        </th:block>
+        <th:block th:unless="${(navi.totalGroupCount) > (navi.currentGroup)}">
+            <span class="page-no">
+                <i class="fa-solid fa-forward"></i>
+            </span>
+        </th:block>
+    </nav>
  
 </body>
 </html>

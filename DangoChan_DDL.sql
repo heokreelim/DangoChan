@@ -14,7 +14,7 @@ CREATE TABLE `users` (
 	email	VARCHAR(50)	UNIQUE,
 	user_name	VARCHAR(50)	NOT NULL UNIQUE,
 	auth_type	VARCHAR(50) NOT NULL check(auth_type in ('LOCAL', 'GOOGLE', 'APPLE', 'LINE', 'GUEST')),
-	password	VARCHAR(50),
+	password	VARCHAR(255),
 	provider_id	VARCHAR(255),
 	roles    varchar(50) DEFAULT 'ROLE_USER' check(roles in ('ROLE_USER', 'ROLE_ADMIN')),
 	created_at	DATETIME DEFAULT CURRENT_TIMESTAMP
