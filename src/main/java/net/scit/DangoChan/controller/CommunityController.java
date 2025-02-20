@@ -1,11 +1,17 @@
 package net.scit.DangoChan.controller;
 
+import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CommunityDTO;
+import net.scit.DangoChan.service.BoardLikesService;
 import net.scit.DangoChan.service.CommunityService;
 import net.scit.DangoChan.util.PageNavigator;
 
@@ -26,6 +35,10 @@ import net.scit.DangoChan.util.PageNavigator;
 public class CommunityController {
 	
 	private final CommunityService communityService;
+	private final BoardLikesService boardLikesService;
+	
+	@Value("${spring.servlet.multipart.location}")
+	private String uploadPath;
 	
 	@Value("${user.board.pageLimit}")	
 	private int pageLimit;
@@ -111,9 +124,13 @@ public class CommunityController {
 		CommunityDTO communityDTO = communityService.selectOne(boardId);
 		communityService.incrementViews(boardId);
 		
+		// 좋아요 개수를 BoardLikesService를 통해 별도로 구하기
+		Integer likeCount = boardLikesService.getLikeCount(boardId);
+		
 		model.addAttribute("community", communityDTO);
 		model.addAttribute("searchItem", searchItem);
 		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("likeCount", likeCount);
 		
 		return "community/communityDetail";	
 		
@@ -183,7 +200,51 @@ public class CommunityController {
 		
 		return "redirect:/community/communityBoardlist";
 		
-		
 	}
 	
+	/**
+	 * 파일 다운로드
+	 * @param boardId
+	 * @param response
+	 * @return
+	 * */
+	@GetMapping("/download")
+	public String download(
+			@RequestParam(name="boardId") Integer boardId,
+			HttpServletResponse response) {
+		CommunityDTO communityDTO = communityService.selectOne(boardId);
+		
+		String originalFileName = communityDTO.getOriginalFileName();
+		String savedFileName = communityDTO.getSavedFileName();
+		String fullpath = uploadPath + "/" + savedFileName;
+
+		try {
+			String tempName = URLEncoder.encode(originalFileName
+					, StandardCharsets.UTF_8.toString());
+			
+			response.setHeader("Content-Disposition", "attachment;filename=" + tempName);
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		FileInputStream fin = null; 			// 로컬에서  input : file
+		ServletOutputStream fout = null;		// 네트워크로 output: servlet
+		
+		try {
+			fin = new FileInputStream(fullpath);
+			fout = response.getOutputStream();
+			
+			FileCopyUtils.copy(fin, fout);
+			
+			fout.close();
+			fin.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
 }

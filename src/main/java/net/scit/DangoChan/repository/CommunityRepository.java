@@ -11,6 +11,5 @@ public interface CommunityRepository extends JpaRepository<CommunityEntity, Inte
 	Page<CommunityEntity> findByTitleContains(String searchWord, PageRequest of);
 
 	Page<CommunityEntity> findByBoardContentContains(String searchWord, PageRequest of);
-	
 
 }

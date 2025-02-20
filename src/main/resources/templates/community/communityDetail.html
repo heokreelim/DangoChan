@@ -31,10 +31,12 @@
         <script defer th:src="@{/js/reply.js}"></script>
 </head>
 <body>
+    <!-- fragment 적용 -->
+    <div class="container" th:replace="fragment/header(title='게시글 상세 보기')"></div>
+    
     <div class="content">
         <input type="hidden" th:value="${community.boardId}" id="boardId">
-        <!-- fragment 적용 -->
-    <div class="container" th:replace="fragment/header(title='게시글 상세 보기')"></div>
+        
 
     <!-- 게시글 자세히 보기 화면-->
     <div class="content">
@@ -93,7 +95,10 @@
                         <!-- </th:block> -->
                         <!-- 목록 버튼 -->                    
                         <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록</a>&nbsp;
-                    </th>4
+                    </th>
+                </tr>
+                <tr>
+                
                 </tr>                
         </table>
         <!-- 댓글 목록 처리 -->
