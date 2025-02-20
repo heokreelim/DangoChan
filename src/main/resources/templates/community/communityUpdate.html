@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 덱 공유하기 수정</title>
+</head>
+<body>
+    <!-- fragment 적용 -->
+    <div class="container" th:replace="fragment/header(title='나의 덱 수정하기')"></div>
+    <!-- 게시글 쓰기 화면 -->
+    <div class="content">
+        <form th:action="@{/community/communityUpdate}" method="POST" enctype="multipart/form-data">
+            <!-- 두 종류의 데이터(boardSeq, boardWriter(writer는 security 완성되면 삭제 예정)) -->
+            <input type="hidden" name="boardSeq" th:value="${community.boardId}">
+        	<!-- <input type="hidden" name="boardWriter" th:value="${community.boardWriter}"> -->
+        	<input type="hidden" name="searchItem" th:value="${searchItem}">
+        	<input type="hidden" name="searchWord" th:value="${searchWord}">            
+            <table>
+                <tr>
+                    <th>덱 제목</th>
+                    <td>
+                        <input type="text" name="title" id="title" th:value="${community.title}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>작성자</th>
+                    <td>
+                        <!-- 작성자의 이름은 로그인 되면 수정되어야 함~ -->
+                    	<!-- <input type="text" name="boardWriter" th:value="${#authentication.name}" id="boardWriter" readonly> -->
+                    </td>
+                </tr>
+                <tr>
+                    <th>덱 파일 첨부</th> <!-- 첨부 파일 작성 시 완성-->
+                    <td>
+                        <th:block th:if="${community.originalFileName != null}">
+                            <span th:text="${community.originalFileName}" style="color: #2000c2"></span><br>
+                        </th:block>
+                        <th:block th:unless="${community.originalFileName != null}">
+                            <span style="color: #2000c2">첨부파일이 없습니다.</span><br>
+                        </th:block>
+                        <input type="file" name="uploadFile"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>덱 설명</th>
+                    <td>
+                        <textarea name="boardContent" id="boardContent" th:text="${community.boardContent}"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>저작권 확인 체크</th>
+                    <td>
+                        <p>
+                            <input type="checkbox" name="copyrightCheck" id="copyrightCheck">
+                            "나는 내가 공유하는 모든 자료가 전부 내가 만든 것이며, 여기에 공유되는 자료에 대한 모든 지적재산권리를 내가 보유하고 있음을 선언합니다"
+                        </p>
+
+                    </td>
+                </tr>     
+                <tr>
+                    <th colspan="2">
+                        <input type="submit" value="덱 수정하기" class="btn btn-primary">
+                        <input type="reset" value="목록 보기" class="btn btn-danger">
+                    </th>
+                </tr>                    
+            </table>
+        </form>
+    </div>    
+</body>
+</html>

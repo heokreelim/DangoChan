@@ -65,7 +65,7 @@ public class CommunityService {
 			temp = communityRepository.findByTitleContains(
 					searchWord,
 					PageRequest.of(pageNumber, pageLimit, Sort.by(Sort.Direction.DESC, "createDate")));
-			break;
+			break;			
 		case "boardContent":
 			temp = communityRepository.findByBoardContentContains(
 					searchWord,
@@ -123,11 +123,14 @@ public class CommunityService {
 	 * 3) 변경된 값을 다시 setter를 통해 삽입 
 	 * @param boardId
 	 */
+	@Transactional
 	public void incrementViews(Integer boardId) {
 		Optional<CommunityEntity> temp = communityRepository.findById(boardId);
 		if(temp.isEmpty()) return;
 		CommunityEntity entity = temp.get();
-		entity.setViews((entity.getViews() + 1));
+		
+		int currentViews = (entity.getViews() != null ? entity.getViews() : 0);
+		entity.setViews((currentViews + 1));
 		
 	}
 	
@@ -232,5 +235,6 @@ public class CommunityService {
 			entity.setSavedFileName(null);
 		}
 	}
+	
 
 }
