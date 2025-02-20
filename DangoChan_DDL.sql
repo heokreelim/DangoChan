@@ -57,7 +57,7 @@ CREATE TABLE `card` (
     `meaning` VARCHAR(255),
     `example_jp` VARCHAR(500),
     `example_kr` VARCHAR(500),
-    `study_level` INT,
+    `study_level` INT default 1,
     PRIMARY KEY (`card_id`),
     FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`),
 	FOREIGN KEY (`category_id`) REFERENCES `deck` (`category_id`),
@@ -66,14 +66,14 @@ CREATE TABLE `card` (
 
 
 -- 학습시간 기록 테이블
-DROP TABLE IF EXISTS `deckStudyTime`;
-CREATE TABLE `deckStudyTime` (
-    `studyTime_id` BIGINT AUTO_INCREMENT NOT NULL,
+DROP TABLE IF EXISTS `deck_study_time`;
+CREATE TABLE `deck_study_time` (
+    `study_time_id` BIGINT AUTO_INCREMENT NOT NULL,
     `deck_id` BIGINT NOT NULL,
     `user_id` BIGINT NOT NULL,
     `study_time` TIME default '00:00:00',
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`studyTime_id`),
+    PRIMARY KEY (`study_time_id`),
     FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`),
     FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`)
 );
@@ -101,12 +101,12 @@ CREATE TABLE `board` (
 select * from board;
 
 -- 게시물 좋아요 테이블
-DROP TABLE IF EXISTS `boardLikes`;
-CREATE TABLE `boardLikes` (
-    `boardLike_id` BIGINT AUTO_INCREMENT NOT NULL,
+DROP TABLE IF EXISTS `board_likes`;
+CREATE TABLE `board_likes` (
+    `board_like_id` BIGINT AUTO_INCREMENT NOT NULL,
     `board_id` INT NOT NULL,
     `user_id` BIGINT NOT NULL,
-    PRIMARY KEY (`boardLike_id`),
+    PRIMARY KEY (`board_like_id`),
     FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`),
     FOREIGN KEY (`user_id`) REFERENCES `board` (`user_id`)
     );
@@ -154,7 +154,7 @@ INSERT INTO `card` (`card_id`, `deck_id`, `category_id`, `user_id`, `word`, `pos
 (2, 2, 2, 2, '契約', '名詞', '계약', '新しい契約を締結する。', '아아', 2);
 
 -- deckStudyTime 테이블 데이터 삽입
-INSERT INTO `deckStudyTime` (`studyTime_id`, `deck_id`, `user_id`, `study_time`, `date`) VALUES
+INSERT INTO `deck_study_time` (`study_time_id`, `deck_id`, `user_id`, `study_time`, `date`) VALUES
 (1, 1, 1, NOW(), CURDATE()),
 (2, 2, 2, NOW(), CURDATE());
 
@@ -164,7 +164,7 @@ INSERT INTO `board` (`board_id`, `user_id`, `title`, `word_count`, `views`, `ori
 (2, 2, '한자 외우기 팁', 300, 50, 'kanji_tips.pdf', NOW(), NOW());
 
 -- boardLikes 테이블 데이터 삽입
-INSERT INTO `boardLikes` (`boardLike_id`, `board_id`, `user_id`) VALUES
+INSERT INTO `board_likes` (`board_like_id`, `board_id`, `user_id`) VALUES
 (1, 1, 2),
 (2, 2, 1);
 
@@ -189,13 +189,13 @@ SELECT * FROM `deck`;
 SELECT * FROM `card`;
 
 -- deckStudyTime 테이블 데이터 조회
-SELECT * FROM `deckStudyTime`;
+SELECT * FROM `deck_study_time`;
 
 -- board 테이블 데이터 조회
 SELECT * FROM `board`;
 
 -- boardLikes 테이블 데이터 조회
-SELECT * FROM `boardLikes`;
+SELECT * FROM `board_likes`;
 
 -- reply 테이블 데이터 조회
 SELECT * FROM `reply`;

@@ -97,12 +97,19 @@ public class FlashCardController {
 	}
 
 	// ✅ AJAX 요청 (랜덤 단어 반환)
+	// ✅ JSON 데이터 반환 (랜덤 단어 가져오기)
 	@GetMapping(value = "/json", produces = "application/json")
 	public ResponseEntity<CardDTO> getRandomFlashcard(@RequestParam(required = false) Long deckId) {
 		if (deckId == null) {
 			deckId = 1L; // 기본 덱 ID 설정
 		}
+
+		// ✅ DTO 변환된 데이터 가져오기
 		CardDTO card = flashCardService.getCardByDeckId(deckId);
+
+		// ✅ 디버깅 로그 추가 (JSON 응답 확인)
+		System.out.println("🔥 [DEBUG] 응답 JSON: " + card);
+
 		return ResponseEntity.ok(card);
 	}
 	//SYH end
