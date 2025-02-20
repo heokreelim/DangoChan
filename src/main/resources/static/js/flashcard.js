@@ -1,20 +1,46 @@
 $(document).ready(function () {
+    let studyTimerInterval;
+    let studyTotalSeconds = 0;
+
     function startTimer(timerId) {
         let totalSeconds = 0;
         const $timerElement = $("#" + timerId);
 
-        setInterval(() => {
-            totalSeconds++;
-            let min = Math.floor(totalSeconds / 60);
-            let sec = totalSeconds % 60;
-            let formattedTime = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-            $timerElement.text(formattedTime);
+        if (timerId === "studyTimer") {
+            studyTotalSeconds = 0;
+            clearInterval(studyTimerInterval); // 기존 studyTimer 중지
+            studyTimerInterval = setInterval(updateStudyTimer, 1000);
+        } else {
+            setInterval(() => {
+                totalSeconds++;
+                let min = Math.floor(totalSeconds / 60);
+                let sec = totalSeconds % 60;
+                let formattedTime = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+                $timerElement.text(formattedTime);
+            }, 1000);
+        }
+    }
 
-            if (timerId === "studyTimer" && formattedTime === "01:00") {
-                $timerElement.addClass("red");
-                $(".circleBtn").prop("disabled", true).addClass("disabled-btn");
-            }
-        }, 1000);
+    function updateStudyTimer() {
+        studyTotalSeconds++;
+        let min = Math.floor(studyTotalSeconds / 60);
+        let sec = studyTotalSeconds % 60;
+        let formattedTime = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+        $("#studyTimer").text(formattedTime);
+
+        if (formattedTime === "01:00") {
+            $("#studyTimer").addClass("red");
+            $(".circleBtn").prop("disabled", true).addClass("disabled-btn");
+        }
+    }
+
+    // ✅ studyTimer 리셋 함수 추가
+    function resetStudyTimer() {
+        clearInterval(studyTimerInterval);
+        studyTotalSeconds = 0;
+        $("#studyTimer").removeClass("red").text("00:00");
+        $(".circleBtn").prop("disabled", false).removeClass("disabled-btn");
+        studyTimerInterval = setInterval(updateStudyTimer, 1000);
     }
 
     // ✅ 새 단어 데이터를 비동기적으로 가져오는 함수
@@ -36,17 +62,10 @@ $(document).ready(function () {
 
     // 🔄 새로운 단어로 변경하는 함수
     function updateFlashcard(data) {
-        // ✅ 앞면(Front) 한자 업데이트 (즉시 변경)
         $(".word-box span").text(data.kanji);
-
-        // ✅ 500ms 후에 뒷면 데이터 업데이트 (부드러운 전환)
         setTimeout(() => {
             $("#wordText").text(data.kanji);
             $("#wordFurigana").text(data.furigana);
-
-            // ✅ 뒷면의 한자 + 후리가나 업데이트 (각 한자 위에 후리가나 적용)
-            //$(".word-container").html(data.formattedRuby);
-
             $("#pos").text(data.pos);
             $("#meaning").text(data.meaning);
             $("#example_jp").text(data.exampleJp);
@@ -54,21 +73,47 @@ $(document).ready(function () {
         }, 500);
     }
 
-    // ✅ ○ △ X 버튼 클릭 시 새로운 단어 가져오기 + 앞면 전환
+    // ✅ study_level 업데이트 함수
+    function updateStudyLevel(cardId, studyLevel) {
+
+        console.log("📌 서버로 보낼 데이터:", { cardId, studyLevel }); // 🔥 콘솔에 데이터 출력
+
+        $.ajax({
+            url: "/flashcard/updateStudyLevel", // 🔥 서버 API 호출
+            type: "POST",
+            data: { cardId: cardId, studyLevel: studyLevel },
+            success: function (response) {
+                console.log("✅ study_level 업데이트 성공:", response);
+            },
+            error: function (error) {
+                console.error("❌ study_level 업데이트 실패:", error);
+            }
+        });
+    }
+
+// ✅ ○ △ X 버튼 클릭 시 새로운 단어 가져오기 + 앞면 전환 + study_level 업데이트
     $(".circleBtn, .triangleBtn, .xBtn").click(function () {
         $(".flashcard-wrap").removeClass("show-answer").addClass("hide-answer");
         $(".answerBtn").show();
         $(".backBtn").css("display", "none");
 
-        // 🔥 데이터를 미리 가져와서 한자를 즉시 변경
-        fetchNewFlashcard(1) // 🔥 deckId=1 예시
+        let studyLevel = 1; // 기본값
+        if ($(this).hasClass("circleBtn")) studyLevel = 3; // ○
+        if ($(this).hasClass("triangleBtn")) studyLevel = 2; // △
+        if ($(this).hasClass("xBtn")) studyLevel = 1; // ✕
+
+        // 🔥 study_level 업데이트 요청
+        let cardId = $(".word-box span").attr("data-card-id"); // 카드 ID 가져오기
+        updateStudyLevel(cardId, studyLevel);
+
+        // 🔥 studyTimer 리셋 추가
+        resetStudyTimer();
+
+        // 🔥 새로운 단어 불러오기
+        fetchNewFlashcard(1)
             .done((data) => {
                 console.log("🔄 새 단어 데이터:", data);
-
-                // ✅ 먼저 앞면 한자만 변경 (전환 애니메이션과 동시에 보이도록)
                 $(".word-box span").text(data.kanji);
-
-                // ✅ 500ms 후에 나머지 데이터 업데이트 (뒷면 애니메이션 후 변경)
                 setTimeout(() => {
                     updateFlashcard(data);
                 }, 500);
@@ -77,6 +122,7 @@ $(document).ready(function () {
                 console.error("❌ 단어 로드 실패:", error);
             });
     });
+
 
     // 타이머 실행
     startTimer("mainTimer");

@@ -19,7 +19,7 @@
         <!-- 앞면 (한자) -->
         <div class="front">
             <div class="word-box">
-                <span th:text="${flashcard.kanji}"></span>
+                <span th:text="${flashcard.kanji}" th:attr="data-card-id=${flashcard.cardId}"></span>
             </div>
         </div>
         <!-- 뒷면 (품사 + 의미 + 예문) -->
