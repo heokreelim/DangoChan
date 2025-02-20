@@ -40,6 +40,9 @@ public class CommunityDTO {
 	// 댓글 개수(BoardEntity에서 @Formula를 이용해서 조회)
 	private int replyCount;
 	
+	// 좋아요 개수
+	private int likeCount;
+	
 	//entity -> DTO
 	public static CommunityDTO toDTO(CommunityEntity communityEntity) {
 		return CommunityDTO.builder()
