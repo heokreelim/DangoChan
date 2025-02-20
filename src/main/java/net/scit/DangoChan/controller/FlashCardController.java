@@ -1,17 +1,24 @@
 package net.scit.DangoChan.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CardDTO;
 import net.scit.DangoChan.dto.CategoryDTO;
+import net.scit.DangoChan.dto.DeckAndCardsRequest;
+import net.scit.DangoChan.dto.DeckDTO;
 import net.scit.DangoChan.service.FlashCardService;
 
 @Controller
@@ -70,6 +77,22 @@ public class FlashCardController {
 	
 	//AYH start
 	
+	@ResponseBody
+	@PostMapping("/importDeck")
+    public String importDeck(@RequestBody DeckAndCardsRequest request) {
+        DeckDTO deckDTO = request.getDeckDTO();
+        List<CardDTO> cardDTOList = request.getCardDTOList();
+
+        System.out.println("▶ Deck 저장: " + deckDTO);
+        flashCardService.insertDeck(deckDTO);
+        for (CardDTO cardDTO : cardDTOList) {
+        	cardDTO.setDeckId(deckDTO.getDeckId()); // 백엔드에서 저장 후 ID 업데이트 필요
+            System.out.println("▶ 카드 저장: " + cardDTO);
+            flashCardService.insertCard(cardDTO);
+        }
+     // TODO: DB 저장 로직 추가 (Service & Repository 호출)
+        return "Deck and Cards saved successfully!";
+	}
 	//AYH end
 		
 	//PJB start

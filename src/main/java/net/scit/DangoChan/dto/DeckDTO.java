@@ -25,8 +25,8 @@ public class DeckDTO {
     public static DeckDTO toDTO(DeckEntity deckEntity) {
 		return DeckDTO.builder()
 				.deckId(deckEntity.getDeckId())
-				.categoryId(deckEntity.getCategoryId())
-				.userId(deckEntity.getUserId())
+				.categoryId(deckEntity.getCategoryEntity().getCategoryId())
+				.userId(deckEntity.getCategoryEntity().getUserId())
 				.deckName(deckEntity.getDeckName())
 				.build();
     }

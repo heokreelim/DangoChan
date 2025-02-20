@@ -1,10 +1,397 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let modalAddingCategory = $('.modal_adding_category');
+            let modalEditingCategory = $('.modal_editing_category');
+            let modalAddingMenu = $('.modal_adding_menu');
+            let modalAddingDeck = $('.modal_adding_deck');
+            let modalImportingDeck = $('.modal_importing_deck');
+
+
+            /* 모달 상호작용 버튼 */
+            $('.btn-open-adding-category-modal').click(function () {
+                modalAddingCategory.css("display", "flex");
+            });
+
+            $('.btn-open-editing-category-modal').click(function () {
+                modalEditingCategory.css("display", "flex");
+            });
+
+            $('.btn-open-adding-menu-modal').click(function () {
+                modalAddingMenu.css("display", "flex");
+            });
+            $('.btn-open-adding-deck-modal').click(function () {
+                modalAddingDeck.css("display", "flex");
+                var tableBody = $('.card_list tbody');
+                tableBody.empty();
+            });
+            $('.btn-open-adding-card-modal').on('click', function (event) {
+                modalAddingCard.css("display", "flex");
+            });
+
+            $('.btn-close-modal').click(function () {
+                modalAddingCategory.css("display", "none");
+                modalEditingCategory.css("display", "none");
+                modalAddingMenu.css("display", "none");
+                modalAddingDeck.css("display", "none");
+                modalImportingDeck.css("display", "none");
+                modalAddingCard.css("display", "none");
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            var fileInput = $('#importFile');
+            var tableBody = $('.card_list tbody');
+            var modal = $('#modal_importing_deck');
+            $('.btn-open-importing-deck-modal').on('click', function (event) {
+                event.preventDefault();
+                fileInput.click();
+            });
+
+            fileInput.on('change', function (event) {
+                $('.modal_importing_deck').css("display", "flex");
+                var file = event.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.readAsArrayBuffer(file);
+
+                    reader.onload = function (e) {
+                        var data = new Uint8Array(e.target.result);
+                        var workbook = XLSX.read(data, { type: 'array' });
+                        var sheetName = workbook.SheetNames[0];
+                        var sheet = workbook.Sheets[sheetName];
+                        var jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                        console.log("엑셀 데이터:", jsonData); // 디버깅용
+                        tableBody.empty();
+
+                        $.each(jsonData.slice(1), function (index, row) {
+                            if (row.length < 5) return;
+                            var tr = $('<tr>');
+
+                            var ids = ['word', 'pos', 'meaning', 'exampleJp', 'exampleKr']; // 각 td의 id 목록
+                            $.each(row, function (i, cell) {
+                                var td = $('<td>').text(cell);
+                                td.attr('id', ids[i] + '-' + index); // 각 td에 id 추가 (중복 방지를 위해 index 추가)
+                                tr.append(td);
+                            });
+
+                            var deleteBtn = $('<button>').text('🗑').on('click', function () {
+                                tr.remove();
+                            });
+
+                            tr.append($('<td>').append(deleteBtn));
+                            tableBody.append(tr);
+                        });
+
+                        modal.addClass('active');
+                    };
+
+                    reader.onerror = function (error) {
+                        console.error("파일 읽기 오류:", error);
+                    };
+                }
+            });
+
+            $('.btn-submit-deck').on('click', function () {
+            	// 임시값
+            	var example = '1';
+            	
+                var deckName = $('#deckName').val().trim(); // deckName 값 가져오기
+                if (!deckName) {
+                    deckName = $('#deckName2').val().trim(); // deckName이 비어있으면 deckName2 사용
+                }
+                var categoryName = $('.categoryName').val();
+                var cardDTOList = [];
+                var deckDTO = {
+                    // categoryId: $('#categoryId').val(),
+                    // userId: $('#userId').val(),  // 현재 로그인한 사용자 ID
+                    // 임시 카테고리ID
+                    categoryId: example,
+                    deckName: deckName
+                };
+
+                $('.card_list tbody tr').each(function () {
+                    var row = {
+                        word: $(this).find('td[id^="word"]').text(),
+                        pos: $(this).find('td[id^="pos"]').text(),
+                        meaning: $(this).find('td[id^="meaning"]').text(),
+                        exampleJp: $(this).find('td[id^="exampleJp"]').text(),
+                        exampleKr: $(this).find('td[id^="exampleKr"]').text()
+                    };
+                    cardDTOList.push(row);
+                });
+
+                console.log(deckDTO);
+                console.log(cardDTOList);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/flashcard/importDeck",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        deckDTO: deckDTO,
+                        cardDTOList: cardDTOList
+                    }),
+                    success: function (response) {
+                        alert("덱이 성공적으로 저장되었습니다!");
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("오류 발생:", error);
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        .modal_adding_category,
+        .modal_editing_category,
+        .modal_adding_menu,
+        .modal_adding_deck,
+        .modal_importing_deck {
+            position: absolute;
+            display: none;
+
+            justify-content: center;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+
+
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .adding_category,
+        .editing_category,
+        .adding_menu,
+        .adding_deck,
+        .importing_deck {
+            position: absolute;
+            /* 모달을 화면가운데 놓기위함. */
+            top: 50%;
+            width: 50%;
+            height: 50%;
+            margin: auto;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+            /* 모듈창열었을때 위치설정 가운데로 */
+            transform: translateY(-50%);
+
+
+        }
+
+        .modal_header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .card_list {
+            background: white;
+            padding: 10px;
+            min-height: 100px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-width: 100%;
+            white-space: nowrap;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        #importFile {
+            display: none;
+        }
+    </style>
 </head>
+
+
 <body>
-	this is index page
+    <button class="btn-open-adding-category-modal">카테고리 추가 Modal열기</button>
+    <button class="btn-open-editing-category-modal"> 카테고리 편집 Modal열기</button>
+    <button class="btn-open-adding-menu-modal">플러스 버튼</button>
+
+    <div class="modal_adding_menu">
+        <div class="adding_menu">
+            <div><!-- 카테고리 생성 버튼 -->
+                <label>카테고리
+                    <br>
+                    <button class="btn-open-adding-category-modal">카테고리 생성</button>
+                </label>
+            </div>
+            <br>
+            <div> <!-- 덱 생성 버튼 -->
+                <p>덱</p>
+                <button class="btn-open-adding-deck-modal">덱 생성</button>
+                <button class="btn-open-importing-deck-modal">덱 불러오기</button>
+                <input id="importFile" type="file" />
+            </div>
+            <div>
+                <button type="button" class="btn-close-modal">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal_adding_category">
+        <div class="adding_category">
+            <form th:action="@{/flashcard/insertCategory}" action="/flashcard/insertCategory" method="GET">
+
+                <h2>카테고리 추가</h2>
+                <label>카테고리 :
+                    <input type="text" name="categoryName" id="categoryName" placeholder="카테고리 이름을 입력해주세요">
+                </label><br>
+                <button type="submit">추가</button>
+                <button type="button" class="btn-close-modal">닫기</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal_editing_category">
+        <div class="editing_category">
+            <form th:action="@{/flashcard/updateCategory}" action="/flashcard/updateCategory" method="GET">
+                <h2>카테고리 편집</h2>
+                <!-- html을 처음 불러오면서 모델로 categoryId를 불러와야 함 type="hidden" -->
+                <input type="text" name="categoryId" id="categoryId" value="1">
+                <label>카테고리 :
+                    <input type="text" name="categoryName" id="categoryName" placeholder="입력된 카테고리명">
+                </label><br>
+                <button type="submit">수정</button>
+                <button type="button" class="btn-close-modal">닫기</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal_adding_deck">
+        <div class="adding_deck">
+            <form th:action="@{/flashcard/insertDeck}" action="/flashcard/insertDeck" method="GET">
+
+                <label>덱이름 :
+                    <input type="text" name="deckName" id="deckName" placeholder="덱 이름을 입력해주세요">
+                </label>
+                <label>카테고리 :
+                    <select name="categoryName" id="categoryName">
+                        <option value="1">임시1</option>
+                        <option value="2">임시2</option>
+                    </select>
+                </label>
+                <div>
+                    <table class="card_list">
+                        <thead>
+                            <tr>
+                                <th>단어</th>
+                                <th>품사</th>
+                                <th>뜻</th>
+                                <th>예문</th>
+                                <th>예문 뜻</th>
+                                <th>삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>단어</td>
+                                <td>품사</td>
+                                <td>뜻</td>
+                                <td>예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문문예문예문예예문예문예문예문예문예문예문예문예문예문예문</td>
+                                <td>예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문</td>
+                                <td><button>🗑</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-open-adding-card-modal">카드 추가</button>
+                <br>
+                <div>
+                    <!-- <button type="submit">추가</button> -->
+                    <button type="button" class="btn-submit-deck">저장2</button>
+                    <button type="button" class="btn-close-modal">닫기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal_importing_deck">
+        <div class="importing_deck">
+            <form th:action="@{/flashcard/importDeck}" action="/flashcard/importDeck" method="POST">
+                <label>덱이름 :
+                    <input type="text" name="deckName2" id="deckName2" placeholder="덱 이름을 입력해주세요">
+                </label>
+                <label>카테고리 :
+                    <select name="categoryName" class="categoryName">
+                        <option value="1">임시1</option>
+                        <option value="2">임시2</option>
+                    </select>
+                </label>
+                <div class="card_list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>단어</th>
+                                <th>품사</th>
+                                <th>뜻</th>
+                                <th>예문</th>
+                                <th>예문 뜻</th>
+                                <th>삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>단어</td>
+                                <td>품사</td>
+                                <td>뜻</td>
+                                <td>예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문문예문예문예예문예문예문예문예문예문예문예문예문예문예문</td>
+                                <td>예문뜻뜻예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문예문</td>
+                                <td><button>🗑</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-open-adding-card-modal">카드 추가</button>
+                <br>
+                <div>
+                    <!-- <button type="submit">추가</button> -->
+                    <button type="button" class="btn-submit-deck">저장</button>
+                    <button type="button" class="btn-close-modal">닫기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </body>
+
+
 </html>
