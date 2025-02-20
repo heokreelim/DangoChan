@@ -1,18 +1,22 @@
 package net.scit.DangoChan.service;
 
-import jakarta.transaction.Transactional;
-import net.scit.DangoChan.entity.CardEntity;
-import net.scit.DangoChan.repository.CardRepository;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.scit.DangoChan.dto.CategoryDTO;
-import net.scit.DangoChan.entity.CategoryEntity;
-import net.scit.DangoChan.repository.CategoryRepository;
-import net.scit.DangoChan.dto.CardDTO;
 
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.scit.DangoChan.dto.CardDTO;
+import net.scit.DangoChan.dto.CategoryDTO;
+import net.scit.DangoChan.dto.DeckDTO;
+import net.scit.DangoChan.entity.CardEntity;
+import net.scit.DangoChan.entity.CategoryEntity;
+import net.scit.DangoChan.entity.DeckEntity;
+import net.scit.DangoChan.repository.CardRepository;
+import net.scit.DangoChan.repository.CategoryRepository;
+import net.scit.DangoChan.repository.DeckRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class FlashCardService {
 
 	//private final Repository variable start
 	private final CategoryRepository categoryRepository;
+	private final DeckRepository deckRepository;
 	private final CardRepository cardRepository;
 	//private final Repository variable end
 	
@@ -42,6 +47,24 @@ public class FlashCardService {
 
 	}
 
+	/**
+	 * 카테고리 이름 수정 처리
+	 * @param categoryDTO
+	 */
+@Transactional
+public void updateCategory(CategoryDTO categoryDTO) {
+	// 1) 수정하려는 데이터가 있는지 확인
+	Optional<CategoryEntity> temp = categoryRepository.findById(categoryDTO.getCategoryId());
+
+	if (!temp.isPresent()) {
+		return;
+	}
+	// 2) 있으면 dto -> entity로 변환
+	// 3) 이름을 변경하여 데이터 베이스에 저장한다
+	CategoryEntity entity = temp.get();
+	entity.setCategoryName(categoryDTO.getCategoryName());
+}
+
 		//AYH end
 		
 		//PJB start
@@ -54,6 +77,33 @@ public class FlashCardService {
 	
 		//AYH start
 		
+public void insertDeck(DeckDTO deckDTO) {
+	// 1) 수정하려는 데이터가 있는지 확인
+		Optional<CategoryEntity> temp = categoryRepository.findById(deckDTO.getCategoryId());
+
+		if (!temp.isPresent()) {
+			return;
+		}
+		// 2) 있으면 dto -> entity로 변환
+		// 3) 이름을 변경하여 데이터 베이스에 저장한다
+		CategoryEntity entity = temp.get();
+	
+	DeckEntity deckentity = DeckEntity.toEntity(deckDTO, entity);
+	log.info("카테고리 저장 {}", deckentity);
+	deckRepository.save(deckentity);
+	
+}
+
+
+
+public void insertCard(CardDTO cardDTO) {
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+
 		//AYH end
 			
 		//PJB start

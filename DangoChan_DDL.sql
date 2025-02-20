@@ -1,4 +1,4 @@
--- 2025-02-13
+-- 2025-02-20
 -- 데이터베이스 사용 : scit
 create database DangoChan;
 
@@ -28,7 +28,7 @@ CREATE TABLE `category` (
     `user_id` BIGINT NOT NULL,
     `category_name` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`category_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON delete CASCADE
 );
 
 
@@ -41,8 +41,8 @@ CREATE TABLE `deck` (
     `user_id` BIGINT NOT NULL,
     `deck_name` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`deck_id`),
-    FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `category` (`user_id`)
+    FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON delete CASCADE,
+	FOREIGN KEY (`user_id`) REFERENCES `category` (`user_id`) ON delete CASCADE
     );
 
 -- 카드 테이블
@@ -59,9 +59,9 @@ CREATE TABLE `card` (
     `example_kr` VARCHAR(500),
     `study_level` INT default 1,
     PRIMARY KEY (`card_id`),
-    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`),
-	FOREIGN KEY (`category_id`) REFERENCES `deck` (`category_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`)
+    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE,
+	FOREIGN KEY (`category_id`) REFERENCES `deck` (`category_id`) ON delete CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`) ON delete CASCADE
     );
 
 
@@ -74,8 +74,8 @@ CREATE TABLE `deck_study_time` (
     `study_time` TIME default '00:00:00',
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`study_time_id`),
-    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`)
+    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`) ON delete CASCADE
 );
 
 
@@ -107,8 +107,8 @@ CREATE TABLE `board_likes` (
     `board_id` INT NOT NULL,
     `user_id` BIGINT NOT NULL,
     PRIMARY KEY (`board_like_id`),
-    FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `board` (`user_id`)
+    FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`) ON delete CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `board` (`user_id`) ON delete CASCADE
     );
 
 -- 댓글 테이블
@@ -121,8 +121,8 @@ CREATE TABLE `reply` (
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `parent_reply_id` INT,
     PRIMARY KEY (`reply_id`),
-    FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `board` (`user_id`)
+    FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`) ON delete CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `board` (`user_id`) ON delete CASCADE
     );
 
    
