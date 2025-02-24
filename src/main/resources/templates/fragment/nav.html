@@ -17,14 +17,24 @@
                 </div> <!-- profile-picture end -->
                 <div class="nickname">
                     <p class="userName" id="userName">
-                        유저 닉네임이 출력됩니다.
-                        
+                        🍡だんごちゃん
                     </p>
                 </div> <!-- nickname end -->
             </div> <!-- profile-wrap end -->
             <div class="statistics-wrap">
-
-            </div>
+                <ul class="statistics-list">
+                    <li>
+                        <p>217일 연속으로 학습중입니다.</p>
+                    </li>
+                    <li>
+                        <p>오늘 학습량 : 60분</p>
+                        <!-- (deckStudyTime.studyTime) -->
+                    </li>
+                    <li>
+                        <p>🎉 게임 하이스코어 스코어 홀더!</p>
+                    </li>
+                </ul>
+            </div> <!-- statistics-wrap end -->
             <div class="calendar-wrap">
                     <div id="currentMonth" class="nav-currentMonth"></div>
                     <table class="nav-calendar">
@@ -42,7 +52,7 @@
                         <tbody id="calendarBody"></tbody>
                     </table>
             </div> <!-- calendar-wrap end -->
-            <div class="authentication">
+            <div class="authentication-wrap">
                 <th:block sec:authorize="isAnonymous()">
                     <div><a th:href="@{/user/login}">로그인</a></div>
                 </th:block>

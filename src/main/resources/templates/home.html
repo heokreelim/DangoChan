@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="fragment/head"></div>
+    <title>홈페이지</title>
+    <script defer th:src="@{/js/calendar.js}"></script>
+</head>
+<body>
+    <div class="page-wrap">
+      <div class="left-wrap">
+        <div th:replace="fragment/nav"></div>
+      </div>  
+      <div class="right-wrap">
+        <div th:replace="fragment/header"></div>
+        <div class="container">
+            <div class="category-wrap"></div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
