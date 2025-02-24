@@ -4,13 +4,11 @@ body {
     background: #f0f0ff;
     font-family: sans-serif;
 }
-
 .container {
     display: flex;
     flex-direction: row;
     height: 100vh;
 }
-
 /* 중앙 채팅 영역 */
 .chat-area {
     flex: 1;
@@ -18,7 +16,6 @@ body {
     flex-direction: column;
     border-right: 1px solid #ccc;
 }
-
 .chat-messages {
     flex: 1;
     padding: 10px;
@@ -27,8 +24,6 @@ body {
     display: flex;
     flex-direction: column;
 }
-
-/* 메시지 말풍선 */
 .message {
     margin: 5px 0;
     max-width: 60%;
@@ -43,7 +38,6 @@ body {
     align-self: flex-start;
     background-color: #fff;
 }
-
 .chat-input {
     border-top: 1px solid #ccc;
     padding: 10px;
@@ -51,18 +45,15 @@ body {
     display: flex;
     align-items: center;
 }
-
 .chat-input input[type="text"] {
     flex: 1;
     padding: 10px;
     margin-right: 5px;
 }
-
 .chat-input button {
     padding: 10px;
     cursor: pointer;
 }
-
 /* 우측 사용자 목록 */
 .user-list {
     width: 200px;
@@ -70,7 +61,6 @@ body {
     flex-direction: column;
     background: #fff;
 }
-
 .user-list-header {
     padding: 10px;
     border-bottom: 1px solid #ccc;
@@ -96,4 +86,12 @@ body {
 }
 .leave-button:hover {
     background-color: #ff5151;
+}
+
+/* 시스템 메시지 스타일 */
+.message.system-message {
+    text-align: center;
+    color: gray;
+    font-style: italic;
+    margin: 10px 0;
 }

@@ -18,8 +18,6 @@ public class ChatService {
     public void sendChatMessage(ChatMessage chatMessage) {
         ChatRoom room = chatRoomRepository.findRoomById(chatMessage.getRoomId());
         if (room == null) return;
-
-        // 메시지 저장 없이, 바로 WebSocket으로 브로드캐스트
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
@@ -27,21 +25,21 @@ public class ChatService {
     public void sendFileMessage(ChatMessage chatMessage) {
         ChatRoom room = chatRoomRepository.findRoomById(chatMessage.getRoomId());
         if (room == null) return;
-
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
-    // 유저가 방에 들어옴
+    // 사용자가 방에 들어옴
     public void enterUser(String sessionId, String roomId) {
         ChatRoom room = chatRoomRepository.findRoomById(roomId);
         if (room != null) {
             room.getUserSet().add(sessionId);
             chatRoomRepository.updateChatRoom(room);
+            // 입장하면 시스템 메시지 전송
+            sendSystemMessage(roomId, sessionId + "님이 들어왔습니다.");
         }
     }
 
-    // 유저가 방을 나감
-    // 방에 사람이 아무도 없으면 삭제
+    // 사용자가 방을 나감 (방에 아무도 없으면 삭제)
     public void leaveUser(String sessionId, String roomId) {
         ChatRoom room = chatRoomRepository.findRoomById(roomId);
         if (room != null) {
@@ -51,6 +49,19 @@ public class ChatService {
             } else {
                 chatRoomRepository.updateChatRoom(room);
             }
+            // 퇴장하면 시스템 메시지 전송
+            sendSystemMessage(roomId, sessionId + "님이 나갔습니다.");
         }
+    }
+
+    // 시스템 메시지를 만들어 전송하는 도우미 메서드
+    private void sendSystemMessage(String roomId, String text) {
+        ChatMessage systemMessage = ChatMessage.builder()
+                .type(ChatMessage.MessageType.SYSTEM)
+                .roomId(roomId)
+                .sender("system")
+                .message(text)
+                .build();
+        messagingTemplate.convertAndSend("/sub/chat/room/" + roomId, systemMessage);
     }
 }
