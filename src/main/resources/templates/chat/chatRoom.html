@@ -5,18 +5,16 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" th:href="@{/css/chatRoom.css}"/>
 </head>
-<!-- 아래에서 th:attr를 사용하여 roomId 값을 치환 -->
+<!-- 서버가 전달한 roomId를 data-roomid에 저장 -->
 <body th:attr="data-roomid=${roomId}">
 <div class="container">
     <!-- 중앙 채팅 영역 -->
     <div class="chat-area">
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input">
-            <!-- 파일 첨부: 파일 선택 시 onchange 이벤트로 sendFile() 호출 -->
+            <!-- 파일 첨부: 파일 선택 시 onchange로 sendFile() 호출 -->
             <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()"/>
-            <!-- 메시지 입력창 -->
             <input type="text" id="chatInput" placeholder="메시지 입력"/>
-            <!-- 전송 버튼 (텍스트 메시지 전송) -->
             <button onclick="sendMessage()">전송</button>
         </div>
     </div>
@@ -31,8 +29,7 @@
         </div>
     </div>
 </div>
-
-<!-- SockJS와 STOMP를 로컬에서 로드 (Thymeleaf 사용) -->
+<!-- 로컬에 저장한 SockJS와 STOMP 라이브러리를 Thymeleaf를 사용해 로드 -->
 <script th:src="@{/js/lib/sockjs.min.js}"></script>
 <script th:src="@{/js/lib/stomp.min.js}"></script>
 <!-- 외부 JS 파일 -->
