@@ -2,9 +2,13 @@ package net.scit.DangoChan.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,21 +32,29 @@ public class CardEntity {
     @Column(name = "card_id")
     private Long cardId;
 
-	@Column(name = "user_id", nullable = false, insertable = false, updatable = false)
-	private Long userId;
-	
-	@Column(name = "category_id", nullable = false, insertable = false, updatable = false)
-    private Long categoryId;
-
-	@Column(name = "deck_id", nullable = false, insertable = false, updatable = false)
-    private Long deckId;
-	
+//	@Column(name = "user_id", nullable = false, insertable = false, updatable = false)
+//	private Long userId;
+//	
+//	@Column(name = "category_id", nullable = false, insertable = false, updatable = false)
+//    private Long categoryId;
+//
+//	@Column(name = "deck_id", nullable = false, insertable = false, updatable = false)
+//    private Long deckId;
+//	
 //    @ManyToOne
 //    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
 //    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
 //    @JoinColumn(name = "deck_id", referencedColumnName = "deck_id")
 //    private DeckEntity deckEntity;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumns({
+  		@JoinColumn(name = "category_id", referencedColumnName = "category_id"),
+  		@JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+		@JoinColumn(name = "deck_id", referencedColumnName = "deckId")		
+})
+  private DeckEntity deckEntity;
+	
     @Column(name = "word", nullable = false)
     private String word;
 
@@ -62,15 +74,10 @@ public class CardEntity {
     private Integer studyLevel;
     
 // DTO --> Entity
-    public static CardEntity toEntity(CardDTO cardDTO) {
+    public static CardEntity toEntity(CardDTO cardDTO, DeckEntity entity) {
 		return CardEntity.builder()
 				.cardId(cardDTO.getCardId())
-				//	임시값 : 1
-				.userId(1L)
-				//	임시값 : 1
-				.categoryId(1L)
-				//	임시값 : 1
-				.deckId(1L)
+				.deckEntity(entity)
 				.word(cardDTO.getWord())
 				.pos(cardDTO.getPos())				
 				.meaning(cardDTO.getMeaning())				

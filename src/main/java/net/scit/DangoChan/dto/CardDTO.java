@@ -35,9 +35,9 @@ public class CardDTO {
     public static CardDTO toDTO(CardEntity cardEntity) {
 		return CardDTO.builder()
 				.cardId(cardEntity.getCardId())
-				.userId(cardEntity.getUserId())
-				.categoryId(cardEntity.getCategoryId())
-				.deckId(cardEntity.getDeckId())
+//				.userId(cardEntity.getDeckEntity().getCategoryEntity().getUserId())
+//				.categoryId(cardEntity.getDeckEntity().getCategoryEntity().getCategoryId())
+//				.deckId(cardEntity.getDeckEntity().getDeckId())
 				.word(cardEntity.getWord())
 				.kanji(getKanji(cardEntity.getWord()))
 				.furigana(getFurigana(String.valueOf(cardEntity.getWord())))

@@ -77,28 +77,42 @@ public void updateCategory(CategoryDTO categoryDTO) {
 	
 		//AYH start
 		
-public void insertDeck(DeckDTO deckDTO) {
-	// 1) 수정하려는 데이터가 있는지 확인
+public DeckDTO insertDeck(DeckDTO deckDTO) {
+	// 1) 수정하려는 카테고리가 있는지 확인
 		Optional<CategoryEntity> temp = categoryRepository.findById(deckDTO.getCategoryId());
 
 		if (!temp.isPresent()) {
-			return;
+			return DeckDTO.toDTO(null);
 		}
 		// 2) 있으면 dto -> entity로 변환
 		// 3) 이름을 변경하여 데이터 베이스에 저장한다
 		CategoryEntity entity = temp.get();
 	
 	DeckEntity deckentity = DeckEntity.toEntity(deckDTO, entity);
-	log.info("카테고리 저장 {}", deckentity);
+	log.info("덱 저장 {}", deckentity);
 	deckRepository.save(deckentity);
 	
+	return DeckDTO.toDTO(deckentity);
 }
 
 
 
 public void insertCard(CardDTO cardDTO) {
-	// TODO Auto-generated method stub
-	
+	// 1) 수정하려는 덱이 있는지 확인
+			Optional<DeckEntity> temp = deckRepository.findById(cardDTO.getDeckId());
+
+			if (!temp.isPresent()) {
+				return;
+			} else {
+				
+			}
+			// 2) 있으면 dto -> entity로 변환
+			// 3) 이름을 변경하여 데이터 베이스에 저장한다
+			DeckEntity entity = temp.get();
+		
+		CardEntity cardEntity = CardEntity.toEntity(cardDTO, entity);
+		log.info("카드 저장 {}", cardEntity);
+		cardRepository.save(cardEntity);
 }
 
 
