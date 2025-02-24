@@ -53,10 +53,6 @@ public class DeckEntity {
     public static DeckEntity toEntity(DeckDTO deckDTO, CategoryEntity entity) {
 		return DeckEntity.builder()
 				.deckId(deckDTO.getDeckId())
-				//	임시값 : 1
-//				.categoryId(1L)
-				//	임시값 : 1
-//				.userId(1L)
 				.categoryEntity(entity)
 				.deckName(deckDTO.getDeckName())
 				.build();
