@@ -1,0 +1,73 @@
+/* 기본 레이아웃 */
+.page-wrap {
+    flex-direction: column;
+}
+
+.inner {
+    width: 1280px;
+}
+.inner>div {
+    margin: 20px 0;
+}
+
+/* profile 프로필 */
+
+.inner .profile-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 38px;
+    align-items: center;
+}
+
+.inner .profile-wrap>.profile-picture {
+    width: 285px;
+    height: 285px;
+    border-radius: 50%;
+    background-color: #FF9EBE;
+}
+
+.inner .profile-wrap>.nickname {
+    width: 285px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.inner .profile-wrap>.nickname p {
+    background-color: #B4D8E4;
+    line-height: 1.75;
+}
+
+.inner .profile-wrap>.nickname i {
+    font-size: 1.75em;
+}
+
+.inner .profile-wrap>.nickname i:hover {
+    color: #FF9EBE;
+    transition: 0.5s;
+}
+
+.inner .profile-wrap>.nickname .userName {
+    font-size: 1.85em;
+    font-weight: 700;
+}
+
+/* calendar 캘린더 */
+.mypage-currentMonth {
+    font-family: "GoryeongStrawberry";
+    font-size: 1.85em;
+    text-align: center;
+    align-items: center;
+    margin: 24px auto;
+}
+
+.mypage-calendar th,
+.mypage-calendar td {
+    border: 2px solid #FF9EBE;
+    width: 75px;
+    height: 75px;
+    padding: 12px;
+    font-size: 1.78em;
+}

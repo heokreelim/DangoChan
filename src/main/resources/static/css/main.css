@@ -80,34 +80,155 @@ body {
 
 
 /* 기본 레이아웃 */
-.inner {
-    width: 1280px;
+.page-wrap {
+    width: 100%;
+    display: flex;
+}
+/* fragment */
+/* nav */ 
+.nav {
+    width: calc(100% / 6);
 }
 
-/* nav */
 .nav .nav-bg {
-    background-color: #ccc;
+    height: 100vh;
+    background-color: #FFF;
+    border-right: 1px solid #E0E0E0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.nav .nav-bg{
+    padding: 20px 12px;
+}
+.nav .nav-bg>div {
+    margin: 8px 0;
 }
 
 .nav .logo {
-    height: 125px;
+    margin: 12px 0;
 }
-
+.nav .profile-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 .nav .profile-wrap > .profile-picture {
-    width: 225px;
-    height: 225px;
+    width: 175px;
+    height: 175px;
     border-radius: 50%;
     background-color: #FF9EBE;
+    margin: 0 auto;
 }
+.nav .profile-wrap>.profile-picture>a{
+    position: relative;
+    width: 100%;
+    display: block;
+}
+.nav .profile-wrap>.profile-picture>a::after{
+    content: "";
+    display: none;
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    filter: blur(3px);
+}
+.nav .profile-wrap>.profile-picture>a:hover::after {
+    display: block;
+}
+.nav .profile-wrap>.profile-picture>a img {
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
 .nav .profile-wrap > .nickname {
     width: 255px;
     height: auto;
     background-color: #B4D8E4;
+    line-height: 1.5;
 }
 
 .nav .profile-wrap>.nickname .userName {
     font-size: 1.15em;
     font-weight: 600;
+}
+/* nav 가 있는 페이지에 header 는 .right-wrap   */
+.right-wrap {
+    width: 100%;
+}
+
+.right-wrap .logo {
+    display: none;
+}
+
+.right-wrap .title {
+    margin-left: 12px;
+}
+
+.right-wrap .header-bg {
+    width: 100%;
+    position: relative;
+
+}
+
+.right-wrap .header-bg>.gnb-wrap {
+    position: absolute;
+    right: 0;
+}
+
+/* statistics */
+.statistics-wrap>.statistics-list>li>p {
+    font-size: 0.85em;
+}
+/* 업적 디자인 */
+.achievement-notice {
+    text-align: center;
+}
+
+/* 캘린더 디자인 */
+/* 공통 */
+.calendar-wrap {
+    padding: 0 8px;
+}
+
+.nav-currentMonth {
+    font-family: "GoryeongStrawberry";
+    font-size: 1.08em;
+    text-align: center;
+    align-items: center;
+    margin: 7px 0;
+}
+
+.nav-calendar,
+.mypage-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.nav-calendar th,
+.nav-calendar td {
+    border: 1px solid #FF9EBE;
+    padding: 5px;
+}
+
+
+.nav-calendar th,
+.mypage-calendar th {
+    background-color: #FDF4F1;
+}
+
+.nav-calendar th,
+.nav-calendar td {
+    font-size: 0.85em;
 }
 
 /* header */
@@ -117,7 +238,9 @@ body {
     width: 100%;
 }
 .header-bg{
-    background-color: #ccc;
+    width: 100%;
+    background-color: #FFF;
+    border-bottom: 1px solid #E0E0E0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -132,97 +255,23 @@ body {
     display: flex;
     gap: 12px;
     align-items: center;
-    margin-right: 36px;
+    margin-right: 18px;
+    margin-top: 18px;
 }
 .gnb-list>li>a>i {
     font-size: 1.75em;
     line-height: 1.75;
 }
 .gnb-list>li>a>i:hover {
-    color : #FF9EBE;
+    color: #007BFF;
     transition: 0.5s;
 }
 
-.inner>div{
-    margin: 30px 0;
-}
-
-.inner .profile-wrap {
-    display: flex;
-    justify-content: center;
-    gap: 38px;
-    align-items: center;
-}
-
-.inner .profile-wrap>.profile-picture {
-    width: 285px;
-    height: 285px;
-    border-radius: 50%;
-    background-color: #FF9EBE;
-}
-
-.inner .profile-wrap>.nickname {
-    width: 285px;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
-}
-
-.inner .profile-wrap>.nickname p {
-background-color: #B4D8E4;
-line-height: 1.75;
-}
-
-.inner .profile-wrap>.nickname i {
-    font-size: 1.75em;
-}
-
-.inner .profile-wrap>.nickname i:hover{
-    color: #FF9EBE;
-    transition: 0.5s;
-}
-
-.inner .profile-wrap>.nickname .userName {
-    font-size: 1.85em;
-    font-weight: 700;
-}
-
-/* nav 가 있는 페이지에 header 는 .right-wrap   */
-
-/* 업적 디자인 */
-.achievement-notice {
-    text-align: center;
-    margin: 0 auto;
-}
-
-/* 캘린더 디자인 */
-/* 공통 */
-.mypage-currentMonth {
-    font-family:  "GoryeongStrawberry";
-    font-size: 1.85em;
-    text-align: center;
-    align-items: center;
-    margin: 30px auto;
-}
-
-.nav-calendar,
-.mypage-calendar {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-}
-
-.nav-calendar th,
-.nav-calendar td,
-.mypage-calendar th,
-.mypage-calendar td {
-    border: 1px solid #FF9EBE;
-    padding: 12px;
-}
-
-.nav-calendar th,
-.mypage-calendar th {
-    background-color: #FDF4F1;
-}
+/* container 영역 */
+  .container {
+      flex-grow: 1;
+    /* 콘텐츠 영역 내에서만 스크롤 */
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #FAFAFA;
+  }
