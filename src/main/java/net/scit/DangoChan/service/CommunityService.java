@@ -65,7 +65,7 @@ public class CommunityService {
 			temp = communityRepository.findByTitleContains(
 					searchWord,
 					PageRequest.of(pageNumber, pageLimit, Sort.by(Sort.Direction.DESC, "createDate")));
-			break;			
+			break;
 		case "boardContent":
 			temp = communityRepository.findByBoardContentContains(
 					searchWord,

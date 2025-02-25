@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.scit.DangoChan.entity.ReplyEntity;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +27,15 @@ public class ReplyDTO {
 	private Integer parentReplyId;
 	
 	// coId의 정체? 엔티티에서 DTO로 변환하면서 가져온 값 
-	
+	public static ReplyDTO toDTO(ReplyEntity entity, Integer boardId) {
+		return ReplyDTO.builder()
+				.replyId(entity.getReplyId())
+				.boardId(boardId)
+				.userId(entity.getUserId())
+				.content(entity.getContent())
+				.createAt(entity.getCreateAt())
+				.parentReplyId(entity.getParentReplyId())
+				.build();
+	}
 
 }

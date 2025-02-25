@@ -41,6 +41,7 @@ public class CommunityEntity {
 	@Column(name="board_id")
 	private Integer boardId;
 	
+	
 	@Column(name="user_id", nullable = false)
 	private Long userId;
 	

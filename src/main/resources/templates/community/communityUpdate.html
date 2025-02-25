@@ -12,7 +12,7 @@
     <div class="content">
         <form th:action="@{/community/communityUpdate}" method="POST" enctype="multipart/form-data">
             <!-- 두 종류의 데이터(boardSeq, boardWriter(writer는 security 완성되면 삭제 예정)) -->
-            <input type="hidden" name="boardSeq" th:value="${community.boardId}">
+            <input type="hidden" name="boardId" th:value="${community.boardId}">
         	<!-- <input type="hidden" name="boardWriter" th:value="${community.boardWriter}"> -->
         	<input type="hidden" name="searchItem" th:value="${searchItem}">
         	<input type="hidden" name="searchWord" th:value="${searchWord}">            
