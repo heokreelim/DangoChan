@@ -8,8 +8,11 @@ function loadRooms() {
             data.forEach(room => {
                 const div = document.createElement('div');
                 div.className = 'room-item';
-                div.textContent = room.name + ' (' + room.roomId + ')';
-                // 방을 클릭하면 해당 채팅방 페이지로 이동합니다.
+                // room.userSet가 배열로 전송된다면, 참가 인원 수는 length로 구할 수 있습니다.
+                const participantCount = room.userSet ? room.userSet.length : 0;
+                // 채팅방 이름 옆에 "n명"을 표시합니다.
+                div.textContent = room.name + ' (' + participantCount + '명)';
+                // 방을 클릭하면 해당 채팅방으로 이동합니다.
                 div.onclick = () => {
                     window.location.href = '/chat/room/' + room.roomId;
                 };
@@ -19,9 +22,10 @@ function loadRooms() {
         .catch(err => console.error(err));
 }
 
-// 채팅방 생성 함수입니다.
+// 채팅방을 만드는 함수입니다.
 function createRoom() {
-    const name = document.getElementById('roomName').value.trim();
+    const nameInput = document.getElementById('roomName');
+    const name = nameInput.value.trim();
     if (!name) {
         alert("채팅방 이름을 입력하세요.");
         return;
@@ -41,10 +45,11 @@ function createRoom() {
         .catch(err => console.error(err));
 }
 
-// 페이지가 완전히 로드되면 채팅방 목록을 불러오고,
-// 5초마다 loadRooms() 함수를 호출하여 실시간으로 업데이트합니다.
+// 페이지가 완전히 로드되면 자동으로 방 목록을 불러오고,
+// 채팅방 이름 입력창에 Enter 키 이벤트를 추가하여 Enter로도 방 생성이 가능하게 합니다.
 document.addEventListener('DOMContentLoaded', () => {
     loadRooms();
+    setInterval(loadRooms, 5000);
     const nameInput = document.getElementById('roomName');
     nameInput.addEventListener('keydown', function(event) {
         if (event.key === "Enter" || event.keyCode === 13) {
@@ -52,5 +57,4 @@ document.addEventListener('DOMContentLoaded', () => {
             createRoom();
         }
     });
-    setInterval(loadRooms, 5000);
 });
