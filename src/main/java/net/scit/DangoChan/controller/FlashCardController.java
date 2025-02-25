@@ -84,9 +84,9 @@ public class FlashCardController {
         List<CardDTO> cardDTOList = request.getCardDTOList();
 
         System.out.println("▶ Deck 저장: " + deckDTO);
-        flashCardService.insertDeck(deckDTO);
+        DeckDTO savedDeckId = flashCardService.insertDeck(deckDTO);
         for (CardDTO cardDTO : cardDTOList) {
-        	cardDTO.setDeckId(deckDTO.getDeckId()); // 백엔드에서 저장 후 ID 업데이트 필요
+        	cardDTO.setDeckId(savedDeckId.getDeckId()); // 백엔드에서 저장 후 ID 업데이트 필요
             System.out.println("▶ 카드 저장: " + cardDTO);
             flashCardService.insertCard(cardDTO);
         }
@@ -114,7 +114,8 @@ public class FlashCardController {
 		if (deckId == null) {
 			deckId = 1L; // 기본 덱 ID 설정
 		}
-		CardDTO card = flashCardService.getCardByDeckId(deckId);
+//		CardDTO card = flashCardService.getCardByDeckId(deckId);
+		CardDTO card = new CardDTO();
 		model.addAttribute("flashcard", card);
 		return "flashcard/flashcard"; // ✅ 템플릿: src/main/resources/templates/flashcard/flashcard.html
 	}
@@ -128,8 +129,8 @@ public class FlashCardController {
 		}
 
 		// ✅ DTO 변환된 데이터 가져오기
-		CardDTO card = flashCardService.getCardByDeckId(deckId);
-
+//		CardDTO card = flashCardService.getCardByDeckId(deckId);
+		CardDTO card = new CardDTO();
 		// ✅ 디버깅 로그 추가 (JSON 응답 확인)
 		System.out.println("🔥 [DEBUG] 응답 JSON: " + card);
 
