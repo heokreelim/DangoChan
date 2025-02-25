@@ -29,6 +29,7 @@
         </style>
         <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
         <script defer th:src="@{/js/reply.js}"></script>
+        <script defer th:src="@{/js/boardLikes.js}"></script>
 </head>
 <body>
     <!-- fragment 적용 -->
@@ -98,7 +99,8 @@
                     </th>
                 </tr>
                 <tr>
-                
+                <!-- 좋아요 버튼-->
+                <a th:href="@{/community/like}"><img th:src="@{/images/empty.png}" id="likeImg" alt="like"></a>
                 </tr>                
         </table>
         <!-- 댓글 목록 처리 -->

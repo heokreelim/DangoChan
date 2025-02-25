@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -24,6 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CommunityDTO;
+import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.service.BoardLikesService;
 import net.scit.DangoChan.service.CommunityService;
 import net.scit.DangoChan.util.PageNavigator;
@@ -50,6 +52,7 @@ public class CommunityController {
 	 * */
 	@GetMapping("/communityBoardList")
 	public String communityBoardList(
+			@AuthenticationPrincipal LoginUserDetails loginUser,
 			@PageableDefault(page=1) Pageable pageable,
 			@RequestParam(name="searchItem", defaultValue = "title") String searchItem,
 			@RequestParam(name="searchWord", defaultValue = "") String searchWord,
@@ -73,6 +76,11 @@ public class CommunityController {
 		model.addAttribute("searchItem", searchItem);
 		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("navi", navi);
+		
+		//로그인 했니 안 했니 확인해서, 로그인하면 그 사람의 이름 출력
+		if(loginUser != null) {
+			model.addAttribute(loginUser.getUserName());
+		}
 		
 		return "community/communityBoardList";
 	}
@@ -98,8 +106,8 @@ public class CommunityController {
 	@PostMapping("/communityWrite")
 	public String communityWrite(@ModelAttribute CommunityDTO communityDTO) {
 		
-		//유저정보 임시처리
-		communityDTO.setUserId(1l);
+//		//유저정보 임시처리
+//		communityDTO.setUserId(1l);
 		
 		communityService.insertBoard(communityDTO);
 		
@@ -123,14 +131,10 @@ public class CommunityController {
 		//DB에 boardId에 해당하는 하나의 게시글을 조회
 		CommunityDTO communityDTO = communityService.selectOne(boardId);
 		communityService.incrementViews(boardId);
-		
-		// 좋아요 개수를 BoardLikesService를 통해 별도로 구하기
-		Integer likeCount = boardLikesService.getLikeCount(boardId);
-		
+				
 		model.addAttribute("community", communityDTO);
 		model.addAttribute("searchItem", searchItem);
 		model.addAttribute("searchWord", searchWord);
-		model.addAttribute("likeCount", likeCount);
 		
 		return "community/communityDetail";	
 		
