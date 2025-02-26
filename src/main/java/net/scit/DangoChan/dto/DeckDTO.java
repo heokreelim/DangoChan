@@ -26,7 +26,7 @@ public class DeckDTO {
 		return DeckDTO.builder()
 				.deckId(deckEntity.getDeckId())
 				.categoryId(deckEntity.getCategoryEntity().getCategoryId())
-				.userId(deckEntity.getCategoryEntity().getUserId())
+//				.userId(deckEntity.getCategoryEntity().getUserId()) // 02.26 DDL 수정으로 주석 처리
 				.deckName(deckEntity.getDeckName())
 				.build();
     }

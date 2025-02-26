@@ -31,31 +31,8 @@ public class CardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id")
     private Long cardId;
-
-//	@Column(name = "user_id", nullable = false, insertable = false, updatable = false)
-//	private Long userId;
-//	
-//	@Column(name = "category_id", nullable = false, insertable = false, updatable = false)
-//    private Long categoryId;
-//
-//	@Column(name = "deck_id", nullable = false, insertable = false, updatable = false)
-//    private Long deckId;
-//	
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-//    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
-//    @JoinColumn(name = "deck_id", referencedColumnName = "deck_id")
-//    private DeckEntity deckEntity;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumns({
-  		@JoinColumn(name = "category_id", referencedColumnName = "category_id"),
-  		@JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-		@JoinColumn(name = "deck_id", referencedColumnName = "deckId")		
-})
-  private DeckEntity deckEntity;
 	
-    @Column(name = "word", nullable = false)
+	@Column(name = "word", nullable = false)
     private String word;
 
     @Column(name = "pos")
@@ -72,6 +49,10 @@ public class CardEntity {
     
     @Column(name = "study_level")
     private Integer studyLevel;
+
+	@ManyToOne
+    @JoinColumn(name = "deck_id", referencedColumnName = "deckId", nullable = false)
+    private DeckEntity deckEntity;  // cardEntity(N) -> deckEntity(1)
     
 // DTO --> Entity
     public static CardEntity toEntity(CardDTO cardDTO, DeckEntity entity) {

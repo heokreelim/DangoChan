@@ -76,7 +76,11 @@ public class FlashCardController {
 	//deck start
 	
 	//AYH start
-	
+	/**
+	 * 덱을 저장하면서 함께 입력한 카드도 함께 저장되는 코드
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@PostMapping("/importDeck")
     public String importDeck(@RequestBody DeckAndCardsRequest request) {
@@ -93,6 +97,20 @@ public class FlashCardController {
      // TODO: DB 저장 로직 추가 (Service & Repository 호출)
         return "Deck and Cards saved successfully!";
 	}
+	
+	/**
+	 * 덱 수정 요청
+	 * @param deckDTO
+	 * @return
+	 */
+	@GetMapping("/updateDeck")
+	public String updateDeck(@ModelAttribute DeckDTO deckDTO) {
+//		flashCardService.updateDeck(deckDTO);
+		
+		return "redirect:/";
+	}
+	
+	
 	//AYH end
 		
 	//PJB start
@@ -110,12 +128,12 @@ public class FlashCardController {
 	//SYH start
 	// ✅ 플래시카드 페이지 (HTML 렌더링)
 	@GetMapping("/flashcard") // ❗ 변경: /flashcard/flashcard 로 맞춤
-	public String flashcard(@RequestParam(required = false) Long deckId, Model model) {
-		if (deckId == null) {
-			deckId = 1L; // 기본 덱 ID 설정
-		}
-//		CardDTO card = flashCardService.getCardByDeckId(deckId);
-		CardDTO card = new CardDTO();
+	public String flashcard(@RequestParam(name = "deckId", defaultValue = "1") Long deckId, Model model) {
+//		if (deckId == null) {
+//			deckId = 1L; // 기본 덱 ID 설정
+//		}
+		CardDTO card = flashCardService.getCardByDeckId(deckId);
+		System.out.println(card.toString());
 		model.addAttribute("flashcard", card);
 		return "flashcard/flashcard"; // ✅ 템플릿: src/main/resources/templates/flashcard/flashcard.html
 	}
@@ -123,14 +141,13 @@ public class FlashCardController {
 	// ✅ AJAX 요청 (랜덤 단어 반환)
 	// ✅ JSON 데이터 반환 (랜덤 단어 가져오기)
 	@GetMapping(value = "/json", produces = "application/json")
-	public ResponseEntity<CardDTO> getRandomFlashcard(@RequestParam(required = false) Long deckId) {
+	public ResponseEntity<CardDTO> getRandomFlashcard(@RequestParam(name = "deckId", defaultValue = "26") Long deckId) {
 		if (deckId == null) {
-			deckId = 1L; // 기본 덱 ID 설정
+			deckId = 26L; // 기본 덱 ID 설정
 		}
 
 		// ✅ DTO 변환된 데이터 가져오기
-//		CardDTO card = flashCardService.getCardByDeckId(deckId);
-		CardDTO card = new CardDTO();
+		CardDTO card = flashCardService.getCardByDeckId(deckId);
 		// ✅ 디버깅 로그 추가 (JSON 응답 확인)
 		System.out.println("🔥 [DEBUG] 응답 JSON: " + card);
 
