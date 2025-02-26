@@ -14,9 +14,11 @@ import net.scit.DangoChan.dto.DeckDTO;
 import net.scit.DangoChan.entity.CardEntity;
 import net.scit.DangoChan.entity.CategoryEntity;
 import net.scit.DangoChan.entity.DeckEntity;
+import net.scit.DangoChan.entity.UserEntity;
 import net.scit.DangoChan.repository.CardRepository;
 import net.scit.DangoChan.repository.CategoryRepository;
 import net.scit.DangoChan.repository.DeckRepository;
+import net.scit.DangoChan.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ import net.scit.DangoChan.repository.DeckRepository;
 public class FlashCardService {
 
 	//private final Repository variable start
+	private final UserRepository userRepository;
 	private final CategoryRepository categoryRepository;
 	private final DeckRepository deckRepository;
 	private final CardRepository cardRepository;
@@ -38,12 +41,22 @@ public class FlashCardService {
 	 * user가 입력한 카테고리의 이름을 저장하는 service
 	 * @param categoryDTO
 	 */
+	@Transactional
 	public void insertCategory(CategoryDTO categoryDTO) {
+		// 1) 수정하려는 카테고리가 있는지 확인
+				Optional<UserEntity> temp = userRepository.findById(1L);
 
-		CategoryEntity entity = CategoryEntity.toEntity(categoryDTO);
-		log.info("카테고리 저장 {}", entity);
+				if (!temp.isPresent()) {
+					return;
+				}
+				// 2) 있으면 dto -> entity로 변환
+				// 3) 이름을 변경하여 데이터 베이스에 저장한다
+				UserEntity entity = temp.get();
+		
+		CategoryEntity categoryEntity = CategoryEntity.toEntity(categoryDTO, entity);
+		log.info("카테고리 저장 {}", categoryEntity);
 
-		categoryRepository.save(entity);
+		categoryRepository.save(categoryEntity);
 
 	}
 
@@ -76,7 +89,13 @@ public void updateCategory(CategoryDTO categoryDTO) {
 	//deck start
 	
 		//AYH start
-		
+
+/**
+ * 덱 생성과, 덱 불러오기 기능을 사용하였을 때 동작하는 코드
+ * @param deckDTO
+ * @return
+ */
+@Transactional
 public DeckDTO insertDeck(DeckDTO deckDTO) {
 	// 1) 수정하려는 카테고리가 있는지 확인
 		Optional<CategoryEntity> temp = categoryRepository.findById(deckDTO.getCategoryId());
@@ -84,6 +103,8 @@ public DeckDTO insertDeck(DeckDTO deckDTO) {
 		if (!temp.isPresent()) {
 			return DeckDTO.toDTO(null);
 		}
+		
+		
 		// 2) 있으면 dto -> entity로 변환
 		// 3) 이름을 변경하여 데이터 베이스에 저장한다
 		CategoryEntity entity = temp.get();
@@ -97,6 +118,38 @@ public DeckDTO insertDeck(DeckDTO deckDTO) {
 
 
 
+
+@Transactional
+public void updateDeck(DeckDTO deckDTO) {
+	// 1) 수정하려는 데이터가 있는지 확인
+	Optional<DeckEntity> temp = deckRepository.findById(deckDTO.getDeckId());
+
+	if (!temp.isPresent()) {
+		return;
+	}
+	// 2) 있으면 dto -> entity로 변환
+	// 3) 이름을 변경하여 데이터 베이스에 저장한다
+	DeckEntity entity = temp.get();
+//	entity.setCategoryName(categoryDTO.getCategoryName());
+}
+
+
+		//AYH end
+			
+		//PJB start
+			
+		//PJB end
+	
+	//deck end
+	
+	//card start
+	
+		//AYH start
+/**
+ * 덱을 생성하면서 입력된 카드 속성을 저장
+ * @param cardDTO
+ */
+@Transactional
 public void insertCard(CardDTO cardDTO) {
 	// 1) 수정하려는 덱이 있는지 확인
 			Optional<DeckEntity> temp = deckRepository.findById(cardDTO.getDeckId());
@@ -116,20 +169,6 @@ public void insertCard(CardDTO cardDTO) {
 }
 
 
-
-
-		//AYH end
-			
-		//PJB start
-			
-		//PJB end
-	
-	//deck end
-	
-	//card start
-	
-		//AYH start
-		
 		//AYH end
 		
 	//SYH start

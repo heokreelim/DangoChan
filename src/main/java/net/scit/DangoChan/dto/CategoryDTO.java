@@ -25,7 +25,7 @@ public class CategoryDTO {
     public static CategoryDTO toDTO(CategoryEntity categoryEntity) {
 		return CategoryDTO.builder()
 				.categoryId(categoryEntity.getCategoryId())
-				.userId(categoryEntity.getUserId())
+				.userId(categoryEntity.getUserEntity().getUserId())
 				.categoryName(categoryEntity.getCategoryName())		
 				.build();
     }
