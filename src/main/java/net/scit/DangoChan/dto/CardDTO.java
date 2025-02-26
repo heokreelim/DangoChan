@@ -29,15 +29,15 @@ public class CardDTO {
 
 	private String kanji;
 	private String furigana;
-	//private String formattedRuby; // ✅ 한자+후리가나 자동 생성 필드
+	private String formattedRuby; // ✅ 한자+후리가나 자동 생성 필드
 	
     // Entity --> DTO
     public static CardDTO toDTO(CardEntity cardEntity) {
 		return CardDTO.builder()
 				.cardId(cardEntity.getCardId())
-//				.userId(cardEntity.getDeckEntity().getCategoryEntity().getUserId())
-//				.categoryId(cardEntity.getDeckEntity().getCategoryEntity().getCategoryId())
-//				.deckId(cardEntity.getDeckEntity().getDeckId())
+//				.userId(cardEntity.getDeckEntity().getCategoryEntity().getUserId()) // 02.26 DDL 수정으로 주석 처리
+				.categoryId(cardEntity.getDeckEntity().getCategoryEntity().getCategoryId())
+				.deckId(cardEntity.getDeckEntity().getDeckId())
 				.word(cardEntity.getWord())
 				.kanji(getKanji(cardEntity.getWord()))
 				.furigana(getFurigana(String.valueOf(cardEntity.getWord())))

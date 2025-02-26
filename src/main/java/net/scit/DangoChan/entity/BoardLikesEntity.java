@@ -2,6 +2,7 @@ package net.scit.DangoChan.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,19 +33,24 @@ public class BoardLikesEntity {
 	@Column(name="boardLike_id")
 	private Long boardLikeId;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="board_id", nullable = false)
-	private CommunityEntity board; // 게시글 N:1 관계
+	private CommunityEntity communityEntity; // 게시글 N:1 관계
 	
-	@Column(name="user_id", nullable= false)
-	private Long userId; // 좋아요 누른 사용자 ID
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", nullable= false)
+	private UserEntity userEntity; // 좋아요 누른 사용자 ID
 	
 	// DTO -> entity
-	public static BoardLikesEntity toEntity(BoardLikesDTO boardLikesDTO, CommunityEntity board) {
-		return BoardLikesEntity.builder()
-				.board(board)
-				.userId(boardLikesDTO.getUserId())
-				.build();
+	public static BoardLikesEntity toBoardLikesEntity(UserEntity userEntity, CommunityEntity communityEntity) {
+		
+		BoardLikesEntity boardLikesEntity = new BoardLikesEntity();
+		
+		boardLikesEntity.setUserEntity(userEntity);
+		boardLikesEntity.setCommunityEntity(communityEntity);
+		
+		return boardLikesEntity;
+		
 	}
 
 }
