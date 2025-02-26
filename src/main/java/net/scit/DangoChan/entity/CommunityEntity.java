@@ -78,7 +78,7 @@ public class CommunityEntity {
 	public static CommunityEntity toEntity(CommunityDTO communityDTO) {
 		return CommunityEntity.builder()
 				.boardId(communityDTO.getBoardId())
-				.userId(communityDTO.getUserId())
+				.userId(1L)	// 02.26 임시 수정
 				.title(communityDTO.getTitle())
 				.wordCount(communityDTO.getWordCount())
 				.views(communityDTO.getViews())
