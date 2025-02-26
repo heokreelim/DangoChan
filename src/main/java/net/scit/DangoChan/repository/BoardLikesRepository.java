@@ -12,14 +12,14 @@ import net.scit.DangoChan.entity.BoardLikesEntity;
 
 public interface BoardLikesRepository extends JpaRepository<BoardLikesEntity, Long> {
 	
-	Optional<BoardLikesEntity> findByBoard_BoardIdAndUserId(Integer boardId, Long userId);
+//	Optional<BoardLikesEntity> findByBoard_BoardIdAndUserId(Integer boardId, Long userId); // 02.26 임시 수정
 
-    @Query("SELECT COUNT(b) FROM BoardLikesEntity b WHERE b.board.boardId = :boardId")
+    @Query("SELECT COUNT(b) FROM BoardLikesEntity b WHERE b.communityEntity.boardId = :boardId")
     Integer countByBoardId(@Param("boardId") Integer boardId);
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM BoardLikesEntity b WHERE b.board.boardId = :boardId AND b.userId = :userId")
-    void deleteByBoardIdAndUserId(@Param("boardId") Integer boardId, @Param("userId") Long userId);
+//    @Modifying // 02.26 임시 수정
+//    @Transactional
+//    @Query("DELETE FROM BoardLikesEntity b WHERE b.communityEntity.boardId = :boardId AND b.userId = :userId")
+//    void deleteByBoardIdAndUserId(@Param("boardId") Integer boardId, @Param("userId") Long userId);
 
 }
