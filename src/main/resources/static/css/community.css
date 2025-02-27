@@ -1,143 +1,151 @@
-/**************************
-* 게시글 목록
-*************************** */
-@charset "UTF-8";
-@import "main.css";
-
-/**************************
-* 페이지 전체 폭
-*************************** */
-div.content {
-    width: 1000px;
-    margin: 0 auto;
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
-/**************************
-* 글 개수, 검색창
-*************************** */
-div.content>div.top {
+
+.container {
+    margin: 20px auto;
+    max-width: 960px;
+}
+
+/* 콘텐츠 영역 */
+.content {
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 상단 영역: 전체 글 개수와 검색 */
+.top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
-div.search {
-    width: 500px;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: right;
-
-}
-
-div.search select {
-    width: 140px;
-    height: 32px;
-    border: 0px;
-    outline: 1px solid rgb(0, 100, 255);
-    border-radius: 10px;
-}
-
-div.search input[type="text"] {
-    width: 250px;
-    height: 35px;
-}
-
-/**************************
-* 게시글 목록 테이블
-*************************** */
-.head {
-    margin-top: 20px;
-}
-.no, .writer, .hitcount {
-    width: 100px;
-}
-.create_date {
-    width: 180px;
-}
-
-/**************************
-* 글쓰기 버튼
-*************************** */
-div.write {
-    width: 1000px;
-    margin: 20px auto;
-    text-align: right;
-}
-/**************************
-* 페이지 내비게이션(pagination: 페이지네이션)
-*************************** */
-nav.pagination {
-    width: 1000px;
-    margin: 20px auto;
-    text-align: center;
-
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-}
-
-/* .page-no {
-    display: inline-block;
-    width: 20px;
-    height: 30px;
-    padding: 0.4rem;
-    margin: 0 2px;
-
-    font-size: 1.2rem;
-}
-
-.current {
-    color: red;
-    font-weight: bold;
-
-}
-
-*/
-
-.page-no.current {
-    background-color: #007bAA;
-    color: #fff;
-    border: 1px solid #007bBB;
-    pointer-events: none;
-}
-
-.page-no.disabled {
-    color: #000;
-    border-color: #ddd;
-    pointer-events: none;
-}
-
-/* 아이콘 스타일 */
-.page-no i {
+.top .count p {
+    margin: 0;
     font-size: 16px;
+    color: #333;
+}
+
+.top .search form {
+    display: flex;
+    align-items: center;
+}
+
+.top .search form select,
+.top .search form input[type="text"] {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.top .search form input[type="submit"] {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.top .search form input[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+/* 게시글 리스트 테이블 */
+.head table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.head table th,
+.head table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
     vertical-align: middle;
 }
 
-/* 화살표 버튼 스타일 */
-.page-no:first-child,
-.page-no:last-child {
-    font-size: 16px;
-    padding: 8px;
+.head table th {
+    background-color: #f1f1f1;
 }
 
-/* 오빤 강남스타일이 아니고 숫자 스타일*/
-.pageNumberList:hover {
-    color:red;
+/* 제목 영역 내 링크 및 아이콘 */
+.head table a {
+    color: #007bff;
+    text-decoration: none;
 }
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-    .pagination {
-        gap: 4px;
-    }
+.head table a:hover {
+    text-decoration: underline;
+}
 
-    .page-no {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
+.head table span {
+    font-weight: bold;
+    margin-left: 5px;
+}
 
-    .page-no i {
-        font-size: 14px;
-    }
+/* 글쓰기 버튼 */
+.write {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.write a.btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.write a.btn:hover {
+    opacity: 0.9;
+}
+
+/* 페이지 내비게이션 */
+nav.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+nav.pagination a.page-no,
+nav.pagination span.page-no {
+    display: inline-block;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav.pagination a.page-no:hover {
+    background-color: #e9ecef;
+}
+
+nav.pagination span.page-no.current {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border-color: #007bff;
+}
+
+/* 아이콘 버튼 (pagination 내) */
+nav.pagination .page-no i {
+    vertical-align: middle;
 }

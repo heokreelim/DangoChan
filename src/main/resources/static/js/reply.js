@@ -64,9 +64,6 @@ function output(resp) {
                             <input type="button" value="삭제" class="btn btn-danger deleteBtn"
                                 data-seq="${item['replyId']}"
                                 ${item['userName'] == loginName ? '' : 'disabled'}>
-                            <input type="button" value="수정" class="btn btn-secondary updateBtn"
-                                data-seq="${item['replyId']}"
-                                ${item['userName'] == loginName ? '' : 'disabled'}>
                         </td>
                     </tr>
                     `
