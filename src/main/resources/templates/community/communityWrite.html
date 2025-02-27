@@ -11,7 +11,6 @@
     <!-- 게시글 쓰기 화면 -->
     <div class="content">
         <form th:action="@{/community/communityWrite}" method="POST" enctype="multipart/form-data">
-            <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.userId}">
             <table>
                 <tr>
                     <th>덱 제목</th>

@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +16,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CommunityDTO;
+import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.entity.CommunityEntity;
+import net.scit.DangoChan.entity.UserEntity;
 import net.scit.DangoChan.repository.CommunityRepository;
 import net.scit.DangoChan.util.FileService;
 
@@ -45,9 +49,19 @@ public class CommunityService {
 		communityDTO.setSavedFileName(savedFileName);
 		communityDTO.setOriginalFileName(originalFileName);
 		
-		CommunityEntity entity = CommunityEntity.toEntity(communityDTO);
-				
-//				log.info("파일 저장 경로: {}", uploadPath);
+		// 현재 인증된 사용자의 정보를 SecurityContextHolder에서 가져오기.
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		 // LoginUserDetails에서 UserEntity 추출
+		LoginUserDetails loginUserDetails = (LoginUserDetails) authentication.getPrincipal();
+		
+		// 최소한 userId만 세팅된 UserEntity 객체 생성
+		UserEntity userEntity = new UserEntity();
+		userEntity.setUserId(loginUserDetails.getUserId());
+
+		 // 변경된 toEntity() 메서드를 사용하여 엔티티를 생성
+		CommunityEntity entity = CommunityEntity.toEntity(communityDTO, userEntity);
+		
+//		log.info("파일 저장 경로: {}", uploadPath);
 		
 		communityRepository.save(entity);		
 	}
