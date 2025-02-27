@@ -1,16 +1,10 @@
 package net.scit.DangoChan.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,35 +25,24 @@ public class DeckStudyTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "study_time_id")
     private Long studyTimeId;
-    
-    @Column(name = "deck_id")
-    private Long deckId;
-   
-    @Column(name = "user_id")
-    private Long userId;
-/*
-    // deckId를 DeckEntity로 변경
-    @ManyToOne
-    @JoinColumn(name = "deck_id") // foreign key
-    private DeckEntity deck; // DeckEntity로 연결
 
-    // userId를 UserEntity로 변경
-    @ManyToOne
-    @JoinColumn(name = "user_id") // foreign key
-    private UserEntity user; // UserEntity로 연결
-*/
     @Column(name = "study_time")
     private LocalTime studyTime;  
 
     @Column(name = "date")
-    private LocalDateTime date; 
+    private LocalDateTime date;
 
-    // DTO -> Entity 
-    public static DeckStudyTimeEntity toEntity(DeckStudyTimeDTO dto, DeckEntity deck, UserEntity user) {
+    @ManyToOne
+    @JoinColumn(name = "deck_id", nullable = false)
+    private DeckEntity deckEntity;  // 어떤 Deck에서 학습했는지 저장
+
+    // DTO -> Entity
+    public static DeckStudyTimeEntity toEntity(DeckStudyTimeDTO dto, DeckEntity deckEntity) {
         return DeckStudyTimeEntity.builder()
                 .studyTimeId(dto.getStudyTimeId())
-                .deckId(dto.getDeckId())
-                .userId(dto.getUserId())
+                .deckEntity(deckEntity)
+                //.deckId(dto.getDeckId())
+                //.userId(dto.getUserId())
                 .studyTime(dto.getStudyTime())
                 .date(dto.getDate())
                 .build();

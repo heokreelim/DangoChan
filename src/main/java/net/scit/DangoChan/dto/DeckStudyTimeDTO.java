@@ -21,8 +21,7 @@ import net.scit.DangoChan.entity.UserEntity;
 public class DeckStudyTimeDTO {
 
     private Long studyTimeId;
-    private Long deckId;  
-    private Long userId;   
+    private Long deckId;
     private LocalTime studyTime; 
     private LocalDateTime date;
 
@@ -32,8 +31,7 @@ public class DeckStudyTimeDTO {
     	
     	return DeckStudyTimeDTO.builder()
     					.studyTimeId(entity.getStudyTimeId())
-    					.deckId(entity.getDeckId())
-    					.userId(entity.getUserId())
+    					.deckId(entity.getDeckEntity().getDeckId())
     					.studyTime(entity.getStudyTime())
     					.date(entity.getDate())
     					.build();

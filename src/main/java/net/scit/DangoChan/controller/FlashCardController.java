@@ -2,6 +2,7 @@ package net.scit.DangoChan.controller;
 
 import java.util.List;
 
+import net.scit.DangoChan.service.DeckStudyTimeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,8 @@ import net.scit.DangoChan.service.FlashCardService;
 public class FlashCardController {
 	
 	//private final Service variable start
-		private final FlashCardService flashCardService;
+	private final FlashCardService flashCardService;
+	private final DeckStudyTimeService deckStudyTimeService;
 	//private final Service variable end
 	
 	//category start
@@ -160,6 +162,17 @@ public class FlashCardController {
 		flashCardService.updateStudyLevel(cardId, studyLevel);
 		return ResponseEntity.ok("✅ study_level 업데이트 성공");
 	}
+
+	@PostMapping("/saveStudyTime")
+	public ResponseEntity<String> saveStudyTime(@RequestParam(required = false) Long deckId,
+												@RequestParam(required = false) Integer studyTime) {
+		if (deckId == null || studyTime == null) {
+			return ResponseEntity.badRequest().body("❌ deckId 또는 studyTime이 누락됨");
+		}
+		deckStudyTimeService.saveStudyTime(deckId, studyTime);
+		return ResponseEntity.ok("✅ Study time 저장 완료");
+	}
+
 	//SYH end
 	
 	//card end
