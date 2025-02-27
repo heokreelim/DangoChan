@@ -42,7 +42,7 @@ public class CommunityDTO {
 	private int replyCount;
 	
 	// 좋아요 개수
-	private int likeCount;
+	private int likeCount; 
 	
 	//entity -> DTO
 	public static CommunityDTO toDTO(CommunityEntity communityEntity) {
@@ -59,6 +59,7 @@ public class CommunityDTO {
 				.originalFileName(communityEntity.getOriginalFileName())
 				.savedFileName(communityEntity.getSavedFileName())
 				.replyCount(communityEntity.getReplyCount())
+				.likeCount(communityEntity.getLikeCount())
 				.build();
 	}
 	

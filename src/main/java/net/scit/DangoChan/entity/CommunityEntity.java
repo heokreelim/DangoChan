@@ -79,6 +79,9 @@ public class CommunityEntity {
 	@Formula("(SELECT count(1) from reply r where board_id = r.board_id)")
 	private int replyCount;
 
+	@Formula("(SELECT count(1) from board_likes bl where board_id = bl.board_id)")
+	private int likeCount;
+
 	@OneToMany(mappedBy="communityEntity")
 	@ToString.Exclude
 	private List<ReplyEntity> replyEntityList;
