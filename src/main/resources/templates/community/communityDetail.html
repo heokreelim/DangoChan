@@ -29,7 +29,7 @@
         </style>
         <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
         <script defer th:src="@{/js/reply.js}"></script>
-        <script defer th:src="@{/js/boardLike.js}"></script>
+        <script defer th:src="@{/js/boardLikes.js}"></script>
 </head>
 <body>
     <!-- fragment 적용 -->
@@ -100,7 +100,12 @@
                     <td colspan="2" style="text-align: center;">
                         <button id="likeButton" class="btn btn-outline-primary" data-board-id="[[${community.boardId}]]" data-login-id="[[${#authentication.name}]]">
                             <!-- 좋아요 상태에 따라 empty.png 또는 filled.png 등으로 변경할 수 있습니다 -->
-                            <img id="likeImg" th:src="@{/images/empty.png}" alt="like" width="24" height="24">
+                            <th:block th:if="${isLikedByMe}">
+                                <img id="likeImg" th:src="@{/images/heart.png}" alt="like" width="24" height="24">
+                            </th:block>
+                            <th:block th:unless="${isLikedByMe}">
+                                <img id="likeImg" th:src="@{/images/empty.png}" alt="like" width="24" height="24">
+                            </th:block>
                         </button>
                         (<span id="likeCount" th:text="${community.likeCount != null ? community.likeCount : 0}">0</span>)
                     </td>

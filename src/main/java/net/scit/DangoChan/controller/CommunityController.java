@@ -124,7 +124,7 @@ public class CommunityController {
 	 * */
 	@GetMapping("/communityDetail")
 	public String communityDetail(
-			// authentication principal
+			@AuthenticationPrincipal LoginUserDetails loginUser,
 			@RequestParam(name="searchItem", defaultValue = "communityTitle") String searchItem,
 			@RequestParam(name="searchWord", defaultValue = "") String searchWord,
 			@RequestParam(name="boardId") Integer boardId,
@@ -133,12 +133,12 @@ public class CommunityController {
 		CommunityDTO communityDTO = communityService.selectOne(boardId);
 		communityService.incrementViews(boardId);
 		
-//		boolean isLikedByMe = communityService.selectMyLike(boardID, userId);
-				
+		Boolean isLikedByMe = boardLikesService.isLiked(boardId, loginUser.getUserId());
+		
 		model.addAttribute("community", communityDTO);
 		model.addAttribute("searchItem", searchItem);
 		model.addAttribute("searchWord", searchWord);
-//		model.addAttribute("isLikedByMe", isLikedByMe);
+		model.addAttribute("isLikedByMe", isLikedByMe);
 		
 		return "community/communityDetail";	
 		
