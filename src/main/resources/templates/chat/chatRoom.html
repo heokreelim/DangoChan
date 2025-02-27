@@ -5,23 +5,21 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" th:href="@{/css/chatRoom.css}"/>
 </head>
-<!-- 서버에서 roomId와 로그인한 유저의 닉네임을 data 속성에 저장 -->
-<body th:attr="data-roomid=${roomId}, data-userid=${#authentication.principal.userName}">
+<body th:attr="data-roomid=${roomId}, data-userid=${#authentication.name}">
 <div class="container">
     <!-- 중앙 채팅 영역 -->
     <div class="chat-area">
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input">
-            <!-- 파일 첨부: 파일 선택 시 onchange="sendFile()" 호출 -->
             <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()"/>
             <input type="text" id="chatInput" placeholder="메시지 입력"/>
             <button onclick="sendMessage()">전송</button>
+            <button id="emojiToggle">😊</button>
         </div>
     </div>
     <!-- 우측 사용자 목록 영역 -->
     <div class="user-list">
         <div class="user-list-header">
-            <!-- 사용자 목록 제목과, 오른쪽에 현재 인원 수를 보여주는 span 추가 -->
             <h3>현재 사용자 <span id="userCount">(0명)</span></h3>
         </div>
         <div class="user-list-content" id="userList"></div>
@@ -30,7 +28,39 @@
         </div>
     </div>
 </div>
-<!-- SockJS와 STOMP 라이브러리를 로컬에서 불러오기 (Thymeleaf 사용) -->
+
+<!-- 이모지 선택 모달 -->
+<div id="emojiModal" class="modal">
+    <div class="modal-content">
+        <span id="closeEmojiModal" class="close">&times;</span>
+        <div id="emojiPanel" class="emoji-panel">
+            <!-- 여러 이모지 추가 (예시) -->
+            <span onclick="addEmoji('😀')">😀</span>
+            <span onclick="addEmoji('😂')">😂</span>
+            <span onclick="addEmoji('😅')">😅</span>
+            <span onclick="addEmoji('😊')">😊</span>
+            <span onclick="addEmoji('😍')">😍</span>
+            <span onclick="addEmoji('😎')">😎</span>
+            <span onclick="addEmoji('😉')">😉</span>
+            <span onclick="addEmoji('😢')">😢</span>
+            <span onclick="addEmoji('😭')">😭</span>
+            <span onclick="addEmoji('😡')">😡</span>
+            <span onclick="addEmoji('👍')">👍</span>
+            <span onclick="addEmoji('👎')">👎</span>
+            <span onclick="addEmoji('👏')">👏</span>
+            <span onclick="addEmoji('🙌')">🙌</span>
+            <span onclick="addEmoji('🤔')">🤔</span>
+            <span onclick="addEmoji('🤗')">🤗</span>
+            <span onclick="addEmoji('🤩')">🤩</span>
+            <span onclick="addEmoji('🥳')">🥳</span>
+            <span onclick="addEmoji('😴')">😴</span>
+            <span onclick="addEmoji('🤤')">🤤</span>
+            <!-- 원하는 만큼 추가 -->
+        </div>
+    </div>
+</div>
+
+<!-- SockJS와 STOMP 라이브러리 (Thymeleaf 사용) -->
 <script th:src="@{/js/lib/sockjs.min.js}"></script>
 <script th:src="@{/js/lib/stomp.min.js}"></script>
 <!-- 외부 JS 파일 -->

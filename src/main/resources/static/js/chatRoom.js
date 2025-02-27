@@ -1,4 +1,3 @@
-// DOMContentLoaded 이벤트: body의 data 속성에서 roomId와 userId를 읽어옵니다.
 document.addEventListener('DOMContentLoaded', () => {
     let roomId = document.body.dataset.roomid;
     let userId = document.body.dataset.userid;
@@ -10,18 +9,34 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("userId is not defined in data-userid attribute");
         return;
     }
-    window.chatRoomId = roomId;  // 전역 변수에 저장
-    // 로그인한 사용자의 닉네임을 sessionId로 사용합니다.
-    window.sessionId = userId;
+    window.chatRoomId = roomId;
+    window.sessionId = userId;  // 로그인한 사용자의 닉네임을 사용
     console.log("DOMContentLoaded -> connect(), roomId = " + roomId + ", sessionId = " + userId);
     connect();
 
-    // 채팅 입력창에 Enter 키 이벤트 추가 (Enter 키로 메시지 전송)
+    // Enter 키 이벤트: 채팅 입력창에서 Enter 누르면 메시지 전송
     const chatInput = document.getElementById('chatInput');
     chatInput.addEventListener('keydown', function(event) {
         if (event.key === "Enter" || event.keyCode === 13) {
             event.preventDefault();
             sendMessage();
+        }
+    });
+
+    // 이모지 토글 버튼: 모달창 열기/닫기
+    const emojiToggle = document.getElementById('emojiToggle');
+    const emojiModal = document.getElementById('emojiModal');
+    const closeEmojiModal = document.getElementById('closeEmojiModal');
+    emojiToggle.addEventListener('click', function() {
+        emojiModal.style.display = "block";
+    });
+    closeEmojiModal.addEventListener('click', function() {
+        emojiModal.style.display = "none";
+    });
+    // 모달창 외부 클릭 시 닫기
+    window.addEventListener('click', function(event) {
+        if (event.target == emojiModal) {
+            emojiModal.style.display = "none";
         }
     });
 });
@@ -37,7 +52,6 @@ function connect() {
 
 function onConnected(frame) {
     console.log("Connected: " + frame);
-    // 구독: 채팅방의 메시지를 받기 위해 구독합니다.
     stompClient.subscribe('/sub/chat/room/' + window.chatRoomId, (msg) => {
         onMessageReceived(JSON.parse(msg.body));
     });
@@ -66,7 +80,6 @@ function updateUserList() {
         .then(data => {
             const room = data.find(r => r.roomId === window.chatRoomId);
             if (room) {
-                // 사용자 목록 업데이트
                 const userListElem = document.getElementById('userList');
                 userListElem.innerHTML = '';
                 (room.userSet || []).forEach(user => {
@@ -74,7 +87,6 @@ function updateUserList() {
                     div.textContent = user;
                     userListElem.appendChild(div);
                 });
-                // 현재 사용자 수를 업데이트합니다.
                 const userCountElem = document.getElementById('userCount');
                 userCountElem.textContent = "(" + (room.userSet ? room.userSet.length : 0) + "명)";
             }
@@ -101,7 +113,6 @@ function sendMessage() {
 }
 
 function onMessageReceived(chatMessage) {
-    // SYSTEM 메시지 처리: 시스템 메시지는 중앙에 표시하고 사용자 목록 업데이트
     if (chatMessage.type === "SYSTEM") {
         displaySystemMessage(chatMessage.message);
         updateUserList();
@@ -115,13 +126,19 @@ function onMessageReceived(chatMessage) {
         div.className = 'message other-message';
     }
     if (chatMessage.type === "FILE") {
-        div.innerHTML = `<b>${chatMessage.sender}:</b>
-            <a href="${chatMessage.message}" target="_blank">${chatMessage.fileName}</a>`;
+        let lowerName = chatMessage.fileName.toLowerCase();
+        if (lowerName.endsWith(".png") || lowerName.endsWith(".jpg") ||
+            lowerName.endsWith(".jpeg") || lowerName.endsWith(".gif")) {
+            div.innerHTML = `<b>${chatMessage.sender}:</b><br><img src="${chatMessage.message}" alt="${chatMessage.fileName}" style="max-width:200px; max-height:200px;">`;
+        } else {
+            div.innerHTML = `<b>${chatMessage.sender}:</b> <a href="${chatMessage.message}" target="_blank">${chatMessage.fileName}</a>`;
+        }
     } else {
         div.innerHTML = `<b>${chatMessage.sender}:</b> ${chatMessage.message}`;
     }
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    const chatMessagesElem = document.getElementById('chatMessages');
+    chatMessagesElem.appendChild(div);
+    chatMessagesElem.scrollTop = chatMessagesElem.scrollHeight;
 }
 
 function displaySystemMessage(message) {
@@ -178,4 +195,11 @@ function sendFile() {
             fileInput.value = '';
         })
         .catch(err => console.error(err));
+}
+
+function addEmoji(emoji) {
+    const chatInput = document.getElementById('chatInput');
+    chatInput.value += emoji;
+    // 모달창 닫기 후 포커스 유지
+    document.getElementById('emojiModal').style.display = "none";
 }
