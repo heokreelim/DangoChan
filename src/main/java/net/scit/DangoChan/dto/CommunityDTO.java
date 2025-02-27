@@ -25,6 +25,7 @@ public class CommunityDTO {
 	// 여전히 DTO에서는 Long 타입의 userId를 사용하되, Entity의 UserEntity에서 추출
 	private Long userId;
 	private String title;
+	private String userName;
 	private Integer wordCount;
 	private Integer views;
 	private String boardContent;
@@ -50,6 +51,7 @@ public class CommunityDTO {
 				.boardId(communityEntity.getBoardId())
 				// UserEntity 객체에서 userId 추출
 				.userId(communityEntity.getUser().getUserId())
+				.userName(communityEntity.getUser().getUserName())
 				.title(communityEntity.getTitle())
 				.wordCount(communityEntity.getWordCount())
 				.views(communityEntity.getViews())

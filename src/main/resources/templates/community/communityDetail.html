@@ -10,7 +10,7 @@
         <!--fontawesome 아이콘 가져오기-->
         <script src="https://kit.fontawesome.com/def97ee41b.js" crossorigin="anonymous"></script>
         <!-- 우리 디자인 -->
-        <link rel="stylesheet" href="../../static/css/detail.css" th:href="@{/css/detail.css}">
+        <link rel="stylesheet" href="../../static/css/communityDetail.css" th:href="@{/css/communityDetail.css}">
         <style>
             .deleteFile {
                 cursor: pointer;
@@ -44,7 +44,7 @@
             <tr>
                 <th>작성자</th>
                     <td>
-                    <!-- <span th:text="${community.boardWriter}"></span> -->
+                    <span th:text="${community.userName}"></span>
                     </td>
             </tr>
             <tr>
@@ -93,11 +93,6 @@
                         <!-- </th:block> -->
                         <!-- 목록 버튼 -->                    
                         <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록</a>&nbsp;
-                    </th>
-                </tr>
-                <tr>
-                    <!-- 좋아요 버튼 -->
-                    <td colspan="2" style="text-align: center;">
                         <button id="likeButton" class="btn btn-outline-primary" data-board-id="[[${community.boardId}]]" data-login-id="[[${#authentication.name}]]">
                             <!-- 좋아요 상태에 따라 empty.png 또는 filled.png 등으로 변경할 수 있습니다 -->
                             <th:block th:if="${isLikedByMe}">
@@ -108,6 +103,12 @@
                             </th:block>
                         </button>
                         (<span id="likeCount" th:text="${community.likeCount != null ? community.likeCount : 0}">0</span>)
+                    </th>
+                </tr>
+                <tr>
+                    <!-- 좋아요 버튼 -->
+                    <td colspan="2" style="text-align: center;">
+                        
                     </td>
                 </tr>
                              
