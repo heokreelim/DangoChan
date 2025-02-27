@@ -47,7 +47,7 @@ $(document).ready(function () {
     function fetchNewFlashcard(deckId) {
         return $.ajax({
             url: "/flashcard/json", // 🔥 랜덤 단어 API 호출
-            type: "GET",
+            method: "GET",
             data: { deckId: deckId },
             dataType: "json"
         });
@@ -66,6 +66,7 @@ $(document).ready(function () {
         setTimeout(() => {
             $("#wordText").text(data.kanji);
             $("#wordFurigana").text(data.furigana);
+            $(".ruby").html(data.formattedRuby);
             $("#pos").text(data.pos);
             $("#meaning").text(data.meaning);
             $("#example_jp").text(data.exampleJp);
@@ -80,7 +81,7 @@ $(document).ready(function () {
 
         $.ajax({
             url: "/flashcard/updateStudyLevel", // 🔥 서버 API 호출
-            type: "POST",
+            method: "POST",
             data: { cardId: cardId, studyLevel: studyLevel },
             success: function (response) {
                 console.log("✅ study_level 업데이트 성공:", response);
@@ -122,6 +123,32 @@ $(document).ready(function () {
                 console.error("❌ 단어 로드 실패:", error);
             });
     });
+
+    // ✅ goHome()을 전역 함수로 선언
+    window.goHome = function () {
+        let studyTime = $("#mainTimer").text(); // 타이머에서 시간 가져오기 (MM:SS 형식)
+
+        // "00:05" → 5초로 변환
+        let timeParts = studyTime.split(":");
+        let totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+
+        let deckId = 1; // 실제 deckId로 변경 필요
+
+        console.log("📌 서버로 보낼 데이터:", { deckId, studyTime: totalSeconds });
+
+        $.ajax({
+            url: "/flashcard/saveStudyTime",
+            method: "POST",
+            data: { deckId: deckId, studyTime: totalSeconds },
+            success: function (response) {
+                console.log("✅ study_time 저장 완료:", response);
+                window.location.href = "/home"; // 저장 후 홈으로 이동
+            },
+            error: function (error) {
+                console.error("❌ study_time 저장 실패:", error);
+            }
+        });
+    };
 
 
     // 타이머 실행

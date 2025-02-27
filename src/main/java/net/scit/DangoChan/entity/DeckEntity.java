@@ -46,7 +46,10 @@ public class DeckEntity {
     @OneToMany(mappedBy = "deckEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude	// DeckEntity와 CardEntity의 toString() 무한 호출문제 해결
     private List<CardEntity> cardEntityList;  // deckEntity(1) -> cardEntityList(N)
-    
+
+    @OneToMany(mappedBy = "deckEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<DeckStudyTimeEntity> studyTimeList;  // deckEntity(1) -> studyTimeList(N)
     
  // DTO --> Entity
     public static DeckEntity toEntity(DeckDTO deckDTO, CategoryEntity entity) {
