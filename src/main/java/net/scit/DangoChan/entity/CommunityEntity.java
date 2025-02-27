@@ -10,9 +10,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,9 +44,9 @@ public class CommunityEntity {
 	@Column(name="board_id")
 	private Integer boardId;
 	
-	
-	@Column(name="user_id", nullable = false)
-	private Long userId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", nullable = false)
+	private UserEntity user;
 	
 	@Column(name="title", nullable = false)
 	private String title;
@@ -75,10 +78,10 @@ public class CommunityEntity {
 	private int replyCount;
 
 	//DTO -> entity
-	public static CommunityEntity toEntity(CommunityDTO communityDTO) {
+	public static CommunityEntity toEntity(CommunityDTO communityDTO, UserEntity userEntity) {
 		return CommunityEntity.builder()
 				.boardId(communityDTO.getBoardId())
-				.userId(communityDTO.getUserId())
+				.user(userEntity)
 				.title(communityDTO.getTitle())
 				.wordCount(communityDTO.getWordCount())
 				.views(communityDTO.getViews())

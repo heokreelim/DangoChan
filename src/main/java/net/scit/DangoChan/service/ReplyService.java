@@ -31,6 +31,18 @@ public class ReplyService {
 		// 2) 부모글이 있다면 부모글 꺼내오기
 		CommunityEntity communityEntity = temp.get();
 		
+		//단, parent_reply_id가 0 또는 null이면 최상위 댓글, 그렇지 않으면 대댓글.
+		if (replyDTO.getParentReplyId() != null && replyDTO.getParentReplyId() != 0) {
+			
+			// 부모 댓글 존재 여부 확인 추가 (Optional)
+			Optional<ReplyEntity> parent = replyRepository.findById(replyDTO.getParentReplyId());
+			
+			if (!parent.isPresent()) {
+				// 부모 댓글이 없으면 예외 처리
+				return;
+			}
+		}
+		
 		// 3) 두 개를 전달받아 entity 변환
 		ReplyEntity replyEntity = ReplyEntity.toEntity(replyDTO, communityEntity);
 		
@@ -46,10 +58,15 @@ public class ReplyService {
 		// 1) 부모 글이 있는지 조회하기
 		Optional<CommunityEntity> temp = communityRepository.findById(boardId);
 		
+		if (!temp.isPresent()) {
+		    return new ArrayList<>();
+		}
+		CommunityEntity communityEntity = temp.get();
+		
 		// 2) 댓글 조회하기 위한 Query Method
 		List<ReplyEntity> entityList = 
 				// 저장은 댓글에, 조회는 보드 기준
-				replyRepository.findByCommunityEntity(temp, Sort.by(Sort.Direction.DESC, "replyId"));
+				replyRepository.findByCommunityEntity(communityEntity, Sort.by(Sort.Direction.DESC, "replyId"));
 		
 		// 3) List<ReplyDTO>를 선언
 		List<ReplyDTO> list = new ArrayList<>();
@@ -59,6 +76,17 @@ public class ReplyService {
 		log.info("댓글 개수: {}", entityList.size());
 		
 		return list;
+	}
+	/**
+	 * 댓글 삭제처리
+	 * @param replyId
+	 * */
+	public void replyDelete(Integer replyId) {
+		Optional<ReplyEntity> temp = replyRepository.findById(replyId);
+		
+		if(!temp.isPresent()) return;
+		
+		replyRepository.deleteById(replyId);
 	}
 	
 	/**
@@ -96,5 +124,7 @@ public class ReplyService {
 		replyRepository.save(entity);
 		
 	}
+
+
 	
 }

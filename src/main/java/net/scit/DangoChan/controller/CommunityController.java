@@ -202,7 +202,7 @@ public class CommunityController {
 		reat.addAttribute("searchItem", searchItem);
 		reat.addAttribute("searchWord", searchWord);
 		
-		return "redirect:/community/communityBoardlist";
+		return "redirect:/community/communityBoardList";
 		
 	}
 	
