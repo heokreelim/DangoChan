@@ -38,9 +38,4 @@ public class BoardLikesService {
 		
 		
 	}
-	
-	// 좋아요 등록
-
-
-
 }

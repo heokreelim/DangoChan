@@ -8,12 +8,12 @@ $(document).ready(function() {
     let likeVal = parseInt($("#likeCount").text()); // 좋아요 개수를 표시하는 span 요소
     const likeImg = document.getElementById("likeImg");
 
-    // 초기 상태에 따라 이미지 설정
-    if (likeVal > 0) {
-        likeImg.src = "/images/heart.png";
-    } else {
-        likeImg.src = "/images/empty.png";
-    }
+    // 내가 눌렀으면 하트 표시 / 아니면 빈 거
+    // if (likeVal > 0) {
+    //     likeImg.src = "/images/heart.png";
+    // } else {
+    //     likeImg.src = "/images/empty.png";
+    // }
 
     // 좋아요 버튼 클릭 시 처리 (버튼에 이벤트를 걸어줍니다)
     $("#likeButton").on("click", function() {

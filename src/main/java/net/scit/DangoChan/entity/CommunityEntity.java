@@ -1,6 +1,7 @@
 package net.scit.DangoChan.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -77,6 +79,15 @@ public class CommunityEntity {
 	@Formula("(SELECT count(1) from reply r where board_id = r.board_id)")
 	private int replyCount;
 
+	@OneToMany(mappedBy="communityEntity")
+	@ToString.Exclude
+	private List<ReplyEntity> replyEntityList;
+
+	@OneToMany(mappedBy="communityEntity")
+	@ToString.Exclude
+	private List<BoardLikesEntity> boardLikesEntityList;
+	
+	
 	//DTO -> entity
 	public static CommunityEntity toEntity(CommunityDTO communityDTO, UserEntity userEntity) {
 		return CommunityEntity.builder()

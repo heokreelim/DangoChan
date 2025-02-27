@@ -1,19 +1,23 @@
 package net.scit.DangoChan.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +31,7 @@ import net.scit.DangoChan.dto.UserDTO;
 @ToString
 @Builder
 @Entity
+@Data
 @Table(name="users")
 public class UserEntity {
 	@Id
@@ -64,6 +69,23 @@ public class UserEntity {
 		if (this.roles == null)
 			this.roles = "ROLE_USER";
 	}
+	
+	@OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude	// UserEntity와 CategoryEntity의 toString() 무한 호출문제 해결
+    private List<CategoryEntity> categoryEntityList;  // userEntity(1) -> categoryEntity(N)
+
+	@OneToMany(mappedBy="user")
+	@ToString.Exclude
+	private List<CommunityEntity> communityEntityList;
+
+	@OneToMany(mappedBy="user")
+	@ToString.Exclude
+	private List<ReplyEntity> replyEntityList;
+
+	@OneToMany(mappedBy="userEntity")
+	@ToString.Exclude
+	private List<BoardLikesEntity> boardLikesEntityList;
+
 	
 	public static UserEntity toEntity(UserDTO dto)
 	{

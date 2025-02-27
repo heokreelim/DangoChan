@@ -38,11 +38,11 @@ DROP TABLE IF EXISTS `deck`;
 CREATE TABLE `deck` (
     `deck_id` BIGINT AUTO_INCREMENT NOT NULL,
     `category_id` BIGINT NOT NULL,
-    `user_id` BIGINT NOT NULL,
+--     `user_id` BIGINT NOT NULL,
     `deck_name` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`deck_id`),
-    FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON delete CASCADE,
-	FOREIGN KEY (`user_id`) REFERENCES `category` (`user_id`) ON delete CASCADE
+    FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON delete CASCADE
+-- 	FOREIGN KEY (`user_id`) REFERENCES `category` (`user_id`) ON delete CASCADE
     );
 
 -- 카드 테이블
@@ -50,8 +50,8 @@ DROP TABLE IF EXISTS `card`;
 CREATE TABLE `card` (
     `card_id` BIGINT AUTO_INCREMENT NOT NULL,
     `deck_id` BIGINT NOT NULL,
-    `category_id` BIGINT NOT NULL,
-    `user_id` BIGINT NOT NULL,
+--     `category_id` BIGINT NOT NULL,
+--     `user_id` BIGINT NOT NULL,
     `word` VARCHAR(100) NOT NULL,
     `pos` VARCHAR(50),
     `meaning` VARCHAR(255),
@@ -59,9 +59,9 @@ CREATE TABLE `card` (
     `example_kr` VARCHAR(500),
     `study_level` INT default 1,
     PRIMARY KEY (`card_id`),
-    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE,
-	FOREIGN KEY (`category_id`) REFERENCES `deck` (`category_id`) ON delete CASCADE,
-    FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`) ON delete CASCADE
+    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE
+-- 	FOREIGN KEY (`category_id`) REFERENCES `deck` (`category_id`) ON delete CASCADE,
+--     FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`) ON delete CASCADE
     );
 
 
@@ -70,12 +70,12 @@ DROP TABLE IF EXISTS `deck_study_time`;
 CREATE TABLE `deck_study_time` (
     `study_time_id` BIGINT AUTO_INCREMENT NOT NULL,
     `deck_id` BIGINT NOT NULL,
-    `user_id` BIGINT NOT NULL,
+--     `user_id` BIGINT NOT NULL,
     `study_time` TIME default '00:00:00',
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`study_time_id`),
-    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE,
-    FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`) ON delete CASCADE
+    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE
+--     FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`) ON delete CASCADE
 );
 
 
@@ -107,8 +107,8 @@ CREATE TABLE `board_likes` (
     `board_id` INT NOT NULL,
     `user_id` BIGINT NOT NULL,
     PRIMARY KEY (`board_like_id`),
-    FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`) ON delete CASCADE,
-    FOREIGN KEY (`user_id`) REFERENCES `board` (`user_id`) ON delete CASCADE
+    FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`) ON delete cascade,
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
     );
 
 -- 댓글 테이블
@@ -122,7 +122,7 @@ CREATE TABLE `reply` (
     `parent_reply_id` INT,
     PRIMARY KEY (`reply_id`),
     FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`) ON delete CASCADE,
-    FOREIGN KEY (`user_id`) REFERENCES `board` (`user_id`) ON delete CASCADE
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
     );
 
    
@@ -143,20 +143,21 @@ INSERT INTO `category` (`category_id`, `user_id`, `category_name`) VALUES
 (1, 1, 'JLPT N1'),
 (2, 2, 'Business Japanese');
 
--- deck 테이블 데이터 삽입
-INSERT INTO `deck` (`deck_id`, `category_id`, `user_id`, `deck_name`) VALUES
-(1, 1, 1, 'N1 Vocabulary'),
-(2, 2, 2, 'Business Expressions');
+-- deck 테이블 데이터 삽입 , `user_id`
+INSERT INTO `deck` (`deck_id`, `category_id`, `deck_name`) VALUES
+(1, 1, 'N1 Vocabulary'),
+(2, 2, 'Business Expressions');
 
 -- card 테이블 데이터 삽입
-INSERT INTO `card` (`card_id`, `deck_id`, `category_id`, `user_id`, `word`, `pos`, `meaning`, `example_jp`, `example_kr`, `study_level`) VALUES
-(1, 1, 1, 1, '挑戦', '名詞', '도전', '新しい仕事に挑戦する。', '마ㅏ', 3),
-(2, 2, 2, 2, '契約', '名詞', '계약', '新しい契約を締結する。', '아아', 2);
+INSERT INTO `card` (`card_id`, `deck_id`, `word`, `pos`, `meaning`, `example_jp`, `example_kr`, `study_level`) VALUES
+(1, 1, '挑戦', '名詞', '도전', '新しい仕事に挑戦する。', '마ㅏ', 3),
+(2, 2, '契約', '名詞', '계약', '新しい契約を締結する。', '아아', 2);
+
 
 -- deckStudyTime 테이블 데이터 삽입
-INSERT INTO `deck_study_time` (`study_time_id`, `deck_id`, `user_id`, `study_time`, `date`) VALUES
-(1, 1, 1, NOW(), CURDATE()),
-(2, 2, 2, NOW(), CURDATE());
+INSERT INTO `deck_study_time` (`study_time_id`, `deck_id`, `study_time`, `date`) VALUES
+(1, 1, NOW(), CURDATE()),
+(2, 2, NOW(), CURDATE());
 
 -- board 테이블 데이터 삽입
 INSERT INTO `board` (`board_id`, `user_id`, `title`, `word_count`, `views`, `original_file_name`, `create_date`, `modify_date`) VALUES
@@ -174,7 +175,7 @@ INSERT INTO `reply` (`reply_id`, `board_id`, `user_id`, `content`, `created_at`,
 (2, 2, 1, '도움이 되었다니 다행입니다!', NOW(), 1);
 
 
-
+use dangochan;
 -- 샘플 데이터 조회
 -- users 테이블 데이터 조회
 SELECT * FROM `users`;
@@ -184,6 +185,7 @@ SELECT * FROM `category`;
 
 -- deck 테이블 데이터 조회
 SELECT * FROM `deck`;
+commit;
 
 -- card 테이블 데이터 조회
 SELECT * FROM `card`;
