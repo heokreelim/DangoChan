@@ -23,7 +23,7 @@
                     <th>작성자</th>
                     <td>
                         <!-- 작성자의 이름은 로그인 되면 수정되어야 함~ -->
-                    	<input type="text" name="boardWriter" th:value="${#authentication.name}" id="boardWriter" readonly>
+                    	<input type="text" name="boardWriter" th:value="${#authentication.principal.userName}" id="boardWriter" readonly>
                     </td>
                 </tr>
                 <tr>
