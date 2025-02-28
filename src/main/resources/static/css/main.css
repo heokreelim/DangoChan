@@ -82,6 +82,7 @@ body {
 /* 기본 레이아웃 */
 .page-wrap {
     width: 100%;
+    height: 100vh;
     display: flex;
 }
 /* fragment */
@@ -126,21 +127,24 @@ body {
     width: 100%;
     display: block;
 }
-.nav .profile-wrap>.profile-picture>a::after{
-    content: "";
-    display: none;
-    width: 175px;
-    height: 175px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 0;
-    left: 0;
-    text-align: center;
-    filter: blur(3px);
-}
-.nav .profile-wrap>.profile-picture>a:hover::after {
-    display: block;
+
+.nav .profile-wrap>.profile-picture a::after {
+        content: "";
+        display: block;
+        width: 175px;
+        height: 175px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-align: center;
+        filter: blur(3px);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+.nav .profile-wrap > .profile-picture a:hover::after {
+    opacity: 1;
 }
 .nav .profile-wrap>.profile-picture>a img {
     width: 175px;
@@ -163,6 +167,8 @@ body {
 /* nav 가 있는 페이지에 header 는 .right-wrap   */
 .right-wrap {
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .right-wrap .logo {
@@ -239,7 +245,7 @@ body {
 }
 .header-bg{
     width: 100%;
-    background-color: #FFF;
+    background-color: #FCFCFC;
     border-bottom: 1px solid #E0E0E0;
     display: flex;
     justify-content: space-between;
@@ -268,10 +274,229 @@ body {
 }
 
 /* container 영역 */
-  .container {
-      flex-grow: 1;
-    /* 콘텐츠 영역 내에서만 스크롤 */
-      overflow-y: auto;
-      padding: 20px;
-      background-color: #FAFAFA;
-  }
+.container {
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding: 12px;
+    background-color: #F3F3F3;
+}
+.service-wrap {
+    background-color: #FCFCFC;
+    margin: 0 auto;
+    border-radius: 33px;
+    box-shadow: 0 0 5px #121511;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* category 영역 */
+/* no-category */
+.categoryEmpty {
+    padding-top: 50px;
+    font-size: 2.57em;
+    font-weight: bold;
+    text-align: center;
+}
+.plusBtn,
+.addCategoryBtn {
+    font-size: 3em;
+    font-weight: 800;
+    line-height: 55px;
+    width: calc(100% * 3 / 5);
+    height: 55px;
+    border-radius: 33px;
+    border: none;
+    box-shadow: 0 0 3px #121511;
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    /* 중앙 정렬을 위한 flex 설정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* 기본 input 스타일 제거 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.plusBtn,
+.addCategoryBtn:hover {
+    font-size: 3.08em;
+    box-shadow: 0 0 8px #121511;
+    transform: translateX(-50%) scale(1.05);
+    cursor: pointer;
+}
+/* category 가 1개 이상 존재할 때*/
+.category {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: lemonchiffon;
+    width: calc(100% );
+    height: 55px;
+    padding: 0 12px;
+}
+
+.category> .category-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+}
+.category>.category-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+}
+
+.category i {
+    font-size: 1.45em;
+}
+.category a>i:hover {
+    transition: 0.5s;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.category i.fa-ellipsis-vertical {
+    padding: 8px;
+}
+
+/* deck */
+
+.deckList>li {
+    display: block;
+    margin: 8px 0;
+    width: calc(100% * 4 / 5);
+}
+.deck-wrap {
+    border: 1px solid #121511;
+    border-radius: 33px;
+    padding: 20px;
+}
+
+.deck-wrap>.deck-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.deck-wrap>.deck-top span b {
+    font-size: 1.38em;
+    font-weight: 700;
+}
+.deck-wrap>.deck-top>a>i {
+    font-size: 1.45em;
+} 
+
+
+.deck-wrap>.deck-top>a>i:hover {
+    transition: 0.5s;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.deck-wrap>.deck-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.deck-wrap>.deck-bottom .icon-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 진행도 원  */
+.percentage-box {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.percentage-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.percentage-box svg {
+    width: 150px;
+    height: 150px;
+    transform: rotate(-90deg);
+}
+
+.progress {
+    fill: none;
+    stroke-width: 10;
+    stroke: #f66;
+    /* 기본값, JS에서 동적으로 변경됨 */
+    stroke-dasharray: 376.8;
+    /* 2πr (r=60) */
+    stroke-dashoffset: 376.8;
+    transition: stroke-dashoffset 0.5s ease, stroke 0.5s ease;
+}
+/* dropdown */
+/* 드롭다운 컨테이너 */
+.dropdown {
+    position: relative;
+    /* 자식의 position:absolute 기준 */
+    display: inline-block;
+}
+
+/* 아이콘 스타일(예시) */
+.menu-icon {
+    cursor: pointer;
+    font-size: 20px;
+    /* 아이콘 배치 등에 따라 margin/padding 조정 가능 */
+}
+
+/* 메뉴 박스 기본 숨김 상태 */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    /* 아이콘 오른쪽 정렬을 원한다면 right:0 */
+    top: 100%;
+    /* 아이콘 바로 아래쪽에 배치 */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 100px;
+    /* 메뉴 폭 조정 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    /* 다른 요소보다 위에 보이도록 */
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f0f0f0;
+}
+
+/* 메뉴가 열릴 때 적용할 클래스 */
+.show {
+    display: block;
+}

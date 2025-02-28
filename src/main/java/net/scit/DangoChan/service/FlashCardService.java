@@ -48,7 +48,7 @@ public class FlashCardService {
 	public void insertCategory(CategoryDTO categoryDTO) {
 		// 1) 수정하려는 카테고리가 있는지 확인
 				Optional<UserEntity> temp = userRepository.findById(1L);
-
+				
 				if (!temp.isPresent()) {
 					return;
 				}
@@ -85,7 +85,48 @@ public void updateCategory(CategoryDTO categoryDTO) {
 		//AYH end
 		
 		//PJB start
-		
+// 카테고리 리스트 생성		
+//public List<CategoryDTO> selectAllCategory(Long userId) {
+//	Optional<CategoryEntity> temp = categoryRepository.findByUserEntity_UserId(userId);
+//	
+//	if(temp.isEmpty()) 
+//		return null;
+//	
+//    List<CategoryDTO> categoryList = temp.stream()
+//            .map(CategoryDTO::toDTO)
+//            .collect(Collectors.toList());
+//    
+//    log.info("=== categoryList=== {}", categoryList);
+//    return categoryList;
+//}
+
+	// userId, categoryId 를 전달하여 특정 카테고리 선택
+//public CategoryDTO selectOneCategory(Long userId, Long categoryId) {
+//	Optional <CategoryEntity> temp = categoryRepository.findByCategoryIdAndUserEntity_UserId(categoryId, userId);
+//	
+//	if (temp.isEmpty()) {
+//		log.info("userId=={}/categoryId==={}",userId, categoryId);
+//		return null;
+//	}
+//	
+//	return CategoryDTO.toDTO(temp.get());
+//}
+ 
+// /**
+//  * 전달받은 categoryId와 userId를 기준으로 덱 목록을 조회하여 DeckDTO 리스트로 반환합니다.
+//  * 
+//  * @param categoryId 조회할 카테고리의 id
+//  * @param userId     사용자 id (카테고리에 연결된 사용자)
+//  * @return 해당 조건에 맞는 DeckDTO 리스트
+//  */
+// public List<DeckDTO> selectDecksByCategoryAndUser(Long categoryId, Long userId) {
+//    List<DeckEntity> deckEntities = deckRepository.findAllByCategoryEntity_CategoryIdAndCategoryEntity_UserEntity_UserId(categoryId, userId);
+//    log.info("조회된 덱 개수: {}", deckEntities.size());
+//    return deckEntities.stream()
+//            .map(DeckDTO::toDTO)
+//            .collect(Collectors.toList());
+//}
+
 		//PJB end
 	
 	//category end
@@ -157,6 +198,20 @@ public void updateDeck(DeckDTO deckDTO) {
 			
 		//PJB start
 			
+// userId 를 전달하여 해당 유저가 소유한 Category 를 리스트로 반환
+public List<CategoryDTO> getCategoryListByUser(Long userId) {
+	List<CategoryEntity> temp = categoryRepository.findAllByUserEntity_UserId(userId);
+	
+	log.info("==========={}",temp.size());
+List<CategoryDTO> categoryList = new ArrayList<>();
+    
+
+    for (CategoryEntity entity : temp) {
+        categoryList.add(CategoryDTO.toDTO(entity));
+    }
+    
+    return categoryList;
+}
 		//PJB end
 	
 	//deck end
@@ -260,6 +315,8 @@ public void updateCards(List<ExportCardDTO> cards) {
 			cardRepository.save(card);
 		});
     }
+
+
     //SYH end
 	
 	//card end

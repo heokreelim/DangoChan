@@ -2,6 +2,7 @@
 <html lang="ko" xmlns:th="http://thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/login_join_tmp.css}">
 <title>Insert title here</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
                     <form th:action="@{/user/joinProc}" method="POST">
                         <label for="userId">ID:</label>
                         <input type="text" name="email" id="userId">
-                        <input type="button" id="idDuplCheckBtn" value="ID중복검사">
+                        <input type="button" class="check-btn" id="idDuplCheckBtn" value="ID중복검사">
                         <br>
                         <label for="password">비밀번호:</label>
                         <input type="password" name="password" id="password">
@@ -28,8 +29,10 @@
                         <input type="text" name="userName" id="userName">
                         <br>
                         <br>
-                        <input type="submit" id="registerBtn" value="회원가입">
-                        <input type="button" id="cancelBtn" value="취소">
+                        <div class="button-group">
+                            <input type="submit" id="registerBtn" value="회원가입">
+                            <input type="button" id="cancelBtn" onclick="location.href='/user/login'" value="취소">
+                        </div>
                     </form>
                 </div>
             </div>
