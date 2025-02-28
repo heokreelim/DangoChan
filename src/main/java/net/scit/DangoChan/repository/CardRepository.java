@@ -1,5 +1,6 @@
 package net.scit.DangoChan.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,10 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import net.scit.DangoChan.entity.CardEntity;
+import net.scit.DangoChan.entity.DeckEntity;
 
 @Repository
 public interface CardRepository extends JpaRepository<CardEntity, Long> {
     // ✅ 덱 ID에 해당하는 카드 중 랜덤으로 하나 가져오기 (Entity를 반환해야 함!)
     @Query("SELECT c FROM CardEntity c WHERE c.deckEntity.deckId = :deckId ORDER BY RAND() LIMIT 1")
     Optional<CardEntity> findCardByDeckId(@Param("deckId") Long deckId);
+
+	List<CardEntity> findAllByDeckEntity(Optional<DeckEntity> temp);
+	
+	
 }
