@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+.page-wrap {
+    display: flex;
+    width: 800px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.left-wrap {
+    width: 50%;
+    padding: 40px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.right-wrap {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* ID 중복 검사 버튼 크기 조정 */
+input.check-btn {
+    width: 30%;
+    padding: 5px;
+    font-size: 0.8em;
+    background-color: #fffacd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right; /* 오른쪽 정렬 */
+}
+
+input.check-btn:hover {
+    background-color: #f0e68c;
+}
+
+/* 회원가입 및 취소 버튼 */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-group input {
+    width: 48%;
+    padding: 10px;
+    font-size: 0.9em;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-group input:hover {
+    background-color: #d6d6d6;
+}
+
+/* 로그인 및 회원가입 버튼 */
+.auth-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.auth-buttons input {
+    width: 48%;
+    padding: 10px;
+    font-size: 0.9em;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.auth-buttons input:hover {
+    background-color: #d6d6d6;
+}
+
+/* 소셜 로그인 */
+.social-login {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    border: none;
+    color: black;
+    cursor: pointer;
+}
+
+.social-login .line { background-color: #06c755; } /* LINE */
+.social-login .google { background-color: #db4437; } /* Google */
