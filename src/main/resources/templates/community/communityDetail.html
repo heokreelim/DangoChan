@@ -38,7 +38,7 @@
     <!-- 게시글 자세히 보기 화면-->
     <div class="content">
         <input type="hidden" th:value="${community.boardId}" id="boardId">
-        <input type="hidden" th:value="${#authentication.name}" id="loginId">
+        <input type="hidden" th:value="${#authentication.principal.userName}" id="loginId">
 
         <table>
             <tr>
@@ -85,12 +85,12 @@
                 <tr>
                     <th colspan="2">
                         <!-- 글을 쓴 주인과 로그인한 사람이 같아야만 수정 삭제 버튼이 보이게~ (나중에 구현) -->
-                        <!-- <th:block th:if="${board.boardWriter == #authentication.name}"> -->
+                        <th:block th:if="${community.userName == #authentication.principal.userName}">
                             <!-- 수정 버튼 -->
                             <a th:href="@{/community/communityUpdate(boardId=${community.boardId}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-warning">수정</a>&nbsp;
                             <!-- 삭제 버튼 -->                    
                             <a th:href="@{/community/communityDelete(boardId=${community.boardId}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-danger">삭제</a>&nbsp;
-                        <!-- </th:block> -->
+                        </th:block>
                         <!-- 목록 버튼 -->                    
                         <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록</a>&nbsp;
                         <button id="likeButton" class="btn btn-outline-primary" data-board-id="[[${community.boardId}]]" data-login-id="[[${#authentication.name}]]">
