@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let roomId = document.body.dataset.roomid;
     let userId = document.body.dataset.userid;
+    let roomType = document.body.dataset.roomtype;
     if (!roomId) {
         console.error("roomId is not defined in data-roomid attribute");
         return;
@@ -10,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
     window.chatRoomId = roomId;
-    window.sessionId = userId;  // 로그인한 사용자의 닉네임을 사용
-    console.log("DOMContentLoaded -> connect(), roomId = " + roomId + ", sessionId = " + userId);
+    window.sessionId = userId;  // 로그인한 사용자의 닉네임 사용
+    window.roomType = roomType;
+    console.log("DOMContentLoaded -> connect(), roomId = " + roomId + ", sessionId = " + userId + ", roomType = " + roomType);
     connect();
 
-    // Enter 키 이벤트: 채팅 입력창에서 Enter 누르면 메시지 전송
     const chatInput = document.getElementById('chatInput');
     chatInput.addEventListener('keydown', function(event) {
         if (event.key === "Enter" || event.keyCode === 13) {
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 이모지 토글 버튼: 모달창 열기/닫기
+    // 이모지 모달 관련 이벤트
     const emojiToggle = document.getElementById('emojiToggle');
     const emojiModal = document.getElementById('emojiModal');
     const closeEmojiModal = document.getElementById('closeEmojiModal');
@@ -33,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     closeEmojiModal.addEventListener('click', function() {
         emojiModal.style.display = "none";
     });
-    // 모달창 외부 클릭 시 닫기
     window.addEventListener('click', function(event) {
         if (event.target == emojiModal) {
             emojiModal.style.display = "none";
@@ -56,6 +56,12 @@ function onConnected(frame) {
         onMessageReceived(JSON.parse(msg.body));
     });
     enterRoom();
+    // 게임 모드 안내 메시지
+    if (window.roomType === "shiritori") {
+        displaySystemMessage("끝말잇기 게임: 이전 단어의 마지막 글자에 맞춰 단어를 입력하세요.");
+    } else if (window.roomType === "quiz") {
+        displaySystemMessage("일본어 퀴즈: 질문에 대한 올바른 답을 입력하세요.");
+    }
 }
 
 function onError(error) {
@@ -200,6 +206,5 @@ function sendFile() {
 function addEmoji(emoji) {
     const chatInput = document.getElementById('chatInput');
     chatInput.value += emoji;
-    // 모달창 닫기 후 포커스 유지
     document.getElementById('emojiModal').style.display = "none";
 }

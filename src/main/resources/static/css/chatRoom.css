@@ -1,34 +1,38 @@
 body {
     margin: 0;
     padding: 0;
-    background: #f0f0ff;
-    font-family: sans-serif;
+    background: #f7f7fc;
+    font-family: 'Arial', sans-serif;
 }
 .container {
     display: flex;
     flex-direction: row;
     height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
 }
-/* 중앙 채팅 영역 */
 .chat-area {
     flex: 1;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #ddd;
+    padding: 15px;
 }
 .chat-messages {
     flex: 1;
-    padding: 10px;
+    padding: 15px;
     overflow-y: auto;
-    background-color: #fafafa;
-    display: flex;
-    flex-direction: column;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
 }
 .message {
-    margin: 5px 0;
-    max-width: 60%;
-    padding: 10px;
-    border-radius: 10px;
+    margin: 8px 0;
+    max-width: 70%;
+    padding: 12px;
+    border-radius: 20px;
+    word-wrap: break-word;
 }
 .my-message {
     align-self: flex-end;
@@ -37,34 +41,52 @@ body {
 .other-message {
     align-self: flex-start;
     background-color: #fff;
+    border: 1px solid #ddd;
 }
 .chat-input {
-    border-top: 1px solid #ccc;
-    padding: 10px;
+    border-top: 1px solid #ddd;
+    padding: 15px;
     background: #fff;
     display: flex;
     align-items: center;
+    border-radius: 20px;
 }
 .chat-input input[type="text"] {
     flex: 1;
-    padding: 10px;
-    margin-right: 5px;
+    padding: 12px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
 }
 .chat-input button {
-    padding: 10px;
+    padding: 12px 20px;
+    border: none;
+    background-color: #2196f3;
+    color: #fff;
+    border-radius: 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-/* 우측 사용자 목록 */
+.chat-input button:hover {
+    background-color: #1976d2;
+}
 .user-list {
-    width: 200px;
+    width: 250px;
     display: flex;
     flex-direction: column;
     background: #fff;
+    padding: 15px;
+    border-radius: 20px;
+    margin-left: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .user-list-header {
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ddd;
     background-color: #ececec;
+    border-radius: 20px 20px 0 0;
+    text-align: center;
+    font-weight: bold;
 }
 .user-list-content {
     flex: 1;
@@ -73,31 +95,30 @@ body {
 }
 .user-list-footer {
     padding: 10px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #ddd;
     text-align: center;
 }
 .leave-button {
-    padding: 8px 12px;
-    background-color: #ff7878;
+    padding: 10px 16px;
+    background-color: #ff5252;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 .leave-button:hover {
-    background-color: #ff5151;
+    background-color: #ff1744;
 }
-/* 시스템 메시지 스타일 */
 .message.system-message {
     text-align: center;
-    color: gray;
+    color: #888;
     font-style: italic;
-    margin: 10px 0;
+    margin: 12px 0;
 }
-
 /* 이모지 모달 스타일 */
 .modal {
-    display: none; /* 기본은 숨김 */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -105,19 +126,17 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검은색 배경 */
+    background-color: rgba(0, 0, 0, 0.5);
 }
-
 .modal-content {
     background-color: #fff;
-    margin: 10% auto;
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 300px;
-    border-radius: 8px;
+    width: 320px;
+    border-radius: 20px;
     text-align: center;
 }
-
 .close {
     color: #aaa;
     float: right;
@@ -125,14 +144,12 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
-
 .close:hover,
 .close:focus {
     color: black;
 }
-
 .emoji-panel span {
-    font-size: 24px;
+    font-size: 28px;
     margin: 5px;
     cursor: pointer;
 }

@@ -14,10 +14,40 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final SimpMessageSendingOperations messagingTemplate;
 
-    // 일반 채팅 메시지 전송
+    // 일반 채팅 메시지 전송 (끝말잇기 모드일 경우 검증 추가)
     public void sendChatMessage(ChatMessage chatMessage) {
         ChatRoom room = chatRoomRepository.findRoomById(chatMessage.getRoomId());
         if (room == null) return;
+
+        // 끝말잇기 모드이면 규칙 검증
+        if ("shiritori".equals(room.getRoomType())) {
+            String newWord = chatMessage.getMessage().trim();
+            if (newWord.isEmpty()) return;
+            if (room.getLastWord() == null || room.getLastWord().isEmpty()) {
+                // 첫 단어이면 그냥 수락
+                room.setLastWord(newWord);
+                chatRoomRepository.updateChatRoom(room);
+            } else {
+                String lastWord = room.getLastWord();
+                String lastChar = lastWord.substring(lastWord.length() - 1);
+                String firstChar = newWord.substring(0, 1);
+                if (!firstChar.equals(lastChar)) {
+                    // 규칙 위반: 시스템 메시지 전송 후 리턴
+                    ChatMessage systemMsg = ChatMessage.builder()
+                            .type(ChatMessage.MessageType.SYSTEM)
+                            .roomId(room.getRoomId())
+                            .sender("system")
+                            .message("끝말잇기 규칙 위반: \"" + newWord + "\"은(는) \"" + lastChar + "\"(으)로 시작해야 합니다.")
+                            .build();
+                    messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), systemMsg);
+                    return;
+                } else {
+                    // 규칙에 맞으면 업데이트
+                    room.setLastWord(newWord);
+                    chatRoomRepository.updateChatRoom(room);
+                }
+            }
+        }
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
@@ -28,18 +58,17 @@ public class ChatService {
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
-    // 사용자가 방에 들어옴
+    // 사용자 입장
     public void enterUser(String sessionId, String roomId) {
         ChatRoom room = chatRoomRepository.findRoomById(roomId);
         if (room != null) {
             room.getUserSet().add(sessionId);
             chatRoomRepository.updateChatRoom(room);
-            // 입장하면 시스템 메시지 전송
             sendSystemMessage(roomId, sessionId + "님이 들어왔습니다.");
         }
     }
 
-    // 사용자가 방을 나감 (방에 아무도 없으면 삭제)
+    // 사용자 퇴장
     public void leaveUser(String sessionId, String roomId) {
         ChatRoom room = chatRoomRepository.findRoomById(roomId);
         if (room != null) {
@@ -49,12 +78,11 @@ public class ChatService {
             } else {
                 chatRoomRepository.updateChatRoom(room);
             }
-            // 퇴장하면 시스템 메시지 전송
             sendSystemMessage(roomId, sessionId + "님이 나갔습니다.");
         }
     }
 
-    // 시스템 메시지를 만들어 전송하는 도우미 메서드
+    // 시스템 메시지 전송
     private void sendSystemMessage(String roomId, String text) {
         ChatMessage systemMessage = ChatMessage.builder()
                 .type(ChatMessage.MessageType.SYSTEM)

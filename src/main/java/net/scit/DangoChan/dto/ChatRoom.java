@@ -13,13 +13,17 @@ import java.util.UUID;
 public class ChatRoom implements Serializable {
     private String roomId;
     private String name;
-    // 현재 방에 들어와 있는 사용자 목록(sessionId 등)
+    private String roomType; // "chat", "shiritori", "quiz" 등
+    private String lastWord; // 끝말잇기 모드일 경우 마지막 단어
     private Set<String> userSet = new HashSet<>();
 
-    public static ChatRoom create(String name) {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.name = name;
-        return chatRoom;
+    // 방 생성 메서드: 끝말잇기 모드이면 lastWord를 초기화
+    public static ChatRoom create(String name, String roomType) {
+        ChatRoom room = new ChatRoom();
+        room.roomId = UUID.randomUUID().toString();
+        room.name = name;
+        room.roomType = roomType;
+        room.lastWord = ""; // 처음엔 빈 문자열
+        return room;
     }
 }
