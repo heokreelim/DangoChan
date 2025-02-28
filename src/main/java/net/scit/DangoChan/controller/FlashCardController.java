@@ -1,25 +1,37 @@
 package net.scit.DangoChan.controller;
 
+import java.io.IOException;
 import java.util.List;
 
-import net.scit.DangoChan.service.DeckStudyTimeService;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CardDTO;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.dto.DeckAndCardsRequest;
 import net.scit.DangoChan.dto.DeckDTO;
+import net.scit.DangoChan.dto.DeckResponseDTO;
+import net.scit.DangoChan.dto.ExportCardDTO;
+import net.scit.DangoChan.service.DeckStudyTimeService;
 import net.scit.DangoChan.service.FlashCardService;
 
 @Controller
@@ -37,7 +49,11 @@ public class FlashCardController {
 	
 	//AYH start
 	
-
+	@GetMapping("/modal")
+	public String modal()
+	{
+		return "modal"; 
+	}
 	/**
 	 *	카테고리 등록 요청
 	 * @param categoryDTO
@@ -100,18 +116,88 @@ public class FlashCardController {
         return "Deck and Cards saved successfully!";
 	}
 	
-	/**
-	 * 덱 수정 요청
-	 * @param deckDTO
-	 * @return
-	 */
-	@GetMapping("/updateDeck")
-	public String updateDeck(@ModelAttribute DeckDTO deckDTO) {
-//		flashCardService.updateDeck(deckDTO);
-		
-		return "redirect:/";
-	}
 	
+	// 덱 내보내기 요청
+	/**
+	 * 덱 내보내기 요청 
+	 * 요청받은 카드 DB를 xlsx파일로 변환하여 저장
+	 * @param deckId
+	 * @param response
+	 * @throws IOException
+	 */
+	@GetMapping("/exportDeck")
+	public void exportDeckToExcel(@RequestParam(name = "deckId") Long deckId, HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=deck_" + deckId + ".xlsx");
+
+        List<ExportCardDTO> cardList = flashCardService.getCardsByDeckId(deckId);
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Flashcards");
+
+        // 헤더 작성
+        Row headerRow = sheet.createRow(0);
+        String[] columns = {"단어", "품사", "뜻", "예문 (일본어)", "예문 (한국어)"};
+
+        for (int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+            CellStyle style = workbook.createCellStyle();
+            Font font = workbook.createFont();
+            font.setBold(true);
+            style.setFont(font);
+            cell.setCellStyle(style);
+        }
+
+        // 데이터 입력
+        int rowNum = 1;
+        for (ExportCardDTO card : cardList) {
+        	System.out.println(card.toString());
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(card.getWord());
+            row.createCell(1).setCellValue(card.getPos());
+            row.createCell(2).setCellValue(card.getMeaning());
+            row.createCell(3).setCellValue(card.getExampleJp());
+            row.createCell(4).setCellValue(card.getExampleKr());
+        }
+
+        // 자동 열 너비 조정
+        for (int i = 0; i < columns.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+	
+	// 덱 편집 요청
+	@ResponseBody
+	@GetMapping("/getDeck")
+    public DeckResponseDTO getDeck(@RequestParam(name="deckId") Long deckId) {
+        DeckDTO deck = flashCardService.getDeckByDeckId(deckId);
+        List<ExportCardDTO> cardList = flashCardService.getCardsByDeckId(deckId);
+        return new DeckResponseDTO(deck, cardList);
+    }
+
+	// 덱 편집 내역 저장
+	@ResponseBody
+	@PutMapping("/updateDeck")
+    public String updateDeck(@RequestBody DeckDTO deckDTO) {
+		System.out.println(deckDTO.toString());
+		flashCardService.updateDeck(deckDTO);
+        return "덱 정보가 성공적으로 수정되었습니다.";
+    }
+
+	// 카드 편집
+	// 덱 편집 안의 단어 수정 내역 저장
+	@ResponseBody
+    @PutMapping("/updateCards")
+    public String updateCards(@RequestBody List<ExportCardDTO> cards) {
+    	for (ExportCardDTO exportCardDTO : cards) {
+			System.out.println(exportCardDTO.toString());
+		}
+        flashCardService.updateCards(cards);
+        return "카드 목록이 성공적으로 수정되었습니다.";
+    }
 	
 	//AYH end
 		

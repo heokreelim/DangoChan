@@ -1,6 +1,8 @@
 package net.scit.DangoChan.service;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CardDTO;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.dto.DeckDTO;
+import net.scit.DangoChan.dto.ExportCardDTO;
 import net.scit.DangoChan.entity.CardEntity;
 import net.scit.DangoChan.entity.CategoryEntity;
 import net.scit.DangoChan.entity.DeckEntity;
@@ -76,6 +79,7 @@ public void updateCategory(CategoryDTO categoryDTO) {
 	// 3) 이름을 변경하여 데이터 베이스에 저장한다
 	CategoryEntity entity = temp.get();
 	entity.setCategoryName(categoryDTO.getCategoryName());
+	categoryRepository.save(entity);
 }
 
 		//AYH end
@@ -117,6 +121,20 @@ public DeckDTO insertDeck(DeckDTO deckDTO) {
 }
 
 
+@Transactional
+public DeckDTO getDeckByDeckId(Long deckId) {
+	// 1) 수정하려는 데이터가 있는지 확인
+	Optional<DeckEntity> temp = deckRepository.findById(deckId);
+
+	if (!temp.isPresent()) {
+		return null;
+	}
+	// 2) 있으면 dto -> entity로 변환
+	// 3) 이름을 변경하여 데이터 베이스에 저장한다
+	DeckEntity entity = temp.get();
+//	entity.setCategoryName(categoryDTO.getCategoryName());
+	return DeckDTO.toDTO(entity);
+}
 
 
 @Transactional
@@ -130,7 +148,8 @@ public void updateDeck(DeckDTO deckDTO) {
 	// 2) 있으면 dto -> entity로 변환
 	// 3) 이름을 변경하여 데이터 베이스에 저장한다
 	DeckEntity entity = temp.get();
-//	entity.setCategoryName(categoryDTO.getCategoryName());
+	entity.setDeckName(deckDTO.getDeckName());
+	deckRepository.save(entity);
 }
 
 
@@ -168,6 +187,49 @@ public void insertCard(CardDTO cardDTO) {
 		cardRepository.save(cardEntity);
 }
 
+public List<ExportCardDTO> getCardsByDeckId(Long deckId) {
+	// 1) 수정하려는 카테고리가 있는지 확인
+				Optional<DeckEntity> temp = deckRepository.findById(deckId);
+			
+				List<CardEntity> cardList = cardRepository.findAllByDeckEntity(temp);
+				
+				log.info("댓글 갯수 : {}", cardList.size());
+				
+				List<ExportCardDTO> cardDTOList = new ArrayList<>();
+				
+				cardList.forEach((entity) -> cardDTOList.add(ExportCardDTO.toDTO(entity)));
+				for (ExportCardDTO exportCardDTO : cardDTOList) {
+					System.out.println(exportCardDTO.toString());
+				}
+
+				// DTO로 변환
+				return cardDTOList;				
+}
+
+/**
+ * 덱 편집시 카드 편집 내용을 저장하는 메서드
+ * @param cards
+ */
+@Transactional
+public void updateCards(List<ExportCardDTO> cards) {
+	for (ExportCardDTO card : cards) {
+        Optional<CardEntity> temp = cardRepository.findById(card.getCardId());
+        
+        if (!temp.isPresent()) {
+			return;
+		}
+		// 2) 있으면 dto -> entity로 변환
+		// 3) 이름을 변경하여 데이터 베이스에 저장한다
+		CardEntity entity = temp.get();
+		entity.setWord(card.getWord());
+		entity.setPos(card.getPos());
+		entity.setMeaning(card.getMeaning());
+		entity.setExampleJp(card.getExampleJp());
+		entity.setExampleKr(card.getExampleKr());
+		System.out.println(entity.toString());
+		cardRepository.save(entity);
+    }
+}
 
 		//AYH end
 		
