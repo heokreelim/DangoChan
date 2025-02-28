@@ -25,7 +25,7 @@ import net.scit.DangoChan.dto.BoardLikesDTO;
 
 @Builder
 @Entity
-@Table(name="boardLikes")
+@Table(name="board_likes")
 public class BoardLikesEntity {
 	
 	@Id

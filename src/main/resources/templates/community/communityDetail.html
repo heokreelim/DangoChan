@@ -10,7 +10,7 @@
         <!--fontawesome 아이콘 가져오기-->
         <script src="https://kit.fontawesome.com/def97ee41b.js" crossorigin="anonymous"></script>
         <!-- 우리 디자인 -->
-        <link rel="stylesheet" href="../../static/css/detail.css" th:href="@{/css/detail.css}">
+        <link rel="stylesheet" href="../../static/css/communityDetail.css" th:href="@{/css/communityDetail.css}">
         <style>
             .deleteFile {
                 cursor: pointer;
@@ -33,21 +33,18 @@
 </head>
 <body>
     <!-- fragment 적용 -->
-    <div class="container" th:replace="fragment/header(title='게시글 상세 보기')"></div>
-    
-    <div class="content">
-        <input type="hidden" th:value="${community.boardId}" id="boardId">
-        
+    <div class="container" th:replace="fragment/header(title='게시글 상세 보기')"></div>        
 
     <!-- 게시글 자세히 보기 화면-->
     <div class="content">
         <input type="hidden" th:value="${community.boardId}" id="boardId">
         <input type="hidden" th:value="${#authentication.name}" id="loginId">
+
         <table>
             <tr>
                 <th>작성자</th>
                     <td>
-                    <!-- <span th:text="${community.boardWriter}"></span> -->
+                    <span th:text="${community.userName}"></span>
                     </td>
             </tr>
             <tr>
@@ -96,12 +93,25 @@
                         <!-- </th:block> -->
                         <!-- 목록 버튼 -->                    
                         <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록</a>&nbsp;
+                        <button id="likeButton" class="btn btn-outline-primary" data-board-id="[[${community.boardId}]]" data-login-id="[[${#authentication.name}]]">
+                            <!-- 좋아요 상태에 따라 empty.png 또는 filled.png 등으로 변경할 수 있습니다 -->
+                            <th:block th:if="${isLikedByMe}">
+                                <img id="likeImg" th:src="@{/images/heart.png}" alt="like" width="24" height="24">
+                            </th:block>
+                            <th:block th:unless="${isLikedByMe}">
+                                <img id="likeImg" th:src="@{/images/empty.png}" alt="like" width="24" height="24">
+                            </th:block>
+                        </button>
+                        (<span id="likeCount" th:text="${community.likeCount != null ? community.likeCount : 0}">0</span>)
                     </th>
                 </tr>
                 <tr>
-                <!-- 좋아요 버튼-->
-                <a th:href="@{/community/like}"><img th:src="@{/images/empty.png}" id="likeImg" alt="like"></a>
-                </tr>                
+                    <!-- 좋아요 버튼 -->
+                    <td colspan="2" style="text-align: center;">
+                        
+                    </td>
+                </tr>
+                             
         </table>
         <!-- 댓글 목록 처리 -->
         <!-- 댓글 입력 -->
@@ -118,10 +128,7 @@
         </div>
     </div>    
 
-
-
-    </div>
-
+</body>
 
 </body>
 </html>

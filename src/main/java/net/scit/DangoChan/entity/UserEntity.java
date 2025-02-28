@@ -74,7 +74,18 @@ public class UserEntity {
     @ToString.Exclude	// UserEntity와 CategoryEntity의 toString() 무한 호출문제 해결
     private List<CategoryEntity> categoryEntityList;  // userEntity(1) -> categoryEntity(N)
 
-	
+	@OneToMany(mappedBy="user")
+	@ToString.Exclude
+	private List<CommunityEntity> communityEntityList;
+
+	@OneToMany(mappedBy="user")
+	@ToString.Exclude
+	private List<ReplyEntity> replyEntityList;
+
+	@OneToMany(mappedBy="userEntity")
+	@ToString.Exclude
+	private List<BoardLikesEntity> boardLikesEntityList;
+
 	
 	public static UserEntity toEntity(UserDTO dto)
 	{

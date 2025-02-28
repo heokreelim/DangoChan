@@ -1,6 +1,7 @@
 package net.scit.DangoChan.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
@@ -10,9 +11,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,9 +46,9 @@ public class CommunityEntity {
 	@Column(name="board_id")
 	private Integer boardId;
 	
-	
-	@Column(name="user_id", nullable = false)
-	private Long userId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", nullable = false)
+	private UserEntity user;
 	
 	@Column(name="title", nullable = false)
 	private String title;
@@ -74,11 +79,23 @@ public class CommunityEntity {
 	@Formula("(SELECT count(1) from reply r where board_id = r.board_id)")
 	private int replyCount;
 
+	@Formula("(SELECT count(1) from board_likes bl where board_id = bl.board_id)")
+	private int likeCount;
+
+	@OneToMany(mappedBy="communityEntity")
+	@ToString.Exclude
+	private List<ReplyEntity> replyEntityList;
+
+	@OneToMany(mappedBy="communityEntity")
+	@ToString.Exclude
+	private List<BoardLikesEntity> boardLikesEntityList;
+	
+	
 	//DTO -> entity
-	public static CommunityEntity toEntity(CommunityDTO communityDTO) {
+	public static CommunityEntity toEntity(CommunityDTO communityDTO, UserEntity userEntity) {
 		return CommunityEntity.builder()
 				.boardId(communityDTO.getBoardId())
-				.userId(1L)	// 02.26 임시 수정
+				.user(userEntity)
 				.title(communityDTO.getTitle())
 				.wordCount(communityDTO.getWordCount())
 				.views(communityDTO.getViews())

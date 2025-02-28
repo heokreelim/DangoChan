@@ -1,25 +1,18 @@
 package net.scit.DangoChan.repository;
 
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import jakarta.transaction.Transactional;
 import net.scit.DangoChan.entity.BoardLikesEntity;
+import net.scit.DangoChan.entity.CommunityEntity;
+import net.scit.DangoChan.entity.UserEntity;
 
 public interface BoardLikesRepository extends JpaRepository<BoardLikesEntity, Long> {
-	
-//	Optional<BoardLikesEntity> findByBoard_BoardIdAndUserId(Integer boardId, Long userId); // 02.26 임시 수정
 
-    @Query("SELECT COUNT(b) FROM BoardLikesEntity b WHERE b.communityEntity.boardId = :boardId")
-    Integer countByBoardId(@Param("boardId") Integer boardId);
+    // 특정 게시글에 대해 특정 사용자가 좋아요를 했는지 확인
+//    Optional<BoardLikesEntity> findByCommunityEntityAndUserEntity(CommunityEntity communityEntity, UserEntity userEntity);
+	boolean existsByCommunityEntityAndUserEntity(CommunityEntity communityEntity, UserEntity userEntity);
 
-//    @Modifying // 02.26 임시 수정
-//    @Transactional
-//    @Query("DELETE FROM BoardLikesEntity b WHERE b.communityEntity.boardId = :boardId AND b.userId = :userId")
-//    void deleteByBoardIdAndUserId(@Param("boardId") Integer boardId, @Param("userId") Long userId);
+    // 게시글의 좋아요 개수를 조회 (카운트 쿼리)
+    Long countByCommunityEntity(CommunityEntity communityEntity);
 
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 덱 공유하기</title>
+    <link rel="stylesheet" th:href="@{/css/communityWrite.css}">
 </head>
 <body>
     <!-- fragment 적용 -->
@@ -11,7 +12,6 @@
     <!-- 게시글 쓰기 화면 -->
     <div class="content">
         <form th:action="@{/community/communityWrite}" method="POST" enctype="multipart/form-data">
-            <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.userId}">
             <table>
                 <tr>
                     <th>덱 제목</th>

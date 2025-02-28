@@ -39,6 +39,16 @@ public class ReplyController {
 		Long loginId = loginUser.getUserId();
 		replyDTO.setUserId(loginId);
 		
+		// 사용자 이름도 저장 (만약 ReplyDTO에 userName이 있을 경우)
+		if(replyDTO.getUserName() == null) {
+			replyDTO.setUserName(loginUser.getUsername());
+		}
+		
+		// parentReplyId가 null인 경우, 최상위 댓글로 간주(예: 0으로 설정)
+		if (replyDTO.getParentReplyId() == null) {
+			replyDTO.setParentReplyId(0);
+		}
+		
 		replyService.replyInsert(replyDTO);
 		
 		return "success";
@@ -64,7 +74,20 @@ public class ReplyController {
 	 * @return
 	 */
 	@GetMapping("/replyDelete")
-	public ReplyDTO replyDelete(
+	public String replyDelete(
+			@RequestParam(name="replyId") Integer replyId
+			) {
+		replyService.replyDelete(replyId);
+		
+		return "success";
+	}
+	
+	/**
+	 * 수정을 위한 조회
+	 * @return
+	 */
+	@GetMapping("/replyUpdate")
+	public ReplyDTO replyUpdate(
 			@RequestParam(name="replyId") Integer replyId
 			) {
 		ReplyDTO replyDTO = replyService.replySelectOne(replyId);
