@@ -71,7 +71,7 @@ CREATE TABLE `deck_study_time` (
     `study_time_id` BIGINT AUTO_INCREMENT NOT NULL,
     `deck_id` BIGINT NOT NULL,
 --     `user_id` BIGINT NOT NULL,
-    `study_time` TIME default '00:00:00',
+    `study_time` INT,
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`study_time_id`),
     FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE

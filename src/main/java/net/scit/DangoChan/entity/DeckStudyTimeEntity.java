@@ -27,7 +27,7 @@ public class DeckStudyTimeEntity {
     private Long studyTimeId;
 
     @Column(name = "study_time")
-    private LocalTime studyTime;  
+    private int studyTime;
 
     @Column(name = "date")
     private LocalDateTime date;
