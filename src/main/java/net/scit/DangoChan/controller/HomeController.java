@@ -48,14 +48,15 @@ public class HomeController {
     	    model.addAttribute("userId", userId);
     	    log.info("categoryList ==={}", categoryList.size());
     	    
-    	    /*
+    	    
     	    for (CategoryDTO categoryDTO : categoryList) {
 				for (DeckEntity deckEntity : categoryDTO.getDeckEntityList()) {
 					log.info("deckEntity  ==={}",deckEntity.toString());
+					log.info("deck size  ==={}",deckEntity.getCardEntityList().size());
 					
 				}
 			}
-			*/
+			
         }
 		
 		

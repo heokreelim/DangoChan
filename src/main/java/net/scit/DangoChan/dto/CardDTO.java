@@ -86,24 +86,6 @@ public class CardDTO {
 	}
 
 	// ✅ <ruby> 태그 자동 생성 메서드 (각 한자에 후리가나 개별 적용)
-//	public static String formatRuby(String word) {
-//		StringBuilder rubyHtml = new StringBuilder("<ruby>");
-//		java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("([^\\[]+)(?:\\[([^\\]]+)\\])?").matcher(word);
-//
-//		while (matcher.find()) {
-//			String kanjiPart = matcher.group(1);    // 한자 부분
-//			String furiganaPart = matcher.group(2); // 후리가나 부분 (있을 경우만)
-//
-//			rubyHtml.append("<rb>").append(kanjiPart).append("</rb>");
-//			if (furiganaPart != null) {
-//				rubyHtml.append("<rt>").append(furiganaPart).append("</rt>");
-//			}
-//		}
-//		rubyHtml.append("</ruby>");
-//		return rubyHtml.toString();
-//	}
-
-	// ✅ <ruby> 태그 자동 생성 메서드 (각 한자에 후리가나 개별 적용)
 	public static String generateRubyTag(String word) {
 		if (word == null || word.trim().isEmpty()) {
 			return "";
