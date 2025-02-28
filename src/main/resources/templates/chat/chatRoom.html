@@ -1,23 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>채팅방</title>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" th:href="@{/css/chatRoom.css}"/>
+    <link rel="stylesheet" th:href="@{/css/chatRoom.css}">
 </head>
-<body th:attr="data-roomid=${roomId}, data-userid=${#authentication.name}">
+<!-- roomId, roomType, 로그인한 사용자의 닉네임을 data 속성에 저장 -->
+<body th:attr="data-roomid=${roomId}, data-roomtype=${roomType}, data-userid=${#authentication.name}">
 <div class="container">
-    <!-- 중앙 채팅 영역 -->
     <div class="chat-area">
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input">
-            <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()"/>
-            <input type="text" id="chatInput" placeholder="메시지 입력"/>
+            <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()">
+            <input type="text" id="chatInput" placeholder="메시지 입력">
             <button onclick="sendMessage()">전송</button>
             <button id="emojiToggle">😊</button>
         </div>
+        <!-- 이모지 선택 모달 -->
+        <div id="emojiModal" class="modal">
+            <div class="modal-content">
+                <span id="closeEmojiModal" class="close">&times;</span>
+                <div id="emojiPanel" class="emoji-panel">
+                    <span onclick="addEmoji('😀')">😀</span>
+                    <span onclick="addEmoji('😂')">😂</span>
+                    <span onclick="addEmoji('😅')">😅</span>
+                    <span onclick="addEmoji('😊')">😊</span>
+                    <span onclick="addEmoji('😍')">😍</span>
+                    <span onclick="addEmoji('😎')">😎</span>
+                    <span onclick="addEmoji('😉')">😉</span>
+                    <span onclick="addEmoji('😢')">😢</span>
+                    <span onclick="addEmoji('😭')">😭</span>
+                    <span onclick="addEmoji('😡')">😡</span>
+                    <span onclick="addEmoji('👍')">👍</span>
+                    <span onclick="addEmoji('👎')">👎</span>
+                    <span onclick="addEmoji('👏')">👏</span>
+                    <span onclick="addEmoji('🙌')">🙌</span>
+                    <span onclick="addEmoji('🤔')">🤔</span>
+                    <span onclick="addEmoji('🤗')">🤗</span>
+                    <span onclick="addEmoji('🤩')">🤩</span>
+                    <span onclick="addEmoji('🥳')">🥳</span>
+                    <span onclick="addEmoji('😴')">😴</span>
+                    <span onclick="addEmoji('🤤')">🤤</span>
+                    <!-- 추가 이모지 원하는 만큼 -->
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- 우측 사용자 목록 영역 -->
     <div class="user-list">
         <div class="user-list-header">
             <h3>현재 사용자 <span id="userCount">(0명)</span></h3>
@@ -28,42 +58,8 @@
         </div>
     </div>
 </div>
-
-<!-- 이모지 선택 모달 -->
-<div id="emojiModal" class="modal">
-    <div class="modal-content">
-        <span id="closeEmojiModal" class="close">&times;</span>
-        <div id="emojiPanel" class="emoji-panel">
-            <!-- 여러 이모지 추가 (예시) -->
-            <span onclick="addEmoji('😀')">😀</span>
-            <span onclick="addEmoji('😂')">😂</span>
-            <span onclick="addEmoji('😅')">😅</span>
-            <span onclick="addEmoji('😊')">😊</span>
-            <span onclick="addEmoji('😍')">😍</span>
-            <span onclick="addEmoji('😎')">😎</span>
-            <span onclick="addEmoji('😉')">😉</span>
-            <span onclick="addEmoji('😢')">😢</span>
-            <span onclick="addEmoji('😭')">😭</span>
-            <span onclick="addEmoji('😡')">😡</span>
-            <span onclick="addEmoji('👍')">👍</span>
-            <span onclick="addEmoji('👎')">👎</span>
-            <span onclick="addEmoji('👏')">👏</span>
-            <span onclick="addEmoji('🙌')">🙌</span>
-            <span onclick="addEmoji('🤔')">🤔</span>
-            <span onclick="addEmoji('🤗')">🤗</span>
-            <span onclick="addEmoji('🤩')">🤩</span>
-            <span onclick="addEmoji('🥳')">🥳</span>
-            <span onclick="addEmoji('😴')">😴</span>
-            <span onclick="addEmoji('🤤')">🤤</span>
-            <!-- 원하는 만큼 추가 -->
-        </div>
-    </div>
-</div>
-
-<!-- SockJS와 STOMP 라이브러리 (Thymeleaf 사용) -->
 <script th:src="@{/js/lib/sockjs.min.js}"></script>
 <script th:src="@{/js/lib/stomp.min.js}"></script>
-<!-- 외부 JS 파일 -->
 <script th:src="@{/js/chatRoom.js}"></script>
 </body>
 </html>
