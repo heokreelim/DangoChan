@@ -22,7 +22,7 @@ public class DeckStudyTimeDTO {
 
     private Long studyTimeId;
     private Long deckId;
-    private LocalTime studyTime; 
+    private int studyTime;
     private LocalDateTime date;
 
     
