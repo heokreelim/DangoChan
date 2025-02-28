@@ -13,9 +13,29 @@
       <div class="right-wrap">
         <div th:replace="fragment/header"></div>
         <div class="container">
-            <div class="category-wrap"></div>
-        </div>
-      </div>
-    </div>
+          <div class="service-wrap">
+            <div class="category-wrap">
+              <input type="hidden" id="userId" th:value="${1}">
+              <!-- 카테고리 없을 경우 -->
+              <th:block th:if="${categoryList == null or categoryList.isEmpty()}">
+                  <p class="categoryEmpty">
+                    하단 플러스(+) 버튼을 클릭하여<br>
+                    카테고리를 추가하고 새로운 덱을 생성하세요.
+                  </p>
+                  <input type="button" id="addCategoryBtn" class="addCategoryBtn" data-userId="" value="&#43;">
+              </th:block>
+              <!-- 카테고리 있을 경우 -->
+              <div th:each="category : ${categoryList}">
+                카테고리명: [[${category.categoryName}]]
+                <div th:each="deck : ${category.deckEntityList}">
+                  덱ID: [[${deck.deckId}]]
+                  덱 이름: [[${deck.deckName}]]
+                </div>
+              </div>
+               <!-- category-wrap end -->
+          </div> <!-- service-wrap end -->
+        </div> <!-- container end -->
+      </div> <!-- right-wrap end -->
+    </div> <!-- page-wrap end -->
 </body>
 </html>

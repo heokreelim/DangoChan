@@ -15,7 +15,7 @@
                     <ul class="gnb-list">
                         <li><a href="#void"><i class="fa-solid fa-pencil"></i></a></li>
                         <li><a th:href="@{/community/communityBoardList}"><i class="fa-solid fa-people-group"></i></a></li>
-                        <li><a th:href="@{/chat/chatRoom}"><i class="fa-regular fa-comments"></i></a></li>
+                        <li><a th:href="@{/chat/chatList}"><i class="fa-regular fa-comments"></i></a></li>
                         <li><a href="#void"><i class="fa-solid fa-puzzle-piece"></i></a></li>
                         <li><a href="#void"><i class="fa-solid fa-bell"></i></a></li>
                     </ul>
@@ -24,7 +24,7 @@
                 <th:block sec:authorize="isAuthenticated()">
                     <li><a href="#void"><i class="fa-solid fa-pencil"></i></a></li>
                     <li><a th:href="@{/community/communityBoardList}"><i class="fa-solid fa-people-group"></i></a></li>
-                    <li><a th:href="@{/chat/chatRoom}"><i class="fa-regular fa-comments"></i></a></li>
+                    <li><a th:href="@{/chat/chatList}"><i class="fa-regular fa-comments"></i></a></li>
                     <li><a href="#void"><i class="fa-solid fa-puzzle-piece"></i></a></li>
                     <li><a href="#void"><i class="fa-solid fa-bell"></i></a></li>
                 </th:block>
