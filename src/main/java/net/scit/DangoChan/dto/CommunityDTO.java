@@ -22,8 +22,10 @@ import net.scit.DangoChan.entity.CommunityEntity;
 public class CommunityDTO {
 	
 	private Integer boardId;
+	// 여전히 DTO에서는 Long 타입의 userId를 사용하되, Entity의 UserEntity에서 추출
 	private Long userId;
 	private String title;
+	private String userName;
 	private Integer wordCount;
 	private Integer views;
 	private String boardContent;
@@ -41,13 +43,15 @@ public class CommunityDTO {
 	private int replyCount;
 	
 	// 좋아요 개수
-	private int likeCount;
+	private int likeCount; 
 	
 	//entity -> DTO
 	public static CommunityDTO toDTO(CommunityEntity communityEntity) {
 		return CommunityDTO.builder()
 				.boardId(communityEntity.getBoardId())
-				.userId(communityEntity.getUserId())
+				// UserEntity 객체에서 userId 추출
+				.userId(communityEntity.getUser().getUserId())
+				.userName(communityEntity.getUser().getUserName())
 				.title(communityEntity.getTitle())
 				.wordCount(communityEntity.getWordCount())
 				.views(communityEntity.getViews())
@@ -57,6 +61,7 @@ public class CommunityDTO {
 				.originalFileName(communityEntity.getOriginalFileName())
 				.savedFileName(communityEntity.getSavedFileName())
 				.replyCount(communityEntity.getReplyCount())
+				.likeCount(communityEntity.getLikeCount())
 				.build();
 	}
 	

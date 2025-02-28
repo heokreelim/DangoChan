@@ -26,6 +26,9 @@ public class ReplyDTO {
 	private LocalDateTime createAt;
 	private Integer parentReplyId;
 	
+	// 추가: 작성자 이름
+	private String userName;
+	
 	// coId의 정체? 엔티티에서 DTO로 변환하면서 가져온 값 
 	public static ReplyDTO toDTO(ReplyEntity entity, Integer boardId) {
 		return ReplyDTO.builder()
@@ -35,6 +38,7 @@ public class ReplyDTO {
 				.content(entity.getContent())
 				.createAt(entity.getCreateAt())
 				.parentReplyId(entity.getParentReplyId())
+				.userName(entity.getUser() != null ? entity.getUser().getUserName() : null)
 				.build();
 	}
 

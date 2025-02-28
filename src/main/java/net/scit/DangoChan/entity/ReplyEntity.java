@@ -2,6 +2,8 @@ package net.scit.DangoChan.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -47,14 +49,20 @@ public class ReplyEntity {
 	@Column(name="user_id")
 	private Long userId;
 	
-	@Column(name="content")
+	@Column(name="content", length = 100)
 	private String content;
 
-	@Column(name="create_at")
+	@Column(name="created_at")
+	@CreationTimestamp
 	private LocalDateTime createAt;
 	
 	@Column(name="parent_reply_id")
 	private Integer parentReplyId;
+	
+	// 추가: 사용자 정보와의 연관 관계
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", insertable = false, updatable = false)
+	private UserEntity user;
 	
 	//엔티티로 값이 두 개가 넘어온다는 것이 포인트.
 	// DTO -> Entity; toEntity();

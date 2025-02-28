@@ -124,6 +124,7 @@ public class CommunityController {
 	 * */
 	@GetMapping("/communityDetail")
 	public String communityDetail(
+			@AuthenticationPrincipal LoginUserDetails loginUser,
 			@RequestParam(name="searchItem", defaultValue = "communityTitle") String searchItem,
 			@RequestParam(name="searchWord", defaultValue = "") String searchWord,
 			@RequestParam(name="boardId") Integer boardId,
@@ -131,10 +132,13 @@ public class CommunityController {
 		//DB에 boardId에 해당하는 하나의 게시글을 조회
 		CommunityDTO communityDTO = communityService.selectOne(boardId);
 		communityService.incrementViews(boardId);
-				
+		
+		Boolean isLikedByMe = boardLikesService.isLiked(boardId, loginUser.getUserId());
+		
 		model.addAttribute("community", communityDTO);
 		model.addAttribute("searchItem", searchItem);
 		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("isLikedByMe", isLikedByMe);
 		
 		return "community/communityDetail";	
 		
@@ -202,7 +206,7 @@ public class CommunityController {
 		reat.addAttribute("searchItem", searchItem);
 		reat.addAttribute("searchWord", searchWord);
 		
-		return "redirect:/community/communityBoardlist";
+		return "redirect:/community/communityBoardList";
 		
 	}
 	

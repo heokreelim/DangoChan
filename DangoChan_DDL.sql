@@ -108,7 +108,7 @@ CREATE TABLE `board_likes` (
     `user_id` BIGINT NOT NULL,
     PRIMARY KEY (`board_like_id`),
     FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`) ON delete cascade,
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON delete CASCADE
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
     );
 
 -- 댓글 테이블
@@ -122,7 +122,7 @@ CREATE TABLE `reply` (
     `parent_reply_id` INT,
     PRIMARY KEY (`reply_id`),
     FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`) ON delete CASCADE,
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON delete CASCADE
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
     );
 
    
