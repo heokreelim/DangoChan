@@ -5,7 +5,8 @@
         .modal_editing_deck,
         .modal_importing_deck,
         .modal_adding_card,
-        .modal_editing_card {
+        .modal_editing_card,
+        .modal_adding_card2 {
             position: absolute;
             display: none;
 
@@ -28,7 +29,8 @@
         .editing_deck,
         .importing_deck,
         .adding_card,
-        .editing_card {
+        .editing_card,
+        .adding_card2 {
             position: absolute;
             /* 모달을 화면가운데 놓기위함. */
             top: 50%;

@@ -49,7 +49,11 @@ public class FlashCardController {
 	
 	//AYH start
 	
-
+	@GetMapping("/modal")
+	public String modal()
+	{
+		return "modal"; 
+	}
 	/**
 	 *	카테고리 등록 요청
 	 * @param categoryDTO
