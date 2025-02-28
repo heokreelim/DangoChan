@@ -49,7 +49,7 @@ function output(resp) {
         // 대댓글이면 들여쓰기를 적용 (부모 댓글이 0이면 최상위 댓글)
         let indentStyle = "";
         if(item['parentReplyId'] && item['parentReplyId'] != 0) {
-            indentStyle = "style='margin-left:30px;'";
+            indentStyle = "style= 'margin-left:30px;'";
         }
             tag += `
                     <tr ${indentStyle}>
@@ -61,7 +61,7 @@ function output(resp) {
                             <!-- 댓글 출력 시 각 댓글 행에 "대댓글" 버튼 추가 -->
                             <input type="button" value="대댓글" class="btn btn-info replyChildBtn" 
                                 data-seq="${item['replyId']}">
-                            <input type="button" value="삭제" class="btn btn-danger deleteBtn"
+                                <input type="button" value="삭제" class="btn btn-danger deleteBtn"
                                 data-seq="${item['replyId']}"
                                 ${item['userName'] == loginName ? '' : 'disabled'}>
                         </td>
@@ -184,32 +184,8 @@ function replyUpdate() {
             $('#replyUpdateProc').css('display', 'inline-block');
             $('#replyCancel').css('display', 'inline-block');
 
-            $("#replyUpdateProc").attr("data-seq", replyId);
         }
     });
 }
 
-/* 댓글 수정 처리 함수 */
-function replyUpdateProc() {
-    let replyId = $(this).attr('data-seq');
-    let updatedReply = $('#replyContent').val();
-
-    $.ajax ({
-        url: '/reply/replyUpdateProc',
-        method: "POST",
-        data: {"replyId": replyId, "updatedReply": updatedReply},
-        success: function() {
-            init();
-            replyCancel();
-        }
-    });
-}
-
-/* 댓글 수정 취소 함수 */
-function replyCancel() {
-    $('#replyBtn').css('display', 'inline-block');
-    $('#replyUpdateProc').css('display', 'none');
-    $('#replyCancel').css('display', 'none');
-    $('#replyContent').val('');
-}
 
