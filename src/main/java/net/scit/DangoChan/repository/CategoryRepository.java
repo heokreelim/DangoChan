@@ -1,13 +1,20 @@
 package net.scit.DangoChan.repository;
 
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import net.scit.DangoChan.entity.CategoryEntity;
 
+@Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
+
 
 	
 	/*
@@ -24,6 +31,18 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
 	 */
 	
 	// 2번 사용 - 예시) 파라미터로 id를 받아 첫번째테이블의 데이터를 조회하는 메서드
-	@EntityGraph(attributePaths = {"userEntity", "deckEntityList"})
+//	@EntityGraph(attributePaths = {"userEntity", "deckEntityList"})
     List<CategoryEntity> findAllByUserEntity_UserId(Long userId);
+
+
+	//PJB start
+		// userId 를 전달하여 해당 유저가 소유한 카테고리를 선택
+	//  Spring Data JPA 네이밍 규칙 활용
+    Optional<CategoryEntity> findByCategoryIdAndUserEntity_UserId(Long categoryId, Long userId);
+    Optional<CategoryEntity> findByUserEntity_UserId(Long userId);
+
+    // @Query("SELECT c FROM CategoryEntity c WHERE c.categoryId = :categoryId AND c.userEntity.userId = :userId")
+    // Optional<CategoryEntity> findByCategoryIdAndUserId(@Param("categoryId") Long categoryId, @Param("userId") Long userId);
+// PJB end
+
 }

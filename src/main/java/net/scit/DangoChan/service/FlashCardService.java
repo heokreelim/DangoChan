@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CardDTO;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.dto.DeckDTO;
+import net.scit.DangoChan.dto.DeckInfoDTO;
 import net.scit.DangoChan.dto.ExportCardDTO;
 import net.scit.DangoChan.entity.CardEntity;
 import net.scit.DangoChan.entity.CategoryEntity;
@@ -47,7 +48,7 @@ public class FlashCardService {
 	@Transactional
 	public void insertCategory(CategoryDTO categoryDTO) {
 		// 1) 수정하려는 카테고리가 있는지 확인
-				Optional<UserEntity> temp = userRepository.findById(1L);
+				Optional<UserEntity> temp = userRepository.findById(categoryDTO.getUserId());
 				
 				if (!temp.isPresent()) {
 					return;
@@ -85,47 +86,65 @@ public void updateCategory(CategoryDTO categoryDTO) {
 		//AYH end
 		
 		//PJB start
-// 카테고리 리스트 생성		
-//public List<CategoryDTO> selectAllCategory(Long userId) {
-//	Optional<CategoryEntity> temp = categoryRepository.findByUserEntity_UserId(userId);
-//	
-//	if(temp.isEmpty()) 
-//		return null;
-//	
-//    List<CategoryDTO> categoryList = temp.stream()
-//            .map(CategoryDTO::toDTO)
-//            .collect(Collectors.toList());
-//    
-//    log.info("=== categoryList=== {}", categoryList);
-//    return categoryList;
-//}
-
-	// userId, categoryId 를 전달하여 특정 카테고리 선택
-//public CategoryDTO selectOneCategory(Long userId, Long categoryId) {
-//	Optional <CategoryEntity> temp = categoryRepository.findByCategoryIdAndUserEntity_UserId(categoryId, userId);
-//	
-//	if (temp.isEmpty()) {
-//		log.info("userId=={}/categoryId==={}",userId, categoryId);
-//		return null;
-//	}
-//	
-//	return CategoryDTO.toDTO(temp.get());
-//}
- 
-// /**
-//  * 전달받은 categoryId와 userId를 기준으로 덱 목록을 조회하여 DeckDTO 리스트로 반환합니다.
-//  * 
-//  * @param categoryId 조회할 카테고리의 id
-//  * @param userId     사용자 id (카테고리에 연결된 사용자)
-//  * @return 해당 조건에 맞는 DeckDTO 리스트
-//  */
-// public List<DeckDTO> selectDecksByCategoryAndUser(Long categoryId, Long userId) {
-//    List<DeckEntity> deckEntities = deckRepository.findAllByCategoryEntity_CategoryIdAndCategoryEntity_UserEntity_UserId(categoryId, userId);
-//    log.info("조회된 덱 개수: {}", deckEntities.size());
-//    return deckEntities.stream()
-//            .map(DeckDTO::toDTO)
-//            .collect(Collectors.toList());
-//}
+//userId 를 전달하여 해당 유저가 소유한 Category 를 리스트로 반환
+public List<CategoryDTO> getCategoryListByUser(Long userId) {
+	List<CategoryEntity> temp = categoryRepository.findAllByUserEntity_UserId(userId);
+	
+	log.info("CategoryEntityList Size ==={}", temp.size());
+    List<CategoryDTO> categoryList = new ArrayList<>();
+    
+    for (CategoryEntity categoryEntity : temp) {
+    	// 1) categoryEntity 안에 있는 deckEntityList를 get
+    			List<DeckEntity> deckEntityList = categoryEntity.getDeckEntityList();
+    			
+    	// 2) List<DeckInfoDTO> deckInfoDTOList 객체를 new로 하나 만들어 지역변수에 할당
+    			List<DeckInfoDTO> deckInfoDTOList = new ArrayList<>();
+    			
+    	// 3) deckEntityList foreach 문 만들기 
+    			for (DeckEntity deckEntity : deckEntityList) {
+    				// 각 deckEntity에서 deckName을 get => DeckInfoDTO의 deckName 값
+    				String deckName = deckEntity.getDeckName();
+    				// deckEntity의 cardEntityList의 size를 get => DeckInfoDTO의 deckCardCount 값
+    				List<CardEntity> cardEntityList = deckEntity.getCardEntityList();
+    				Integer deckCardCount = cardEntityList.size();
+    				
+    				// studiedCardCount 각 값 선언
+    				Integer studiedCardCountOk = 0;
+    				Integer studiedCardCountYet = 0;
+    				Integer studiedCardCountNo = 0;
+    				
+    				// deckEntity의 cardEntityList foreach 문
+    				for (CardEntity cardEntity : cardEntityList) {
+    					// 각 카드의 studyLevel 값에 따라 카운트 증가 (가정: 3 = ○, 2 = △, 1 = ×)
+    					Integer studyLevel = cardEntity.getStudyLevel();
+    					if (studyLevel != null) {
+    						if (studyLevel == 3) {
+    							studiedCardCountOk++;
+    						} else if (studyLevel == 2) {
+    							studiedCardCountYet++;
+    						} else if (studyLevel == 1) {
+    							studiedCardCountNo++;
+    						}
+    					}
+    				} // deckEntity의 cardEntityList foreach 문 끝 ---
+    				
+    				// (studiedCardCountOk, studiedCardCountYet, studiedCardCountNo)의 합을 deckCardCount으로 나눈 값을 구함 => DeckInfoDTO의 cardStudyRate 값
+    				Double cardStudyRate = 0.0;
+    				if (deckCardCount > 0) {
+    					cardStudyRate = (studiedCardCountOk + studiedCardCountYet + studiedCardCountNo) / (double) deckCardCount;
+    				}
+    				
+    				// DeckInfoDTO.toDTO()를 호출하여 DeckInfoDTO 객체 생성 후 deckInfoDTOList에 추가
+    				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, cardStudyRate);
+    				deckInfoDTOList.add(deckInfoDTO);
+    			} // deckEntityList foreach 문 끝 -----
+    			
+    			// CategoryDTO.toDTO()를 호출할 때 deckInfoDTOList를 전달하여 CategoryDTO 객체 생성 후 categoryList에 추가
+    			categoryList.add(CategoryDTO.toDTO(categoryEntity, deckInfoDTOList));
+    		}
+    	    
+    	    return categoryList;
+    	}
 
 		//PJB end
 	
@@ -199,19 +218,65 @@ public void updateDeck(DeckDTO deckDTO) {
 		//PJB start
 			
 // userId 를 전달하여 해당 유저가 소유한 Category 를 리스트로 반환
-public List<CategoryDTO> getCategoryListByUser(Long userId) {
-	List<CategoryEntity> temp = categoryRepository.findAllByUserEntity_UserId(userId);
-	
-	log.info("==========={}",temp.size());
-List<CategoryDTO> categoryList = new ArrayList<>();
-    
-
-    for (CategoryEntity entity : temp) {
-        categoryList.add(CategoryDTO.toDTO(entity));
-    }
-    
-    return categoryList;
-}
+//public List<CategoryDTO> getCategoryListByUser(Long userId) {
+//	List<CategoryEntity> temp = categoryRepository.findAllByUserEntity_UserId(userId);
+//	
+//	log.info("==========={}",temp.size());
+//List<CategoryDTO> categoryList = new ArrayList<>();
+//    
+//
+//for (CategoryEntity categoryEntity : temp) {
+//	// 1) categoryEntity 안에 있는 deckEntityList를 get
+//			List<DeckEntity> deckEntityList = categoryEntity.getDeckEntityList();
+//			
+//	// 2) List<DeckInfoDTO> deckInfoDTOList 객체를 new로 하나 만들어 지역변수에 할당
+//			List<DeckInfoDTO> deckInfoDTOList = new ArrayList<>();
+//			
+//	// 3) deckEntityList foreach 문 만들기 
+//			for (DeckEntity deckEntity : deckEntityList) {
+//				// 각 deckEntity에서 deckName을 get => DeckInfoDTO의 deckName 값
+//				String deckName = deckEntity.getDeckName();
+//				// deckEntity의 cardEntityList의 size를 get => DeckInfoDTO의 deckCardCount 값
+//				List<CardEntity> cardEntityList = deckEntity.getCardEntityList();
+//				Integer deckCardCount = cardEntityList.size();
+//				
+//				// studiedCardCount 각 값 선언
+//				Integer studiedCardCountOk = 0;
+//				Integer studiedCardCountYet = 0;
+//				Integer studiedCardCountNo = 0;
+//				
+//				// deckEntity의 cardEntityList foreach 문
+//				for (CardEntity cardEntity : cardEntityList) {
+//					// 각 카드의 studyLevel 값에 따라 카운트 증가 (가정: 3 = ○, 2 = △, 1 = ×)
+//					Integer studyLevel = cardEntity.getStudyLevel();
+//					if (studyLevel != null) {
+//						if (studyLevel == 3) {
+//							studiedCardCountOk++;
+//						} else if (studyLevel == 2) {
+//							studiedCardCountYet++;
+//						} else if (studyLevel == 1) {
+//							studiedCardCountNo++;
+//						}
+//					}
+//				} // deckEntity의 cardEntityList foreach 문 끝 ---
+//				
+//				// (studiedCardCountOk, studiedCardCountYet, studiedCardCountNo)의 합을 deckCardCount으로 나눈 값을 구함 => DeckInfoDTO의 cardStudyRate 값
+//				Double cardStudyRate = 0.0;
+//				if (deckCardCount > 0) {
+//					cardStudyRate = (studiedCardCountOk + studiedCardCountYet + studiedCardCountNo) / (double) deckCardCount;
+//				}
+//				
+//				// DeckInfoDTO.toDTO()를 호출하여 DeckInfoDTO 객체 생성 후 deckInfoDTOList에 추가
+//				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, cardStudyRate);
+//				deckInfoDTOList.add(deckInfoDTO);
+//			} // deckEntityList foreach 문 끝 -----
+//			
+//			// CategoryDTO.toDTO()를 호출할 때 deckInfoDTOList를 전달하여 CategoryDTO 객체 생성 후 categoryList에 추가
+//			categoryList.add(CategoryDTO.toDTO(categoryEntity, deckInfoDTOList));
+//		}
+//	    
+//	    return categoryList;
+//	}
 		//PJB end
 	
 	//deck end

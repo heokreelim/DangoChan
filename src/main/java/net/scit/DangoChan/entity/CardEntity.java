@@ -64,5 +64,5 @@ public class CardEntity {
 				.exampleKr(cardDTO.getExampleKr())				
 				.studyLevel(cardDTO.getStudyLevel())				
 				.build();
-	}
+	}	
 }

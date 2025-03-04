@@ -59,4 +59,5 @@ public class DeckEntity {
 				.categoryEntity(entity)
 				.build();
     }
+
 }

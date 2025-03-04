@@ -1,5 +1,7 @@
 package net.scit.DangoChan.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,15 @@ public class UserService {
 	// private memberVariable end
 	
 	// PJB start
-	
+	// userId 에 해당하는 유저를 조회
+	public UserDTO selectOne(Long userId) {
+		Optional<UserEntity> temp = userRepository.findById(userId);
+		
+		if (!temp.isPresent()) {
+			return null;
+		}
+		return UserDTO.toDTO(temp.get());
+	}
 	// PJB end
 	
 	// LHR start

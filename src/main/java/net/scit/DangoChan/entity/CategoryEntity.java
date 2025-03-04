@@ -55,6 +55,8 @@ public class CategoryEntity {
 				.categoryName(categoryDTO.getCategoryName())
 				.userEntity(entity)
 				.build();
-	}
+    }
 
 }
+
+
