@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.dto.DeckDTO;
+import net.scit.DangoChan.dto.DeckInfoDTO;
 import net.scit.DangoChan.dto.DeckStudyTimeDTO;
 import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.dto.UserDTO;
@@ -39,28 +40,32 @@ public class HomeController {
 	@GetMapping("/home")
 	public String home (@AuthenticationPrincipal LoginUserDetails user,
 		Model model) {
-		if (user != null) {
-            
+		if (user != null) { 
             Long userId = user.getUserId();
+            model.addAttribute("userId", userId);
+            
             // 서비스에서 해당 유저의 전체 카테고리 목록을 가져온다고 가정
     	    List<CategoryDTO> categoryList = flashCardService.getCategoryListByUser(userId);
     	    model.addAttribute("categoryList", categoryList);
-    	    model.addAttribute("userId", userId);
+    	    
     	    log.info("categoryList ==={}", categoryList.size());
     	    
-    	    
+    	    // 데이터 확인
     	    for (CategoryDTO categoryDTO : categoryList) {
-				for (DeckEntity deckEntity : categoryDTO.getDeckEntityList()) {
-					log.info("deckEntity  ==={}",deckEntity.toString());
-					log.info("deck size  ==={}",deckEntity.getCardEntityList().size());
-					
+    	    	// 카테고리 명 
+    	    	log.info("category name ====== {}", categoryDTO.getCategoryName());
+    	    	
+    	    	// 해당 카테고리에 속한 덱 정보
+				for (DeckInfoDTO deckInfoDTO : categoryDTO.getDeckInfoList()) {
+					log.info("deckName			=== {}", deckInfoDTO.getDeckName());
+					log.info("deckCardCount		=== {}", deckInfoDTO.getDeckCardCount());
+					log.info("studiedCardCount	=== ○ : {}, △ : {}, ×  : {} ", 
+								deckInfoDTO.getStudiedCardCountOk(), deckInfoDTO.getStudiedCardCountYet(), deckInfoDTO.getStudiedCardCountNo());
+					log.info("cardStudyRate		=== {}", deckInfoDTO.getCardStudyRate());
 				}
 			}
 			
-        }
-		
-		
-	    
+        }	    
 		return "home"; 
 	}
 	
@@ -82,18 +87,5 @@ public class HomeController {
 //	    
 //	    return attendanceList;
 //	}
-	
-	
-	/**
-	 * 카테고리 추가 요청
-	 * 클라이언트가 JSON 형태의 CategoryDTO를 전송하면,
-	 * FlashCardService의 insertCategory 메서드를 호출하여 DB에 저장합니다.
-	 */
-	@PostMapping("/insertCategory")
-	@ResponseBody
-	public ResponseEntity<CategoryDTO> insertCategory(@RequestBody CategoryDTO categoryDTO) {
-	    log.info("카테고리 추가 요청: {}", categoryDTO);
-	    flashCardService.insertCategory(categoryDTO);
-	    return ResponseEntity.ok(categoryDTO);
-	}
+
 }

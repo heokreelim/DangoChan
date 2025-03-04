@@ -55,6 +55,7 @@ $(document).ready(function () {
 
             $('.btn-submit-deck').on('click', function () {
                 // 임시값
+                // select value 값이 categoryId
                 var example = '1';
 
                 var deckName = $('#deckName').val().trim(); // deckName 값 가져오기

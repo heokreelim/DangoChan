@@ -22,15 +22,18 @@ public class CategoryDTO {
 	private Long categoryId;
 	private Long userId;
 	private String categoryName;
-	private List<DeckEntity> deckEntityList;
+	private List<DeckInfoDTO> deckInfoList;
 	
 	// Entity --> DTO
-    public static CategoryDTO toDTO(CategoryEntity categoryEntity) {
+    public static CategoryDTO toDTO(
+    		CategoryEntity categoryEntity,
+    		List<DeckInfoDTO> deckInfoList
+    		) {
 		return CategoryDTO.builder()
 				.categoryId(categoryEntity.getCategoryId())
 				.userId(categoryEntity.getUserEntity().getUserId())
 				.categoryName(categoryEntity.getCategoryName())
-				.deckEntityList(categoryEntity.getDeckEntityList())
+				.deckInfoList(deckInfoList)
 				.build();
     }
 }
