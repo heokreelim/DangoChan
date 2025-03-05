@@ -29,35 +29,46 @@
                 <p>게시글 개수: <span th:text="${list.TotalElements != 0 ? list.TotalElements : 0}"></span>개</p>
             </div>
 
-        <!-- 정렬 버튼 영역 -->
-        <div class="sort-buttons">
-            <input type="hidden" id="primarySortField" th:value="${primarySortField}">
-            <input type="hidden" id="primarySortOrder" th:value="${primarySortOrder}">
-            <input type="hidden" id="secondarySortField" th:value="${secondarySortField}">
-            <input type="hidden" id="secondarySortOrder" th:value="${secondarySortOrder}">
-
-            <!-- 제목 정렬 버튼 -->
-            <a href="javascript:void(0);" onclick="updateSort('title')">
-            제목
-            <!-- 현재 정렬 상태에 따라 아이콘 표시 -->
-            <span th:text="${primarySortField=='title' ? (primarySortOrder=='asc' ? '▲' : '▼') : ''}"></span>
-            </a>
-            <!-- 좋아요 수 정렬 버튼 -->
-            <a href="javascript:void(0);" onclick="updateSort('likeCount')">
-            좋아요
-            <span th:text="${primarySortField=='likeCount' ? (primarySortOrder=='asc' ? '▲' : '▼') : ''}"></span>
-            </a>
-            <!-- 작성자 정렬 버튼 (UserEntity의 userName) -->
-            <a href="javascript:void(0);" onclick="updateSort('user.userName')">
-            작성자
-            <span th:text="${primarySortField=='user.userName' ? (primarySortOrder=='asc' ? '▲' : '▼') : ''}"></span>
-            </a>
-            <!-- 조회수 정렬 버튼 -->
-            <a href="javascript:void(0);" onclick="updateSort('views')">
-            조회수
-            <span th:text="${primarySortField=='views' ? (primarySortOrder=='asc' ? '▲' : '▼') : ''}"></span>
-            </a>
-        </div>
+            <div class="sort-buttons">
+                <input type="hidden" id="primarySortField" th:value="${primarySortField}">
+                <input type="hidden" id="primarySortOrder" th:value="${primarySortOrder}">
+                <input type="hidden" id="secondarySortField" th:value="${secondarySortField}">
+                <input type="hidden" id="secondarySortOrder" th:value="${secondarySortOrder}">
+              
+                <!-- 제목 정렬 버튼 -->
+                <a href="javascript:void(0);" onclick="updateSort('title')">
+                  제목
+                  <span th:text="${ primarySortField == 'title' 
+                                    ? (primarySortOrder=='asc' ? '▲' : '▼')
+                                    : (secondarySortField=='title' ? (secondarySortOrder=='asc' ? '▲' : '▼') : '' )
+                                  }"></span>
+                </a>
+                <!-- 좋아요 정렬 버튼 -->
+                <a href="javascript:void(0);" onclick="updateSort('likeCount')">
+                  좋아요
+                  <span th:text="${ primarySortField == 'likeCount' 
+                                    ? (primarySortOrder=='asc' ? '▲' : '▼')
+                                    : (secondarySortField=='likeCount' ? (secondarySortOrder=='asc' ? '▲' : '▼') : '' )
+                                  }"></span>
+                </a>
+                <!-- 작성자 정렬 버튼 -->
+                <a href="javascript:void(0);" onclick="updateSort('user.userName')">
+                  작성자
+                  <span th:text="${ primarySortField == 'user.userName' 
+                                    ? (primarySortOrder=='asc' ? '▲' : '▼')
+                                    : (secondarySortField=='user.userName' ? (secondarySortOrder=='asc' ? '▲' : '▼') : '' )
+                                  }"></span>
+                </a>
+                <!-- 조회수 정렬 버튼 -->
+                <a href="javascript:void(0);" onclick="updateSort('views')">
+                  조회수
+                  <span th:text="${ primarySortField == 'views' 
+                                    ? (primarySortOrder=='asc' ? '▲' : '▼')
+                                    : (secondarySortField=='views' ? (secondarySortOrder=='asc' ? '▲' : '▼') : '' )
+                                  }"></span>
+                </a>
+              </div>
+              
 
             <!--검색창-->
             <div class="search">
