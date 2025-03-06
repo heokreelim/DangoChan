@@ -69,7 +69,7 @@ function output(resp) {
                                 data-seq="${item['replyId']}">
                                 <input type="button" value="삭제" class="btn btn-danger deleteBtn"
                                 data-seq="${item['replyId']}"
-                                ${item['userName'] == loginName ? '' : 'disabled'}>
+                            ${item['userName'] == loginName ? '' : 'disabled'}>
                         </td>
                     </tr>
                     `
