@@ -62,6 +62,36 @@ body {
     opacity: 0.9;
 }
 
+/* 정렬 버튼 영역 */
+.sort-buttons {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.sort-buttons a {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.sort-buttons a:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.sort-buttons a span {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
 /* 게시글 리스트 테이블 */
 .head table {
     width: 100%;
