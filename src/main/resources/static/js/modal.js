@@ -27,12 +27,12 @@ $(document).ready(function () {
             }
         });
     }
-	/***************** 모달 닫기 이벤트 *****************/
-	// 모달 닫기 버튼 (공통)
-	    $('.btn-close-modal').on("click", function () {
-	        closeOpenModals();
-	    });
-	
+    /***************** 모달 닫기 이벤트 *****************/
+    // 모달 닫기 버튼 (공통)
+    $('.btn-close-modal').on("click", function () {
+        closeOpenModals();
+    });
+
     /***************** 모달 열기 이벤트 *****************/
     // 플러스 버튼을 통한 메뉴 모달 열기 (카테고리 추가, 덱 추가 등)
     $('.btn-open-adding-menu-modal').on("click", function () {
@@ -44,7 +44,6 @@ $(document).ready(function () {
         openModal($('.modal_adding_category'));
     });
 
-    // 수정부분
     // 카테고리 편집 모달 열기 버튼
     $('.btn-open-editing-category-modal').click(function () {
         // 클릭된 버튼의 부모 요소에서 category 정보를 찾음
@@ -54,34 +53,45 @@ $(document).ready(function () {
 
         // 모달의 입력 필드에 값 설정
         $('#categoryId_E1').val(categoryId);
+        $('#categoryNameDisplay').text(categoryName);
         $('#categoryName_E1').val(categoryName);
         openModal($('.modal_editing_category'));
     });
 
     // 덱 추가 모달 열기 버튼
     $('.btn-open-adding-deck-modal').on("click", function () {
+        $(this).attr("data-mode", "add"); // 덱 추가 모드
         openModal($('.modal_adding_deck'));
         $('.card_list tbody').empty();
     });
 
-    // 덱 추가/불러오기기 버튼
+    // 덱 추가/불러오기 버튼
     $('.btn-adding-deck').on('click', function () {
+        let mode = $(".modal_adding_deck").css("display") === "flex" ? "add" : "import";
 
-        var deckName = $('#deckName_A2').val().trim(); // deckName 값 가져오기
+        let deckName, categoryId;
+        if (mode === "add") {
+            deckName = $('#deckName_A2').val().trim();
+            categoryId = $('#categoryId_A2').val();
+            targetTable = $('.modal_adding_deck .card_list tbody'); // 💡 특정 모달의 카드 리스트만 가져오도록 변경
+        } else {
+            deckName = $('#deckName_I2').val().trim();
+            categoryId = $('#categoryId_I2').val();
+            targetTable = $('.modal_importing_deck .card_list tbody'); // 💡 특정 모달의 카드 리스트만 가져오도록 변경
+        }
+
         if (!deckName) {
-            deckName = $('#deckName_I2').val().trim(); // deckName이 비어있으면 deckName2 사용
+            alert("덱 이름을 입력해주세요!");
+            return;
         }
         var cardDTOList = [];
-        var categoryId = $('#categoryId_A2').val();
         var deckDTO = {
-            // categoryId: $('#categoryId').val(),
-            // userId: $('#userId').val(),  // 현재 로그인한 사용자 ID
             // 임시 카테고리ID
             categoryId: categoryId,
             deckName: deckName
         };
-		// 카드 테이블 출력
-        $('.card_list tbody tr').each(function () {
+        // **해당 모달의 카드 목록만 가져오도록 변경**
+        targetTable.find('tr').each(function () {
             var row = {
                 word: $(this).find('td[id^="word"]').text(),
                 pos: $(this).find('td[id^="pos"]').text(),
@@ -94,7 +104,7 @@ $(document).ready(function () {
 
         console.log(deckDTO);
         console.log(cardDTOList);
-		// 데이터 서버로 전달
+        // 데이터 서버로 전달
         $.ajax({
             type: "POST",
             url: "/flashcard/importDeck",
@@ -112,64 +122,86 @@ $(document).ready(function () {
             }
         });
         // 덱 이름 초기화
-        $('#deckName_A2').val('');
-        $('#deckName_I2').val('');
+        $('#deckName_A2, #deckName_I2').val('');
     });
 
 
     // 카드 추가 모달 열기 버튼
     $('.btn-open-adding-card-modal').on("click", function () {
-		$('.modal_adding_card').attr("data-mode", "new"); // 새 덱 추가 모드 설정
-		$('.modal_adding_card').css("display", "flex");
+        $('.modal_adding_card').attr("data-mode", "new"); // 새 덱 추가 모드 설정
+        $('.modal_adding_card').css("display", "flex");
     });
 
     // 덱 편집에서 카드 추가 모달 열기 버튼
-	$('.btn-open-adding-card-to-editing-deck').on('click', function () {
-		$('.modal_adding_card').attr("data-mode", "edit"); // 편집 모드 설정
-		$('.modal_adding_card').css("display", "flex"); // 모달 보이기
-	});
+    $('.btn-open-adding-card-to-editing-deck').on('click', function () {
+        $('.modal_adding_card').attr("data-mode", "edit"); // 편집 모드 설정
+        $('.modal_adding_card').css("display", "flex"); // 모달 보이기
+    });
 
-	// "추가" 버튼 클릭 시 이벤트 (이벤트 중복 방지)
-	    $('.btn-add-card-adding').off('click').on('click', function () {
-	        let word = $('#cardWord').val().trim();
-	        let pos = $('#cardPos').val().trim();
-	        let meaning = $('#cardMeaning').val().trim();
-	        let exampleJp = $('#cardExampleJp').val().trim();
-	        let exampleKr = $('#cardExampleKr').val().trim();
+    // "추가" 버튼 클릭 시 이벤트 (이벤트 중복 방지)
+    $('.btn-add-card-adding').off('click').on('click', function () {
+        let word = $('#cardWord').val().trim();
+        let pos = $('#cardPos').val().trim();
+        let meaning = $('#cardMeaning').val().trim();
+        let exampleJp = $('#cardExampleJp').val().trim();
+        let exampleKr = $('#cardExampleKr').val().trim();
 
-	        // 빈 입력값 금지
-	        if (!word || !pos || !meaning || !exampleJp || !exampleKr) {
-	            alert("모든 필드를 입력하세요.");
-	            return;
-	        }
+        // 빈 입력값 금지
+        if (!word || !pos || !meaning || !exampleJp || !exampleKr) {
+            alert("모든 필드를 입력하세요.");
+            return;
+        }
 
-	        // 현재 모드 확인 (편집 모드 or 새 덱 추가 모드)
-	        let mode = $('.modal_adding_card').attr("data-mode");
-	        let targetTable = mode === "edit" ? $('.edit_card_list tbody') : $('.card_list tbody');
+        // 현재 모드 확인 (편집 모드 or 새 덱 추가 모드)
+        let mode = $('.modal_adding_card').attr("data-mode");
+        let targetTable = mode === "edit" ? $('.edit_card_list tbody') : $('.card_list tbody');
 
-	        let index = targetTable.find('tr').length; // 현재 행 개수 기준으로 index 설정
+        let index = targetTable.find('tr').length; // 현재 행 개수 기준으로 index 설정
+        let tr = $('<tr>');
 
-	        let tr = $('<tr>');
-	        tr.append($('<td>').attr('id', 'word-' + index).text(word));
-	        tr.append($('<td>').attr('id', 'pos-' + index).text(pos));
-	        tr.append($('<td>').attr('id', 'meaning-' + index).text(meaning));
-	        tr.append($('<td>').attr('id', 'exampleJp-' + index).text(exampleJp));
-	        tr.append($('<td>').attr('id', 'exampleKr-' + index).text(exampleKr));
+        if (mode === "new") {
+            tr.append($('<td>').attr('id', 'word-' + index).text(word));
+            tr.append($('<td>').attr('id', 'pos-' + index).text(pos));
+            tr.append($('<td>').attr('id', 'meaning-' + index).text(meaning));
+            tr.append($('<td>').attr('id', 'exampleJp-' + index).text(exampleJp));
+            tr.append($('<td>').attr('id', 'exampleKr-' + index).text(exampleKr));
 
-	        let deleteBtn = $('<button>').text('🗑').on('click', function () {
-	            tr.remove();
-	        });
-	        tr.append($('<td>').append(deleteBtn));
+            let deleteBtn = $('<button>').text('🗑').on('click', function () {
+                tr.remove();
+            });
+            tr.append($('<td>').append(deleteBtn));
+        } else {
+            // 편집 버튼을 앞쪽으로 배치
+            let editBtn = $('<button>').text('편집').on('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                openEditCardModal(tr);
+            });
 
-	        // 해당 테이블에 추가
-	        targetTable.append(tr);
+            let deleteBtn = $('<button>').attr('class', 'btn-delete-card').text('🗑').on('click', function () {
+                tr.remove();
+            });
 
-	        // 입력 필드 초기화
-	        $('#cardWord, #cardPos, #cardMeaning, #cardExampleJp, #cardExampleKr').val('');
+            // 편집 버튼을 첫 번째 열에 추가
+            tr.append($('<td>').append(editBtn));
+            tr.append($('<td>').text(word));
+            tr.append($('<td>').text(pos));
+            tr.append($('<td>').text(meaning));
+            tr.append($('<td>').text(exampleJp));
+            tr.append($('<td>').text(exampleKr));
+            tr.append($('<td>').append(deleteBtn));
 
-	        // 모달 닫기
-	        $('.modal_adding_card').css("display", "none");
-	    });
+        }
+
+        // 해당 테이블에 추가
+        targetTable.append(tr);
+
+        // 입력 필드 초기화
+        $('#cardWord, #cardPos, #cardMeaning, #cardExampleJp, #cardExampleKr').val('');
+
+        // 모달 닫기
+        $('.modal_adding_card').css("display", "none");
+    });
 
     /***************** 엑셀 파일 불러오기 및 덱/카드 처리 *****************/
     var fileInput = $('#importFile');
@@ -177,6 +209,7 @@ $(document).ready(function () {
     var modalImport = $('.modal_importing_deck');
 
     $('.btn-open-importing-deck-modal').on('click', function (event) {
+        $(this).attr("data-mode", "import"); // 덱 불러오기 모드
         event.preventDefault();
         fileInput.click();
     });
@@ -229,13 +262,27 @@ $(document).ready(function () {
     // 편집 모달 관련 변수
     let editingRow = null;
 
+    // 덱 편집 모달 열기 버튼 (변경: categoryDiv -> deckDiv 사용)
+    $('.btn-editing-deck').on("click", function () {
+        let deckDiv = $(this).closest(".deck-wrap");
+        let deckId = deckDiv.find("input[type='hidden']").val();
+        let deckName = deckDiv.find("b").text();
+        console.log(deckName);
+
+        $('#editDeckId').val(deckId);
+        $('#editDeckName').val(deckName);
+        $('#deckNameDisplay').text(deckName);
+
+        openModal($('.modal_editing_deck'));
+    });
+
+
     // 덱 편집 모달 열기
     $('.btn-open-editing-deck-modal').on('click', function () {
-        let deckId = prompt("편집할 덱 ID를 입력하세요:");
-        if (!deckId) {
-            alert("덱 ID를 입력하세요.");
-            return;
-        }
+        let deckDiv = $(this).closest(".deck-wrap");
+        let deckId = deckDiv.find("input[type='hidden']").val();
+        let deckName = deckDiv.find("b").text();
+        $('#deckNameDisplay').text(deckName);
 
         $.ajax({
             type: "GET",
@@ -253,24 +300,32 @@ $(document).ready(function () {
 
                 $.each(data.cardList, function (index, card) {
                     let tr = $('<tr>');
+                    // 편집 버튼을 앞쪽으로 배치
+                    let editBtn = $('<button>').text('편집').on('click', function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        openEditCardModal(tr);
+                    });
+
+                    let deleteBtn = $('<button>')
+                        .text('🗑')
+                        .addClass('btn-delete-card');
+
+                    // 편집 버튼을 첫 번째 열에 추가
+                    tr.append($('<td>').append(editBtn));
                     tr.append($('<td>').text(card.word));
                     tr.append($('<td>').text(card.pos));
                     tr.append($('<td>').text(card.meaning));
                     tr.append($('<td>').text(card.exampleJp));
                     tr.append($('<td>').text(card.exampleKr));
+                    tr.append($('<td>').append(deleteBtn));
 
                     let hiddenInput = $('<input type="hidden">').val(card.cardId);
                     tr.append(hiddenInput);
 
-                    let editBtn = $('<button>').text('편집').on('click', function () {
-                        openEditCardModal(tr);
-                    });
-                    let deleteBtn = $('<button>').text('🗑').on('click', function () {
-                        tr.remove();
-                    });
-                    tr.append($('<td>').append(editBtn, deleteBtn));
                     tbody.append(tr);
                 });
+
 
                 $('.modal_editing_deck').css("display", "flex");
             },
@@ -280,50 +335,73 @@ $(document).ready(function () {
         });
     });
 
-    // 카드 편집 모달 열기 함수
-    function openEditCardModal(row) {
-        editingRow = row;
-        let word = row.find('td:eq(0)').text();
-        let pos = row.find('td:eq(1)').text();
-        let meaning = row.find('td:eq(2)').text();
-        let exampleJp = row.find('td:eq(3)').text();
-        let exampleKr = row.find('td:eq(4)').text();
+    let deletedCardIds = [];  // 삭제할 카드 ID 저장 배열
+
+    // 카드 삭제 버튼 클릭 이벤트 리스너
+    $('.edit_card_list tbody').on('click', '.btn-delete-card', function () {
+        let row = $(this).closest('tr');
         let cardId = row.find('input[type=hidden]').val();
 
-        $('.modal_editing_card .cardWord').val(word);
-        $('.modal_editing_card .cardPos').val(pos);
-        $('.modal_editing_card .cardMeaning').val(meaning);
-        $('.modal_editing_card .cardExampleJp').val(exampleJp);
-        $('.modal_editing_card .cardExampleKr').val(exampleKr);
-        $('.modal_editing_card .cardId').val(cardId);
+        if (cardId) {
+            deletedCardIds.push(cardId);  // 삭제된 카드 ID 저장
+            console.log("삭제된 카드 ID 목록:", deletedCardIds);  // 디버깅용
+        }
 
+        row.remove(); // 행 삭제
+    });
+
+    // 카드 편집 모달 열기 함수
+    function openEditCardModal(row) {
+        editingRow = row; // 수정할 행 저장
+        let word = row.find('td:eq(1)').text();
+        let pos = row.find('td:eq(2)').text();
+        let meaning = row.find('td:eq(3)').text();
+        let exampleJp = row.find('td:eq(4)').text();
+        let exampleKr = row.find('td:eq(5)').text();
+        let cardId = row.find('input[type=hidden]').val(); // 카드 ID
+
+        // 모달에 데이터 채우기
+        $('#editCardId').val(cardId);
+        $('#editCardWord').val(word);
+        $('#editCardPos').val(pos);
+        $('#editCardMeaning').val(meaning);
+        $('#editCardExampleJp').val(exampleJp);
+        $('#editCardExampleKr').val(exampleKr);
+
+        // 모달 보이기
         $('.modal_editing_card').css("display", "flex");
     }
 
     // 카드 수정 완료 버튼 클릭
-    $('.btn-save-card').off('click').on('click', function () {
-        if (editingRow) {
-            let updatedWord = $('#cardWord').val().trim();
-            let updatedPos = $('#cardPos').val().trim();
-            let updatedMeaning = $('#cardMeaning').val().trim();
-            let updatedExampleJp = $('#cardExampleJp').val().trim();
-            let updatedExampleKr = $('#cardExampleKr').val().trim();
-            let cardId = $('#cardId').val();
+    $('.btn-save-card').on('click', function () {
+        if (!editingRow) return;
 
-            editingRow.find('td:eq(0)').text(updatedWord);
-            editingRow.find('td:eq(1)').text(updatedPos);
-            editingRow.find('td:eq(2)').text(updatedMeaning);
-            editingRow.find('td:eq(3)').text(updatedExampleJp);
-            editingRow.find('td:eq(4)').text(updatedExampleKr);
-            editingRow.find('input[type=hidden]').val(cardId);
+        let word = $('#editCardWord').val().trim();
+        let pos = $('#editCardPos').val().trim();
+        let meaning = $('#editCardMeaning').val().trim();
+        let exampleJp = $('#editCardExampleJp').val().trim();
+        let exampleKr = $('#editCardExampleKr').val().trim();
 
-            $('.modal_editing_card').css("display", "none");
-            editingRow = null;
-        }
+        // 수정된 내용 원래 행에 반영
+        editingRow.find('td:eq(1)').text(word);
+        editingRow.find('td:eq(2)').text(pos);
+        editingRow.find('td:eq(3)').text(meaning);
+        editingRow.find('td:eq(4)').text(exampleJp);
+        editingRow.find('td:eq(5)').text(exampleKr);
+
+        // 모달 닫기
+        $('.modal_editing_card').css("display", "none");
     });
+
+
+
+
+
+
 
     // 덱 수정 완료 버튼 클릭
     $('.btn-update-deck').on('click', function () {
+        console.log("최종 삭제된 카드 ID 목록:", deletedCardIds);
         let deckId = $('#editDeckId').val();
         let deckName = $('#editDeckName').val().trim();
         let categoryId = $('#editCategoryName').val();
@@ -338,41 +416,116 @@ $(document).ready(function () {
         $('.edit_card_list tbody tr').each(function () {
             let card = {
                 cardId: $(this).find('input[type=hidden]').val(),
-                word: $(this).find('td:eq(0)').text(),
-                pos: $(this).find('td:eq(1)').text(),
-                meaning: $(this).find('td:eq(2)').text(),
-                exampleJp: $(this).find('td:eq(3)').text(),
-                exampleKr: $(this).find('td:eq(4)').text()
+                word: $(this).find('td:eq(1)').text(),
+                pos: $(this).find('td:eq(2)').text(),
+                meaning: $(this).find('td:eq(3)').text(),
+                exampleJp: $(this).find('td:eq(4)').text(),
+                exampleKr: $(this).find('td:eq(5)').text(),
+                deckId: deckId
             };
             updatedCards.push(card);
         });
 
-        $.ajax({
+        let updateDeckAjax = $.ajax({
             type: "PUT",
             url: "/flashcard/updateDeck",
             contentType: "application/json",
-            data: JSON.stringify(deckRequest),
-            success: function () {
-                console.log("덱 정보가 성공적으로 수정되었습니다.");
-            },
-            error: function () {
-                alert("덱 수정 중 오류 발생.");
-            }
+            data: JSON.stringify(deckRequest)
         });
 
-        $.ajax({
+        let updateCardsAjax = $.ajax({
             type: "PUT",
             url: "/flashcard/updateCards",
             contentType: "application/json",
-            data: JSON.stringify(updatedCards),
-            success: function () {
-                alert("덱과 카드가 성공적으로 수정되었습니다!");
-                $('.modal_editing_deck').css("display", "none");
+            data: JSON.stringify({
+                updatedCards: updatedCards,
+                deletedCardIds: deletedCardIds  // 삭제된 카드 ID도 함께 전송
+            })
+        });
+
+        $.when(updateDeckAjax, updateCardsAjax).done(function () {
+            alert("덱과 카드가 성공적으로 수정되었습니다!");
+            $('.modal_editing_deck').css("display", "none");
+            // 원하는 URL로 리다이렉트 (예: 홈 화면)
+            window.location.href = "/home";
+        }).fail(function () {
+            alert("덱 또는 카드 수정 중 오류 발생.");
+        });
+    });
+
+
+
+    // 덱 내보내기 상호작용
+    $('.btn-exporting-deck').on('click', function () {
+        let deckDiv = $(this).closest(".deck-wrap");
+        let deckId = deckDiv.find("input[type='hidden']").val();
+
+        $.ajax({
+            url: "/flashcard/exportDeck?deckId=" + deckId,
+            method: "GET",
+            xhrFields: { responseType: 'blob' }, // 파일 다운로드 처리
+            success: function (data, status, xhr) {
+                var filename = xhr.getResponseHeader('Content-Disposition').split('filename=')[1];
+
+                var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                var link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             },
-            error: function () {
-                alert("카드 수정 중 오류 발생.");
+            error: function (xhr, status, error) {
+                alert("덱을 내보내는 중 오류 발생: " + error);
             }
         });
     });
 
+    // 카테고리 이름 수정
+    $('#btn-edit-category-name').on('click', function () {
+        let categoryNameDisplay = $('#categoryNameDisplay'); // p 태그
+        let categoryNameInput = $('#categoryName_E1'); // input 태그
+        let isEditing = categoryNameInput.css('display') === 'none'; // 현재 상태 확인
+
+        if (isEditing) {
+            // p -> input 변환
+            categoryNameInput.val(categoryNameDisplay.text()); // p 태그 값을 input으로 복사
+            categoryNameDisplay.hide(); // p 태그 숨김
+            categoryNameInput.show().focus(); // input 보이기 및 포커스
+            $(this).text('수정 완료'); // 버튼 텍스트 변경
+        } else {
+            // input -> p 변환
+            let newCategoryName = categoryNameInput.val().trim();
+            if (newCategoryName !== '') {
+                categoryNameDisplay.text(newCategoryName); // 변경된 카테고리 이름 적용
+            }
+            categoryNameInput.hide(); // input 숨김
+            categoryNameDisplay.show(); // p 태그 보이기
+            $(this).text('이름 편집'); // 버튼 텍스트 복원
+        }
+    });
+
+    // 덱 이름 수정 
+    $('#btn-edit-deck-name').on('click', function () {
+        let deckNameDisplay = $('#deckNameDisplay'); // p 태그
+        let deckNameInput = $('#editDeckName'); // input 태그
+        let isEditing = deckNameInput.css('display') === 'none'; // 현재 상태 확인
+
+        if (isEditing) {
+            // 편집 모드: p -> input 변환
+            deckNameInput.val(deckNameDisplay.text()); // 기존 덱 이름을 input으로 복사
+            deckNameDisplay.hide(); // p 태그 숨김
+            deckNameInput.show().focus(); // input 태그 보이기 및 포커스
+            $(this).text('수정 완료'); // 버튼 텍스트 변경
+        } else {
+            // 완료 모드: input -> p 변환
+            let newDeckName = deckNameInput.val().trim();
+            if (newDeckName !== '') {
+                deckNameDisplay.text(newDeckName); // 변경된 덱 이름 적용
+            }
+            deckNameInput.hide(); // input 태그 숨김
+            deckNameDisplay.show(); // p 태그 보이기
+            $(this).text('이름 편집'); // 버튼 텍스트 복원
+        }
+    });
 });

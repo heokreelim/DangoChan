@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.scit.DangoChan.dto.CardDTO;
+import net.scit.DangoChan.dto.ExportCardDTO;
 
 @Entity
 @NoArgsConstructor
@@ -64,5 +65,19 @@ public class CardEntity {
 				.exampleKr(cardDTO.getExampleKr())				
 				.studyLevel(cardDTO.getStudyLevel())				
 				.build();
-	}	
+	}
+
+	public static CardEntity toEntity(ExportCardDTO card, DeckEntity deckEntity2) {
+		return CardEntity.builder()
+				.cardId(card.getCardId())
+				.deckEntity(deckEntity2)
+				.word(card.getWord())
+				.pos(card.getPos())				
+				.meaning(card.getMeaning())				
+				.exampleJp(card.getExampleJp())				
+				.exampleKr(card.getExampleKr())				
+				.studyLevel(card.getStudyLevel())				
+				.build();
+	}
+
 }
