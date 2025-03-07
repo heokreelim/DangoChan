@@ -267,7 +267,7 @@ public List<ExportCardDTO> getCardsByDeckId(Long deckId) {
 			
 				List<CardEntity> cardList = cardRepository.findAllByDeckEntity(temp);
 				
-				log.info("댓글 갯수 : {}", cardList.size());
+				log.info("카드 갯수 : {}", cardList.size());
 				
 				List<ExportCardDTO> cardDTOList = new ArrayList<>();
 				

@@ -7,7 +7,6 @@
 
 </head>
 
-
 <body>
     <div th:fragment="modal" class="modal-wrap">
         <!-- 플러스 버튼 -->
@@ -47,7 +46,6 @@
                 </form>
             </div>
         </div>
-
 
         <!-- 카테고리 편집 모달 -->
         <div th:fragment="modal_editing_category" class="modal_editing_category">
@@ -117,6 +115,9 @@
             </div>
         </div>
 
+
+
+
         <!-- 덱 불러오기 모달 -->
         <div class="modal_importing_deck">
             <div class="importing_deck">
@@ -169,25 +170,22 @@
             </div>
         </div>
 
-
-
-
-
-
         <!-- 덱 편집 모달 -->
         <div class="modal_editing_deck">
             <div class="editing_deck">
                 <form>
                     <label>덱 ID:
-                        <input type="text" id="editDeckId" readonly>
+                        <input type="text" id="editDeckId">
                     </label>
                     <label>덱이름:
                         <input type="text" id="editDeckName">
                     </label>
                     <label>카테고리:
-                        <select id="editCategoryName">
-                            <option value="1">임시1</option>
-                            <option value="2">임시2</option>
+                    <select name="categoryId" id="categoryId_A2">
+                            <option th:each="category : ${categoryList}" th:value="${category.categoryId}"
+                                th:text="${category.categoryName}">
+                                카테고리 명
+                            </option>
                         </select>
                     </label>
                     <div>
@@ -251,8 +249,6 @@
         </div>
 
     </div> <!-- modal-wrap end -->
-
 </body>
-
 
 </html>

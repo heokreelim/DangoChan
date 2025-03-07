@@ -63,6 +63,7 @@ public class FlashCardController {
 	public String insertCategory(@ModelAttribute CategoryDTO categoryDTO) {
 
 //		DB 등록
+		System.out.println(categoryDTO.toString());
 		flashCardService.insertCategory(categoryDTO);
 
 		log.info("카테고리가 추가되었습니다.");
@@ -78,7 +79,7 @@ public class FlashCardController {
 	public String updateCategory(@ModelAttribute CategoryDTO categoryDTO) {
 		flashCardService.updateCategory(categoryDTO);
 		
-		return "redirect:/";
+		return "redirect:/home";
 	}
 
 
