@@ -45,7 +45,7 @@ public class CardEntity {
     @Column(name = "example_kr")
     private String exampleKr;
     
-    @Column(name = "study_level")
+    @Column(name = "study_level", columnDefinition = "INT default 0")
     private Integer studyLevel;
 
 	@ManyToOne
