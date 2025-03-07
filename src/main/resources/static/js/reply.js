@@ -25,7 +25,13 @@ function init() {
         url: "/reply/replyAll",
         method: 'GET',
         data: sendData,
-        success: output,
+        success: function(resp) {
+            // replyId 기준 오름차순 정렬 (작은 replyId가 먼저, 즉 오래된 reply부터.)
+            resp.sort((a, b) => a.replyId - b.replyId);
+
+            // 정렬된 데이터를 가지고 화면에 출력
+            output(resp);
+        }
     })
 }
 
@@ -49,12 +55,12 @@ function output(resp) {
         // 대댓글이면 들여쓰기를 적용 (부모 댓글이 0이면 최상위 댓글)
         let indentStyle = "";
         if(item['parentReplyId'] && item['parentReplyId'] != 0) {
-            indentStyle = "style= 'margin-left:30px;'";
+            indentStyle = "style= 'padding-left:50px;'";
         }
             tag += `
-                    <tr ${indentStyle}>
-                        <td class="no">${index + 1}</td>
-                        <td class="content">${item['content']}</td>
+                    <tr>
+                        <td class="no" ${indentStyle}>${index + 1}</td>
+                        <td class="content" ${indentStyle}>${item['content']}</td>
                         <td class="writer">${item['userName']}</td>
                         <td class="date">${item['createAt']}</td>
                         <td class="btns">
@@ -63,7 +69,7 @@ function output(resp) {
                                 data-seq="${item['replyId']}">
                                 <input type="button" value="삭제" class="btn btn-danger deleteBtn"
                                 data-seq="${item['replyId']}"
-                                ${item['userName'] == loginName ? '' : 'disabled'}>
+                            ${item['userName'] == loginName ? '' : 'disabled'}>
                         </td>
                     </tr>
                     `

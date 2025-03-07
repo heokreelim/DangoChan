@@ -1,5 +1,7 @@
 package net.scit.DangoChan.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -66,55 +68,87 @@ public class CommunityService {
 		communityRepository.save(entity);		
 	}
 
-	public Page<CommunityDTO> selectAll(Pageable pageable, String searchItem, String searchWord) {
+	public Page<CommunityDTO> selectAll(
+			Pageable pageable,
+			String searchItem,
+			String searchWord,
+			String primarySortField,	// 추가 정렬 기준
+			String primarySortOrder,	// 추가 정렬 순서
+			String secondarySortField,
+			String secondarySortOrder
+			) {
 
 		// -1을 한 이유: DB의 Page는 0부터 시작함. 사용자는 1을 요청하기 때문에 우리는 -1을 해줘야 함...
-		int pageNumber = pageable.getPageNumber() -1;
+		int pageNumber = Math.max(0, pageable.getPageNumber() -1);
+
+	    List<Sort.Order> orders = new ArrayList<>();
+
+	    // Primary 정렬
+	    Sort.Direction primaryDirection = "asc".equalsIgnoreCase(primarySortOrder) 
+	            ? Sort.Direction.ASC 
+	            : Sort.Direction.DESC;
+	    orders.add(new Sort.Order(primaryDirection, primarySortField));
+
+	    // Secondary 정렬이 지정되었다면 추가
+	    if (secondarySortField != null && !secondarySortField.isEmpty()) {
+	        Sort.Direction secondaryDirection = "asc".equalsIgnoreCase(secondarySortOrder) 
+	                ? Sort.Direction.ASC 
+	                : Sort.Direction.DESC;
+	        orders.add(new Sort.Order(secondaryDirection, secondarySortField));
+	    }
+	    
+	    // 예를 들어 기본 정렬(작성일 내림차순)을 항상 보조 정렬로 추가할 수도 있습니다.
+	    // if (!"createDate".equals(primarySortField)) {
+	    //     orders.add(new Sort.Order(Sort.Direction.DESC, "createDate"));
+	    // }
+
+	    Sort compositeSort = Sort.by(orders);
+		
+		
+//		// 만약에 대비한 -- "정렬 순서 결정"
+//	    Sort.Direction direction = "asc".equalsIgnoreCase(sortOrder) ? Sort.Direction.ASC : Sort.Direction.DESC;
+//	    // 실제 사용 가능한 정렬 필드인지 검증하는 로직을 추가하는 것이 좋습니다.
+//	    Sort sort = Sort.by(direction, sortField);
 		
 		// 2) 검색 조회
-		Page<CommunityEntity> temp = null;
+		Page<CommunityEntity> temp;
 		
 		switch (searchItem) {
-		case "title": 
-			temp = communityRepository.findByTitleContains(
-					searchWord,
-					PageRequest.of(pageNumber, pageLimit, Sort.by(Sort.Direction.DESC, "createDate")));
-			break;
-		case "boardContent":
-			temp = communityRepository.findByBoardContentContains(
-					searchWord,
-					PageRequest.of(pageNumber, pageLimit, Sort.by(Sort.Direction.DESC, "createDate")));
-			break;
+			case "title": 
+				temp = communityRepository.findByTitleContains(
+						searchWord,
+						PageRequest.of(pageNumber, pageLimit, compositeSort));
+				break;
+			case "boardContent":
+				temp = communityRepository.findByBoardContentContains(
+						searchWord,
+						PageRequest.of(pageNumber, pageLimit, compositeSort));
+				break;
+			case "userName":
+				temp = communityRepository.findByUser_UserNameContains(
+						searchWord,
+						PageRequest.of(pageNumber, pageLimit, compositeSort));
+				break;
+	        default:
+	            // 정의되지 않은 검색 조건은 전체 조회 처리
+	            temp = communityRepository.findAll(
+	            		PageRequest.of(pageNumber, pageLimit, compositeSort));
+	            break;
 		}
-			
+
+	    return temp.map(CommunityDTO::toDTO);
+		
 		// 1) 단순 조회
 //		List<BoardEntity> temp = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
 				
-		Page<CommunityDTO> list = null;
-		
-		// 2) Lambda 객체, Stream : List, Set, Map (등등 데이터 묶음을 처리하기 위한 용도!) 
-		
-		list = temp.map((entity) -> CommunityDTO.toDTO(entity));
-		/* 아래 내용으로 정보 파악하기
-		log.info("getSize: {}", list.getSize());
-		// 한 페이지당 조회된 글 개수
-		log.info("getTotalPages: {}", list.getTotalPages());
-		// 총 페이지 개수
-		log.info("getTotalElement: {}", list.getTotalElements());
-		// 전체 게시글 개수
-		log.info("getNumber: {}", list.getNumber());
-		// 내가 요청한 페이지가 몇 번째 페이지인가?
-		log.info("getNumberOfElements: {}", list.getNumberOfElements());
-		// 현재 페이지의 총 글개수
-		log.info("isFirst: {}", list.isFirst());
-		// (전체 페이지 중에) 첫 번째 페이지인가요?
-		log.info("isLast: {}", list.isLast());
-		// 전체 페이지 중에 마지막 페이지인가요?
-		log.info("getContent().get(0): {}", list.getContent().get(0));
-		// 지금 보고 있는 페이지에서의 0번째 index, 즉 첫 번재 게시글의 내용(BoardDTO) 싹 불러오기.
-		*/
-		
-		return list;
+//		Page<CommunityDTO> list = null;
+//		
+//		// 2) Lambda 객체, Stream : List, Set, Map (등등 데이터 묶음을 처리하기 위한 용도!) 
+//		
+//		list = temp.map((entity) -> CommunityDTO.toDTO(entity));
+
+//		
+//		return list;
 	}
 
 	public CommunityDTO selectOne(Integer boardId) {

@@ -15,7 +15,8 @@ import lombok.ToString;
 
 @Builder
 public class DeckInfoDTO {
-
+	
+	private Long deckId;
 	private String deckName;									// 덱 이름
 	private Integer deckCardCount;					// 덱의 모든 카드 수
 	private Integer studiedCardCountOk;		// ○, 3
@@ -26,6 +27,7 @@ public class DeckInfoDTO {
 	
 	// Entity -> DTO
 	public static DeckInfoDTO toDTO (
+			Long deckId,
 			String deckName,
 			Integer deckCardCount,
 			Integer studiedCardCountOk,
@@ -35,6 +37,7 @@ public class DeckInfoDTO {
 			) {
 		
 		return DeckInfoDTO.builder()
+				.deckId(deckId)
 				.deckName(deckName)
 				.deckCardCount(deckCardCount)
 				.studiedCardCountOk(studiedCardCountOk)

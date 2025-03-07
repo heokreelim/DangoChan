@@ -29,7 +29,7 @@
         </style>
         <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
         <script defer th:src="@{/js/reply.js}"></script>
-        <script defer th:src="@{/js/boardLikes.js}"></script>
+        <script defer th:src="@{/js/boardLike.js}"></script>
 </head>
 <body>
     <!-- fragment 적용 -->
@@ -39,6 +39,7 @@
     <div class="content">
         <input type="hidden" th:value="${community.boardId}" id="boardId">
         <input type="hidden" th:value="${#authentication.principal.userName}" id="loginId">
+        <input type="hidden" th:value="${#authentication.principal.userId}" id="userNumericId">
 
         <table>
             <tr>
@@ -93,8 +94,9 @@
                         </th:block>
                         <!-- 목록 버튼 -->                    
                         <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록</a>&nbsp;
-                        <button id="likeButton" class="btn btn-outline-primary" data-board-id="[[${community.boardId}]]" data-login-id="[[${#authentication.name}]]">
-                            <!-- 좋아요 상태에 따라 empty.png 또는 filled.png 등으로 변경할 수 있습니다 -->
+                        <button id="likeButton" class="btn btn-outline-primary"
+                            th:attr="data-board-id=${community.boardId}, data-login-id=${#authentication.name}">
+                            <!-- 좋아요 상태에 따른 이미지 표시 -->
                             <th:block th:if="${isLikedByMe}">
                                 <img id="likeImg" th:src="@{/images/heart.png}" alt="like" width="24" height="24">
                             </th:block>
@@ -103,6 +105,7 @@
                             </th:block>
                         </button>
                         (<span id="likeCount" th:text="${community.likeCount != null ? community.likeCount : 0}">0</span>)
+
                     </th>
                 </tr>
                 <tr>
