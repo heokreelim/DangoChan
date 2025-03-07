@@ -23,19 +23,6 @@ public class BoardLikesService {
 	private final CommunityRepository communityRepository;
 	private final UserRepository userRepository;
 	
-	// 좋아요 등록
-	@Transactional
-	public void addLike(UserEntity userEntity, CommunityEntity communityEntity) {
-		Boolean existingLike = boardLikesRepository.existsByCommunityEntityAndUserEntity(communityEntity, userEntity);
-		
-		if(existingLike) {
-			throw new RuntimeException("이미 '좋아요'를 하신 덱입니다.");
-		}
-		
-		BoardLikesEntity boardLike = BoardLikesEntity.toBoardLikesEntity(userEntity, communityEntity);
-		boardLikesRepository.save(boardLike);
-	}
-	
 	// 좋아요 수 조회
 	public Long countLikes(CommunityEntity communityEntity) {
 		return boardLikesRepository.countByCommunityEntity(communityEntity);
@@ -54,4 +41,24 @@ public class BoardLikesService {
 		return boardLikesRepository.existsByCommunityEntityAndUserEntity(communityEntity, userEntity);
 
 	}
+	
+	@Transactional
+	public boolean toggleLike(UserEntity userEntity, CommunityEntity communityEntity) {
+	    // 좋아요 상태 확인
+	    boolean isLiked = boardLikesRepository.existsByCommunityEntityAndUserEntity(communityEntity, userEntity);
+	    
+	    if (isLiked) {
+	        // 좋아요가 이미 등록되어 있다면 삭제(취소)
+	        BoardLikesEntity boardLike = boardLikesRepository.findByCommunityEntityAndUserEntity(communityEntity, userEntity)
+	                .orElseThrow(() -> new RuntimeException("좋아요 정보가 존재하지 않습니다."));
+	        boardLikesRepository.delete(boardLike);
+	        return false; // 좋아요 취소됨
+	    } else {
+	        // 좋아요가 없는 상태라면 새로 등록
+	        BoardLikesEntity boardLike = BoardLikesEntity.toBoardLikesEntity(userEntity, communityEntity);
+	        boardLikesRepository.save(boardLike);
+	        return true; // 좋아요 등록됨
+	    }
+	}
+
 }

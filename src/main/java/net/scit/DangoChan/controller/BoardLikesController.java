@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,28 +26,12 @@ public class BoardLikesController {
 	private final BoardLikesService boardLikesService;
 	private final CommunityRepository communityRepository;
 	private final UserRepository userRepository;
-	
-	// 좋아요 등록
-	@PostMapping("/{boardId}")
-	public ResponseEntity<String> addLike(
-			@PathVariable Integer boardId,
-			@RequestParam Long userId
-			) {
-		// 각각의 Repository를 통해 게시글과 사용자 조회
-		CommunityEntity communityEntity = communityRepository.findById(boardId)
-				.orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-		UserEntity userEntity = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 		
-		boardLikesService.addLike(userEntity, communityEntity);
-		
-		return ResponseEntity.ok("좋아요 등록 완료!");
-	}
-	
 	// 게시글 좋아요 수 조회
 	@GetMapping("/{boardId}/count")
+	@ResponseBody
 	public ResponseEntity<Long> countLikes(
-			@PathVariable Integer boardId
+			@PathVariable(name="boardId") Integer boardId
 			) {
 		CommunityEntity communityEntity = communityRepository.findById(boardId)
 				.orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
@@ -55,7 +40,24 @@ public class BoardLikesController {
 		
 		return ResponseEntity.ok(count);
 	}
-
+	// 토글로 좋아요 등록하기
+	@PostMapping("/{boardId}/toggle")
+	public ResponseEntity<String> toggleLike(
+	        @PathVariable(name="boardId") Integer boardId,
+	        @RequestParam(name="userId") Long userId) {
+	    CommunityEntity communityEntity = communityRepository.findById(boardId)
+	            .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+	    UserEntity userEntity = userRepository.findById(userId)
+	            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+	    
+	    boolean isLiked = boardLikesService.toggleLike(userEntity, communityEntity);
+	    
+	    if (isLiked) {
+	        return ResponseEntity.ok("좋아요 등록 완료!");
+	    } else {
+	        return ResponseEntity.ok("좋아요 취소 완료!");
+	    }
+	}
 
 
 }
