@@ -13,11 +13,20 @@ import net.scit.DangoChan.entity.DeckEntity;
 
 @Repository
 public interface CardRepository extends JpaRepository<CardEntity, Long> {
-    // ✅ 덱 ID에 해당하는 카드 중 랜덤으로 하나 가져오기 (Entity를 반환해야 함!)
-    @Query("SELECT c FROM CardEntity c WHERE c.deckEntity.deckId = :deckId ORDER BY RAND() LIMIT 1")
-    Optional<CardEntity> findCardByDeckId(@Param("deckId") Long deckId);
+
+    // ✅ 새로운 카드 (스터디 레벨 0) 목록 가져오기
+    @Query("SELECT c FROM CardEntity c WHERE c.studyLevel = 0 AND c.deckEntity.deckId = :deckId")
+    List<CardEntity> findNewCardsByDeckId(@Param("deckId") Long deckId);
+
+    // ✅ 복습할 카드 (스터디 레벨 1 또는 2) 목록 가져오기
+    @Query("SELECT c FROM CardEntity c WHERE c.studyLevel IN (1, 2) AND c.deckEntity.deckId = :deckId")
+    List<CardEntity> findReviewCardsByDeckId(@Param("deckId") Long deckId);
+
+    // ✅ 특정 덱에서 studyLevel이 0인 카드 개수 조회
+    int countByDeckEntity_DeckIdAndStudyLevel(Long deckId, int studyLevel);
+
+    // ✅ 특정 덱의 모든 카드 가져오기
+    List<CardEntity> findByDeckEntity_DeckId(Long deckId);
 
 	List<CardEntity> findAllByDeckEntity(Optional<DeckEntity> temp);
-	
-	
 }

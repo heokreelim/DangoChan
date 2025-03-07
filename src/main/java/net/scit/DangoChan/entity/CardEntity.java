@@ -17,6 +17,8 @@ import lombok.ToString;
 import net.scit.DangoChan.dto.CardDTO;
 import net.scit.DangoChan.dto.ExportCardDTO;
 
+import java.time.LocalDate;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,6 +51,9 @@ public class CardEntity {
     @Column(name = "study_level", columnDefinition = "INT default 0")
     private Integer studyLevel;
 
+	@Column(name = "studied_at")
+	private LocalDate studiedAt;
+
 	@ManyToOne
     @JoinColumn(name = "deck_id", referencedColumnName = "deckId", nullable = false)
     private DeckEntity deckEntity;  // cardEntity(N) -> deckEntity(1)
@@ -63,7 +68,8 @@ public class CardEntity {
 				.meaning(cardDTO.getMeaning())				
 				.exampleJp(cardDTO.getExampleJp())				
 				.exampleKr(cardDTO.getExampleKr())				
-				.studyLevel(cardDTO.getStudyLevel())				
+				.studyLevel(cardDTO.getStudyLevel())
+				.studiedAt(cardDTO.getStudiedAt())
 				.build();
 	}
 

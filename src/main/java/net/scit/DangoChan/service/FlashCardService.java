@@ -1,9 +1,11 @@
 package net.scit.DangoChan.service;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -327,29 +329,55 @@ public void deleteCard(List<Long> deletedCardIds) {
 		//AYH end
 		
 	//SYH start
-	// ✅ Entity에서 데이터를 가져와 DTO로 변환
-	public CardDTO getCardByDeckId(Long deckId) {
-		// ✅ DB에서 `CardEntity` 가져오기
-		CardEntity cardEntity = cardRepository.findCardByDeckId(deckId)
-				.orElseThrow(() -> new RuntimeException("해당 덱에 카드가 없습니다."));
+	// ✅ 새로운 카드 (스터디 레벨 0) 중 랜덤 카드 선택
+	public Optional<CardDTO> getRandomNewCard(Long deckId) {
+		List<CardEntity> newCards = cardRepository.findNewCardsByDeckId(deckId);
+		if (newCards.isEmpty()) {
+			return Optional.empty();
+		}
+		CardEntity selectedCard = newCards.get(new Random().nextInt(newCards.size()));
 
-		// ✅ 디버깅 로그 추가
-		System.out.println("🔥 [DEBUG] 랜덤으로 가져온 CardEntity: " + cardEntity);
+		return Optional.of(CardDTO.toDTO(selectedCard));
+	}
 
-		// ✅ Entity → DTO 변환 (CardDTO의 toDTO() 메서드 활용)
-		CardDTO cardDTO = CardDTO.toDTO(cardEntity);
+	// ✅ 복습해야 할 카드 목록 (스터디 레벨 1 또는 2) 가져오기
+	public List<CardEntity> getReviewCards(Long deckId) {
+		return cardRepository.findReviewCardsByDeckId(deckId);
+	}
 
-		// ✅ DTO로 변환된 데이터 확인
-		System.out.println("🔥 [DEBUG] 변환된 CardDTO: " + cardDTO);
+	// ✅ 복습 카드 (스터디 레벨 1 또는 2) 중 랜덤으로 하나 선택
+	public Optional<CardEntity> getRandomReviewCard(Long deckId) {
+		List<CardEntity> reviewCards = cardRepository.findReviewCardsByDeckId(deckId);
+		if (reviewCards.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(reviewCards.get(new Random().nextInt(reviewCards.size())));
+	}
 
-		return cardDTO;
+	// ✅ 스터디 레벨 0인 카드가 남아 있는지 확인
+	public boolean isAllCardsStudied(Long deckId) {
+		return cardRepository.countByDeckEntity_DeckIdAndStudyLevel(deckId, 0) == 0;
+	}
+
+	// ✅ 모든 카드의 studyLevel과 studiedAt 초기화
+	@Transactional
+	public void resetStudyData(Long deckId) {
+		List<CardEntity> cards = cardRepository.findByDeckEntity_DeckId(deckId);
+
+		for (CardEntity card : cards) {
+			card.setStudyLevel(0);  // studyLevel 초기화
+			card.setStudiedAt(null);  // studiedAt 초기화
+		}
+
+		cardRepository.saveAll(cards);
 	}
 
 	@Transactional
     public void updateStudyLevel(Long cardId, Integer studyLevel) {
-		Optional<CardEntity> cardEntity = cardRepository.findById(cardId); //optional로 null 체크
+		Optional<CardEntity> cardEntity = cardRepository.findById(cardId); //카드 조회
 		cardEntity.ifPresent(card -> {
 			card.setStudyLevel(studyLevel);
+			card.setStudiedAt(LocalDate.now());
 			cardRepository.save(card);
 		});
     }
