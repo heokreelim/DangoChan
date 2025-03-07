@@ -48,21 +48,22 @@ CREATE TABLE `deck` (
 -- 카드 테이블
 DROP TABLE IF EXISTS `card`;
 CREATE TABLE `card` (
-    `card_id` BIGINT AUTO_INCREMENT NOT NULL,
-    `deck_id` BIGINT NOT NULL,
+        `card_id` BIGINT AUTO_INCREMENT NOT NULL,
+        `deck_id` BIGINT NOT NULL,
 --     `category_id` BIGINT NOT NULL,
 --     `user_id` BIGINT NOT NULL,
-    `word` VARCHAR(100) NOT NULL,
-    `pos` VARCHAR(50),
-    `meaning` VARCHAR(255),
-    `example_jp` VARCHAR(500),
-    `example_kr` VARCHAR(500),
-    `study_level` INT default 1,
-    PRIMARY KEY (`card_id`),
-    FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE
+        `word` VARCHAR(100) NOT NULL,
+        `pos` VARCHAR(50),
+        `meaning` VARCHAR(255),
+        `example_jp` VARCHAR(500),
+        `example_kr` VARCHAR(500),
+        `study_level` INT default 0,
+        `studied_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (`card_id`),
+        FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE
 -- 	FOREIGN KEY (`category_id`) REFERENCES `deck` (`category_id`) ON delete CASCADE,
 --     FOREIGN KEY (`user_id`) REFERENCES `deck` (`user_id`) ON delete CASCADE
-    );
+);
 
 
 -- 학습시간 기록 테이블
@@ -149,9 +150,9 @@ INSERT INTO `deck` (`deck_id`, `category_id`, `deck_name`) VALUES
 (2, 2, 'Business Expressions');
 
 -- card 테이블 데이터 삽입
-INSERT INTO `card` (`card_id`, `deck_id`, `word`, `pos`, `meaning`, `example_jp`, `example_kr`, `study_level`) VALUES
-(1, 1, '挑戦', '名詞', '도전', '新しい仕事に挑戦する。', '마ㅏ', 3),
-(2, 2, '契約', '名詞', '계약', '新しい契約を締結する。', '아아', 2);
+INSERT INTO `card` (`card_id`, `deck_id`, `word`, `pos`, `meaning`, `example_jp`, `example_kr`, `study_level`, `studied_at`) VALUES
+(1, 1, '挑戦', '名詞', '도전', '新しい仕事に挑戦する。', '마ㅏ', 3, NOW()),
+(2, 2, '契約', '名詞', '계약', '新しい契約を締結する。', '아아', 2, NOW());
 
 
 -- deckStudyTime 테이블 데이터 삽입
