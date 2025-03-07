@@ -70,7 +70,7 @@ address {
 
 /* 텍스트에 Noto Sans KR 글꼴 적용 */
 body {
-    font-family: 'Noto Sans KR', 'Shippori Mincho B1',sans-serif;
+    font-family: 'Noto Sans KR', 'Shippori Mincho B1', sans-serif;
     font-size: 16px;
     color: #121511;
     word-break: keep-all;
@@ -78,15 +78,15 @@ body {
     margin: 0 auto;
 }
 
-
 /* 기본 레이아웃 */
 .page-wrap {
     width: 100%;
     height: 100vh;
     display: flex;
 }
+
 /* fragment */
-/* nav */ 
+/* nav */
 .nav {
     width: calc(100% / 6);
 }
@@ -100,9 +100,11 @@ body {
     flex-direction: column;
     align-items: center;
 }
-.nav .nav-bg{
+
+.nav .nav-bg {
     padding: 20px 12px;
 }
+
 .nav .nav-bg>div {
     margin: 8px 0;
 }
@@ -110,50 +112,55 @@ body {
 .nav .logo {
     margin: 12px 0;
 }
+
 .nav .profile-wrap {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.nav .profile-wrap > .profile-picture {
+
+.nav .profile-wrap>.profile-picture {
     width: 175px;
     height: 175px;
     border-radius: 50%;
     background-color: #FF9EBE;
     margin: 0 auto;
 }
-.nav .profile-wrap>.profile-picture>a{
+
+.nav .profile-wrap>.profile-picture a {
     position: relative;
     width: 100%;
     display: block;
 }
 
 .nav .profile-wrap>.profile-picture a::after {
-        content: "";
-        display: block;
-        width: 175px;
-        height: 175px;
-        border-radius: 50%;
-        background-color: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        top: 0;
-        left: 0;
-        text-align: center;
-        filter: blur(3px);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-.nav .profile-wrap > .profile-picture a:hover::after {
+    content: "";
+    display: block;
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    filter: blur(3px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav .profile-wrap>.profile-picture a:hover::after {
     opacity: 1;
 }
-.nav .profile-wrap>.profile-picture>a img {
+
+.nav .profile-wrap>.profile-picture a img {
     width: 175px;
     height: 175px;
     border-radius: 50%;
     overflow: hidden;
 }
 
-.nav .profile-wrap > .nickname {
+.nav .profile-wrap>.nickname {
     width: 255px;
     height: auto;
     background-color: #B4D8E4;
@@ -164,7 +171,8 @@ body {
     font-size: 1.15em;
     font-weight: 600;
 }
-/* nav 가 있는 페이지에 header 는 .right-wrap   */
+
+/* nav가 있는 페이지에 header는 .right-wrap */
 .right-wrap {
     width: 100%;
     display: flex;
@@ -182,7 +190,6 @@ body {
 .right-wrap .header-bg {
     width: 100%;
     position: relative;
-
 }
 
 .right-wrap .header-bg>.gnb-wrap {
@@ -194,6 +201,7 @@ body {
 .statistics-wrap>.statistics-list>li>p {
     font-size: 0.85em;
 }
+
 /* 업적 디자인 */
 .achievement-notice {
     text-align: center;
@@ -226,7 +234,6 @@ body {
     padding: 5px;
 }
 
-
 .nav-calendar th,
 .mypage-calendar th {
     background-color: #FDF4F1;
@@ -238,12 +245,12 @@ body {
 }
 
 /* header */
-/* nav 가 없는 페이지에 header 는 .header  */
-
+/* nav가 없는 페이지에 header는 .header */
 .header {
     width: 100%;
 }
-.header-bg{
+
+.header-bg {
     width: 100%;
     background-color: #FCFCFC;
     border-bottom: 1px solid #E0E0E0;
@@ -264,10 +271,12 @@ body {
     margin-right: 18px;
     margin-top: 18px;
 }
+
 .gnb-list>li>a>i {
     font-size: 1.75em;
     line-height: 1.75;
 }
+
 .gnb-list>li>a>i:hover {
     color: #007BFF;
     transition: 0.5s;
@@ -277,9 +286,13 @@ body {
 .container {
     flex-grow: 1;
     overflow-y: scroll;
+    overflow-x: hidden;
     padding: 12px;
     background-color: #F3F3F3;
 }
+
+/* 서비스 영역 수정 */
+/* 서비스 영역을 flex 컨테이너 (세로 방향)로 설정 */
 .service-wrap {
     background-color: #FCFCFC;
     margin: 0 auto;
@@ -287,10 +300,12 @@ body {
     box-shadow: 0 0 5px #121511;
     height: 100%;
     position: relative;
-    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-/* category 영역 */
+/* 카테고리 영역 */
 /* no-category */
 .categoryEmpty {
     padding-top: 50px;
@@ -298,6 +313,8 @@ body {
     font-weight: bold;
     text-align: center;
 }
+
+/* plusBtn addCategoryBtn */
 .plusBtn,
 .addCategoryBtn {
     font-size: 3em;
@@ -308,46 +325,44 @@ body {
     border-radius: 33px;
     border: none;
     box-shadow: 0 0 3px #121511;
-    position: absolute;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    /* 중앙 정렬을 위한 flex 설정 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* 기본 input 스타일 제거 */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+    display: block;
+    margin: 20px auto;
+    transform: scale(1);
+    margin-top: 30px;
 }
-.plusBtn,
+
+.plusBtn:hover,
 .addCategoryBtn:hover {
-    font-size: 3.08em;
+    transform: scale(1.05);
     box-shadow: 0 0 8px #121511;
-    transform: translateX(-50%) scale(1.05);
     cursor: pointer;
 }
-/* category 가 1개 이상 존재할 때*/
+
+.category-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+/* ===================== category 요소 ==================== */
 .category {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: lemonchiffon;
-    width: calc(100% );
+    width: 100%;
     height: 55px;
     padding: 0 12px;
 }
 
-.category> .category-left {
+.category>.category-left {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 22px;
 }
+
 .category>.category-right {
     display: flex;
     justify-content: center;
@@ -355,9 +370,15 @@ body {
     gap: 22px;
 }
 
+.category .category-right i.fa-chevron-up,
+.category .category-right i.fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
 .category i {
     font-size: 1.45em;
 }
+
 .category a>i:hover {
     transition: 0.5s;
     transform: scale(1.05);
@@ -368,13 +389,17 @@ body {
     padding: 8px;
 }
 
-/* deck */
+/*===================== deck 영역 ===================*/
+.deckList {
+    display: none;
+}
 
 .deckList>li {
     display: block;
     margin: 8px 0;
     width: calc(100% * 4 / 5);
 }
+
 .deck-wrap {
     border: 1px solid #121511;
     border-radius: 33px;
@@ -386,16 +411,17 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .deck-wrap>.deck-top span b {
     font-size: 1.38em;
     font-weight: 700;
 }
-.deck-wrap>.deck-top>a>i {
+
+.deck-wrap>.deck-top a>i {
     font-size: 1.45em;
-} 
+}
 
-
-.deck-wrap>.deck-top>a>i:hover {
+.deck-wrap>.deck-top a>i:hover {
     transition: 0.5s;
     transform: scale(1.05);
     cursor: pointer;
@@ -406,6 +432,7 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .deck-wrap>.deck-bottom .icon-box {
     display: flex;
     justify-content: center;
@@ -413,7 +440,7 @@ body {
     gap: 6px;
 }
 
-/* 진행도 원  */
+/* ============= 진행도 원 ============= */
 .percentage-box {
     position: relative;
     width: 150px;
@@ -440,37 +467,32 @@ body {
     fill: none;
     stroke-width: 10;
     stroke: #f66;
-    /* 기본값, JS에서 동적으로 변경됨 */
     stroke-dasharray: 376.8;
-    /* 2πr (r=60) */
     stroke-dashoffset: 376.8;
     transition: stroke-dashoffset 0.5s ease, stroke 0.5s ease;
 }
+
 /* dropdown */
-/* 드롭다운 컨테이너 */
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* 아이콘 스타일(예시) */
 .menu-icon {
     cursor: pointer;
     font-size: 20px;
 }
 
-/* 메뉴 박스 기본 숨김 상태 */
 .dropdown-menu {
     display: none;
     position: absolute;
     right: 0;
     top: 100%;
-    /* 아이콘 바로 아래쪽에 배치 */
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
     min-width: 100px;
-    /* 메뉴 폭 조정 */
+    min-height: 100px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     z-index: 999;
 }
@@ -482,20 +504,21 @@ body {
 
 .dropdown-menu li a {
     display: block;
-    padding: 8px 12px;
     color: #333;
     text-decoration: none;
+} 
+.dropdown-menu li button{
+    padding: 8px 12px;
+    display: block;
 }
 
 .dropdown-menu li a:hover {
     background-color: #f0f0f0;
 }
 
-/* 메뉴가 열릴 때 적용할 클래스 */
-.show {
-    display: block;
+.dropdown-menu.show {
+    display: block !important;
 }
-
 
 /* modal */
 .modal_adding_category,
@@ -509,16 +532,11 @@ body {
 .modal_adding_card2 {
     position: absolute;
     display: none;
-
     justify-content: center;
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
-
-
     background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -532,7 +550,6 @@ body {
 .editing_card,
 .adding_card2 {
     position: absolute;
-    /* 모달을 화면가운데 놓기위함. */
     top: 50%;
     width: 50%;
     height: 50%;
@@ -540,9 +557,5 @@ body {
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
-    /* 모듈창열었을때 위치설정 가운데로 */
     transform: translateY(-50%);
-
-
 }

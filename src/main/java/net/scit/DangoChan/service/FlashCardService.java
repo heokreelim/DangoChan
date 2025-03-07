@@ -47,6 +47,7 @@ public class FlashCardService {
 	 */
 	@Transactional
 	public void insertCategory(CategoryDTO categoryDTO) {
+		
 		// 1) 수정하려는 카테고리가 있는지 확인
 				Optional<UserEntity> temp = userRepository.findById(categoryDTO.getUserId());
 				
@@ -102,6 +103,8 @@ public List<CategoryDTO> getCategoryListByUser(Long userId) {
     			
     	// 3) deckEntityList foreach 문 만들기 
     			for (DeckEntity deckEntity : deckEntityList) {
+    				// 각 deckEntity에서 deckId를 get => DeckInfoDTO의 deckId 값
+    				Long deckId = deckEntity.getDeckId();
     				// 각 deckEntity에서 deckName을 get => DeckInfoDTO의 deckName 값
     				String deckName = deckEntity.getDeckName();
     				// deckEntity의 cardEntityList의 size를 get => DeckInfoDTO의 deckCardCount 값
@@ -135,7 +138,7 @@ public List<CategoryDTO> getCategoryListByUser(Long userId) {
     				}
     				
     				// DeckInfoDTO.toDTO()를 호출하여 DeckInfoDTO 객체 생성 후 deckInfoDTOList에 추가
-    				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, cardStudyRate);
+    				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckId, deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, cardStudyRate);
     				deckInfoDTOList.add(deckInfoDTO);
     			} // deckEntityList foreach 문 끝 -----
     			
@@ -145,6 +148,12 @@ public List<CategoryDTO> getCategoryListByUser(Long userId) {
     	    
     	    return categoryList;
     	}
+			
+		// categoryId 를 전달받아 해당 카테고리를 DB에서 삭제
+			public void deleteCategory(Long categoryId) {
+				categoryRepository.deleteById(categoryId);
+			}
+
 
 		//PJB end
 	
@@ -216,67 +225,12 @@ public void updateDeck(DeckDTO deckDTO) {
 		//AYH end
 			
 		//PJB start
-			
-// userId 를 전달하여 해당 유저가 소유한 Category 를 리스트로 반환
-//public List<CategoryDTO> getCategoryListByUser(Long userId) {
-//	List<CategoryEntity> temp = categoryRepository.findAllByUserEntity_UserId(userId);
-//	
-//	log.info("==========={}",temp.size());
-//List<CategoryDTO> categoryList = new ArrayList<>();
-//    
-//
-//for (CategoryEntity categoryEntity : temp) {
-//	// 1) categoryEntity 안에 있는 deckEntityList를 get
-//			List<DeckEntity> deckEntityList = categoryEntity.getDeckEntityList();
-//			
-//	// 2) List<DeckInfoDTO> deckInfoDTOList 객체를 new로 하나 만들어 지역변수에 할당
-//			List<DeckInfoDTO> deckInfoDTOList = new ArrayList<>();
-//			
-//	// 3) deckEntityList foreach 문 만들기 
-//			for (DeckEntity deckEntity : deckEntityList) {
-//				// 각 deckEntity에서 deckName을 get => DeckInfoDTO의 deckName 값
-//				String deckName = deckEntity.getDeckName();
-//				// deckEntity의 cardEntityList의 size를 get => DeckInfoDTO의 deckCardCount 값
-//				List<CardEntity> cardEntityList = deckEntity.getCardEntityList();
-//				Integer deckCardCount = cardEntityList.size();
-//				
-//				// studiedCardCount 각 값 선언
-//				Integer studiedCardCountOk = 0;
-//				Integer studiedCardCountYet = 0;
-//				Integer studiedCardCountNo = 0;
-//				
-//				// deckEntity의 cardEntityList foreach 문
-//				for (CardEntity cardEntity : cardEntityList) {
-//					// 각 카드의 studyLevel 값에 따라 카운트 증가 (가정: 3 = ○, 2 = △, 1 = ×)
-//					Integer studyLevel = cardEntity.getStudyLevel();
-//					if (studyLevel != null) {
-//						if (studyLevel == 3) {
-//							studiedCardCountOk++;
-//						} else if (studyLevel == 2) {
-//							studiedCardCountYet++;
-//						} else if (studyLevel == 1) {
-//							studiedCardCountNo++;
-//						}
-//					}
-//				} // deckEntity의 cardEntityList foreach 문 끝 ---
-//				
-//				// (studiedCardCountOk, studiedCardCountYet, studiedCardCountNo)의 합을 deckCardCount으로 나눈 값을 구함 => DeckInfoDTO의 cardStudyRate 값
-//				Double cardStudyRate = 0.0;
-//				if (deckCardCount > 0) {
-//					cardStudyRate = (studiedCardCountOk + studiedCardCountYet + studiedCardCountNo) / (double) deckCardCount;
-//				}
-//				
-//				// DeckInfoDTO.toDTO()를 호출하여 DeckInfoDTO 객체 생성 후 deckInfoDTOList에 추가
-//				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, cardStudyRate);
-//				deckInfoDTOList.add(deckInfoDTO);
-//			} // deckEntityList foreach 문 끝 -----
-//			
-//			// CategoryDTO.toDTO()를 호출할 때 deckInfoDTOList를 전달하여 CategoryDTO 객체 생성 후 categoryList에 추가
-//			categoryList.add(CategoryDTO.toDTO(categoryEntity, deckInfoDTOList));
-//		}
-//	    
-//	    return categoryList;
-//	}
+		// deckId 를 전달하여 해당 덱을 DB에서 삭제
+			public void deleteDeck(Long deckId) {
+				
+				deckRepository.deleteById(deckId);
+			}
+
 		//PJB end
 	
 	//deck end
@@ -380,6 +334,7 @@ public void updateCards(List<ExportCardDTO> cards) {
 			cardRepository.save(card);
 		});
     }
+
 
 
     //SYH end
