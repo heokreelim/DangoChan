@@ -4,6 +4,7 @@ package net.scit.DangoChan.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -286,24 +287,42 @@ public List<ExportCardDTO> getCardsByDeckId(Long deckId) {
  */
 @Transactional
 public void updateCards(List<ExportCardDTO> cards) {
-	for (ExportCardDTO card : cards) {
-        Optional<CardEntity> temp = cardRepository.findById(card.getCardId());
-        
-        if (!temp.isPresent()) {
-			return;
+	List<ExportCardDTO> newCards = cards.stream()
+		    .filter(card -> card.getCardId() == null)
+		    .collect(Collectors.toList());
+
+		List<ExportCardDTO> existingCards = cards.stream()
+		    .filter(card -> card.getCardId() != null)
+		    .collect(Collectors.toList());
+
+		// 새 카드 저장
+		for (ExportCardDTO card : newCards) {
+		    Optional<DeckEntity> tempDeck = deckRepository.findById(card.getDeckId());
+		    tempDeck.ifPresent(deckEntity -> cardRepository.save(CardEntity.toEntity(card, deckEntity)));
 		}
-		// 2) 있으면 dto -> entity로 변환
-		// 3) 이름을 변경하여 데이터 베이스에 저장한다
-		CardEntity entity = temp.get();
-		entity.setWord(card.getWord());
-		entity.setPos(card.getPos());
-		entity.setMeaning(card.getMeaning());
-		entity.setExampleJp(card.getExampleJp());
-		entity.setExampleKr(card.getExampleKr());
-		System.out.println(entity.toString());
-		cardRepository.save(entity);
-    }
+
+		// 기존 카드 업데이트
+		for (ExportCardDTO card : existingCards) {
+		    Optional<CardEntity> temp = cardRepository.findById(card.getCardId());
+		    temp.ifPresent(entity -> {
+		        entity.setWord(card.getWord());
+		        entity.setPos(card.getPos());
+		        entity.setMeaning(card.getMeaning());
+		        entity.setExampleJp(card.getExampleJp());
+		        entity.setExampleKr(card.getExampleKr());
+		        cardRepository.save(entity);
+		    });
+		}
 }
+
+
+public void deleteCard(List<Long> deletedCardIds) {
+	for (Long cardId : deletedCardIds) {
+		System.out.println(cardId);
+		cardRepository.deleteById(cardId);
+	}
+}
+
 
 		//AYH end
 		

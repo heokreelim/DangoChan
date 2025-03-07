@@ -22,6 +22,8 @@ public class ExportCardDTO {
     private String meaning;
     private String exampleJp;
     private String exampleKr;
+	private Long deckId;
+	private Integer studyLevel;
 	
     // Entity --> DTO
     public static ExportCardDTO toDTO(CardEntity cardEntity) {

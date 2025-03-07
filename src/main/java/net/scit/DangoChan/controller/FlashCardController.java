@@ -26,6 +26,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CardDTO;
+import net.scit.DangoChan.dto.CardUpdateRequest;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.dto.DeckAndCardsRequest;
 import net.scit.DangoChan.dto.DeckDTO;
@@ -201,12 +202,24 @@ public class FlashCardController {
 	// 덱 편집 안의 단어 수정 내역 저장
 	@ResponseBody
     @PutMapping("/updateCards")
-    public String updateCards(@RequestBody List<ExportCardDTO> cards) {
-    	for (ExportCardDTO exportCardDTO : cards) {
-			System.out.println(exportCardDTO.toString());
-		}
-        flashCardService.updateCards(cards);
-        return "카드 목록이 성공적으로 수정되었습니다.";
+    public String updateCards(@RequestBody CardUpdateRequest request) {
+		List<ExportCardDTO> updatedCards = request.getUpdatedCards();
+	    List<Long> deletedCardIds = request.getDeletedCardIds();
+	    
+	 // 수정된 카드 출력 (디버깅용)
+	    for (ExportCardDTO exportCardDTO : updatedCards) {
+	        System.out.println("수정된 카드: " + exportCardDTO.toString());
+	    }
+
+	    // 삭제할 카드 ID 출력 (디버깅용)
+	    if (deletedCardIds != null && !deletedCardIds.isEmpty()) {
+	        System.out.println("삭제할 카드 ID 목록: " + deletedCardIds);
+	        flashCardService.deleteCard(deletedCardIds);
+	    }
+
+	    flashCardService.updateCards(updatedCards);
+	    return "카드 목록이 성공적으로 수정되었습니다.";
+	    
     }
 	
 	//AYH end
