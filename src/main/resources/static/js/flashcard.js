@@ -98,7 +98,7 @@ $(document).ready(function () {
         $(".answerBtn").show();
         $(".backBtn").css("display", "none");
 
-        let studyLevel = 1; // 기본값
+        let studyLevel = 0; // 기본값
         if ($(this).hasClass("circleBtn")) studyLevel = 3; // ○
         if ($(this).hasClass("triangleBtn")) studyLevel = 2; // △
         if ($(this).hasClass("xBtn")) studyLevel = 1; // ✕

@@ -58,7 +58,7 @@ CREATE TABLE `card` (
         `example_jp` VARCHAR(500),
         `example_kr` VARCHAR(500),
         `study_level` INT default 0,
-        `studied_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+        `studied_at` DATETIME,
         PRIMARY KEY (`card_id`),
         FOREIGN KEY (`deck_id`) REFERENCES `deck` (`deck_id`) ON delete CASCADE
 -- 	FOREIGN KEY (`category_id`) REFERENCES `deck` (`category_id`) ON delete CASCADE,
