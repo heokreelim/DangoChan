@@ -28,5 +28,9 @@ public interface CardRepository extends JpaRepository<CardEntity, Long> {
     // ✅ 특정 덱의 모든 카드 가져오기
     List<CardEntity> findByDeckEntity_DeckId(Long deckId);
 
+
+
+
+
 	List<CardEntity> findAllByDeckEntity(Optional<DeckEntity> temp);
 }

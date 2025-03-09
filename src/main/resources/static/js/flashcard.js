@@ -98,10 +98,18 @@ $(document).ready(function () {
 
     // ✅ 스터디 데이터 초기화 함수
     function resetStudyData(deckId) {
+        let studyTime = $("#mainTimer").text(); // 타이머에서 시간 가져오기 (MM:SS 형식)
+
+        // "00:05" → 5초로 변환
+        let timeParts = studyTime.split(":");
+        let totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+
+        console.log("📌 서버로 보낼 데이터:", { deckId, studyTime: totalSeconds });
+
         $.ajax({
             url: "/flashcard/resetStudyData",
             method: "POST",
-            data: { deckId: deckId },
+            data: { deckId: deckId, studyTime: totalSeconds},
             success: function (response) {
                 console.log("✅ 스터디 데이터 초기화 성공:", response);
                 alert("🎉 모든 단어 학습 완료! 스터디 데이터를 초기화합니다.");

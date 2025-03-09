@@ -122,6 +122,7 @@ public class FlashCardController {
         DeckDTO savedDeckId = flashCardService.insertDeck(deckDTO);
         for (CardDTO cardDTO : cardDTOList) {
         	cardDTO.setDeckId(savedDeckId.getDeckId()); // 백엔드에서 저장 후 ID 업데이트 필요
+			cardDTO.setStudyLevel(0);
             System.out.println("▶ 카드 저장: " + cardDTO);
             flashCardService.insertCard(cardDTO);
         }
@@ -280,11 +281,13 @@ public class FlashCardController {
 	}
 
 	@PostMapping("/resetStudyData")
-	public ResponseEntity<String> resetStudyData(@RequestParam Long deckId) {
+	public ResponseEntity<String> resetStudyData(@RequestParam(name = "deckId") Long deckId,
+												 @RequestParam Integer studyTime) {
 		boolean allStudied = flashCardService.isAllCardsStudied(deckId);
 
 		if (allStudied) {
 			flashCardService.resetStudyData(deckId);
+			deckStudyTimeService.saveStudyTime(deckId, studyTime);
 			return ResponseEntity.ok("✅ 모든 단어 학습 완료! 스터디 데이터 초기화됨.");
 		} else {
 			return ResponseEntity.ok("📌 아직 학습이 완료되지 않음.");
