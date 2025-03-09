@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/login_join_tmp.css}">
     <title>로그인 페이지</title>
+    <script>
+        function redirectToLineLogin() {
+            window.location.href = "/oauth2/authorization/line";
+        }
+
+        function redirectToGoogleLogin() {
+            window.location.href = "/oauth2/authorization/google";
+        }
+    </script>
 </head>
 <body>
 	<div th:replace="fragment/head"></div>
@@ -44,10 +53,10 @@
                     </ul>
                     <ul class="social-login">
                         <li>
-                            <button class="google">google</button>
+                            <button class="google" onclick="redirectToGoogleLogin()">google</button>
                         </li>
                         <li>
-                            <button class="line">line</button>
+                            <button class="line" onclick="redirectToLineLogin()">line</button>
                         </li>
                     </ul>
                 </div>
