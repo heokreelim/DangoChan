@@ -11,8 +11,12 @@ import net.scit.DangoChan.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	// LHR start
 	boolean existsByEmail(String email);
+	
+	boolean existsByAuthTypeAndProviderId(String authType, String providerId);
 
 	Optional<UserEntity> findByEmail(String email);
+	
+	Optional<UserEntity> findByAuthTypeAndProviderId(String authType, String providerId);
 	// LHR end
 	
 	// PJB start

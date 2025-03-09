@@ -68,7 +68,7 @@ public class UserController {
 		public String registerProc(@ModelAttribute UserDTO dto) {
 			String returnPage;
 			
-			dto.setAuthType("Local");
+			dto.setAuthType("LOCAL");
 			
 			if (userService.registerUser(dto))
 			{
