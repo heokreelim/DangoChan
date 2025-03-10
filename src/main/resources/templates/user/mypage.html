@@ -14,6 +14,7 @@
     </div>
     <div class="inner">
         <div class="profile-wrap">
+            <input type="hidden" name="userId" id="userId" th:value="${userId}">
             <div class="profile-picture">
                 <a href="#void" id="changePictureBtn" class="changePictureBtn">
                     프로필 사진이 출력됩니다.
@@ -21,8 +22,8 @@
                 </a>
             </div> <!-- profile-picture end -->
             <div class="nickname">
-                <p class="userName" id="userName" sec:authentication="name">
-                    유저 닉네임
+                <p class="userName" id="userName" >
+                    [[${#authentication.principal.userName}]]
                 </p>
                 <i class="fa-regular fa-pen-to-square"></i>
             </div> <!-- nickname end -->
@@ -32,7 +33,7 @@
 
             </div>
             <div class="achievement-notice">
-                <h4><b>userName</b>님의 최근 달성한 업적</h4>
+                <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
                 <ul class="achievement-list">
                     <li>
                         <p>🏅 7일 연속 출석으로 업적 달성!</p>
@@ -47,7 +48,11 @@
             </div>
         </div>
         <div class="calendar-wrap">
-            <div id="currentMonth" class="mypage-currentMonth"></div>
+            <div class="calendar-controls">
+                <button id="prevMonth" class="calendar-btn"><i class="fa-solid fa-caret-left"></i></button>
+                <div id="currentMonth" class="mypage-currentMonth"></div>
+                <button id="nextMonth" class="calendar-btn"><i class="fa-solid fa-caret-right"></i></button>
+            </div>
             <table class="mypage-calendar">
                 <thead>
                     <tr>

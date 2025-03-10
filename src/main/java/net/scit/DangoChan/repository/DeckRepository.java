@@ -1,6 +1,7 @@
 package net.scit.DangoChan.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,9 +19,9 @@ public interface DeckRepository extends JpaRepository<DeckEntity, Long> {
 
 	
 	// PJB start
-	 
-	// CategoryEntity의 categoryId와 userEntity의 userId를 기준으로 덱 리스트 조회
-//	    List<DeckEntity> findAllByCategoryEntity_CategoryIdAndCategoryEntity_UserEntity_UserId(Long categoryId, Long userId);
+	// userId를 전달받아 해당 유저가 만든 Deck의 deckId 조회
+		@EntityGraph(attributePaths = {"categoryEntity", "cardEntityList"})
+	    List<DeckEntity> findByCategoryEntity_UserEntity_UserId(Long userId);		
 	// PJB end
 
 }

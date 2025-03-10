@@ -33,4 +33,15 @@ public interface CardRepository extends JpaRepository<CardEntity, Long> {
 
 
 	List<CardEntity> findAllByDeckEntity(Optional<DeckEntity> temp);
+	
+	// PJB start
+	// studied_at 날짜 기준으로 study_level이 3인 카드의 개수
+	@Query("SELECT DATE(c.studiedAt), COUNT(c) " +
+		       "FROM CardEntity c " +
+		       "WHERE c.deckEntity.categoryEntity.userEntity.userId = :userId " +
+		       "AND c.studyLevel = 3 " +
+		       "GROUP BY DATE(c.studiedAt)")
+		List<Object[]> findDailyLearnedWords(@Param("userId") Long userId);
+
+	// PJB end
 }
