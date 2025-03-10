@@ -529,8 +529,9 @@ body {
     display: block;
     color: #333;
     text-decoration: none;
-} 
-.dropdown-menu li button{
+}
+
+.dropdown-menu li button {
     padding: 8px 12px;
     display: block;
 }
@@ -544,15 +545,8 @@ body {
 }
 
 /* modal */
-.modal_adding_category,
-.modal_editing_category,
-.modal_adding_menu,
-.modal_adding_deck,
-.modal_editing_deck,
-.modal_importing_deck,
-.modal_adding_card,
-.modal_editing_card,
-.modal_adding_card2 {
+/* 모달 외외부 */
+.modal {
     position: absolute;
     display: none;
     justify-content: center;
@@ -563,22 +557,33 @@ body {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.adding_category,
-.editing_category,
-.adding_menu,
-.adding_deck,
-.editing_deck,
-.importing_deck,
-.adding_card,
-.editing_card,
-.adding_card2 {
+/* 모달 내내부 */
+.modal-content {
     position: absolute;
     top: 50%;
     width: 50%;
-    height: 50%;
+    height: 60%;
     margin: auto;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
     transform: translateY(-50%);
+}
+
+/* 파일 업로드 숨기기 */
+#importFile {
+    display: none;
+}
+
+.table {
+    width: 100%;
+    overflow: auto;
+}
+
+
+.modal-content .card_list,
+.edit_card_list {
+    white-space: nowrap;
+    border-collapse: collapse;
+    border: 1px solid #555;
 }
