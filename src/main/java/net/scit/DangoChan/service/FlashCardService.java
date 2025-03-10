@@ -343,19 +343,19 @@ public void deleteCard(List<Long> deletedCardIds) {
 		return Optional.of(CardDTO.toDTO(selectedCard));
 	}
 
-	// ✅ 복습해야 할 카드 목록 (스터디 레벨 1 또는 2) 가져오기
-	public List<CardEntity> getReviewCards(Long deckId) {
-		return cardRepository.findReviewCardsByDeckId(deckId);
-	}
-
-	// ✅ 복습 카드 (스터디 레벨 1 또는 2) 중 랜덤으로 하나 선택
-	public Optional<CardEntity> getRandomReviewCard(Long deckId) {
-		List<CardEntity> reviewCards = cardRepository.findReviewCardsByDeckId(deckId);
-		if (reviewCards.isEmpty()) {
-			return Optional.empty();
-		}
-		return Optional.of(reviewCards.get(new Random().nextInt(reviewCards.size())));
-	}
+//	// ✅ 복습해야 할 카드 목록 (스터디 레벨 1 또는 2) 가져오기
+//	public List<CardEntity> getReviewCards(Long deckId) {
+//		return cardRepository.findReviewCardsByDeckId(deckId);
+//	}
+//
+//	// ✅ 복습 카드 (스터디 레벨 1 또는 2) 중 랜덤으로 하나 선택
+//	public Optional<CardEntity> getRandomReviewCard(Long deckId) {
+//		List<CardEntity> reviewCards = cardRepository.findReviewCardsByDeckId(deckId);
+//		if (reviewCards.isEmpty()) {
+//			return Optional.empty();
+//		}
+//		return Optional.of(reviewCards.get(new Random().nextInt(reviewCards.size())));
+//	}
 
 	// ✅ 스터디 레벨 0인 카드가 남아 있는지 확인
 	public boolean isAllCardsStudied(Long deckId) {

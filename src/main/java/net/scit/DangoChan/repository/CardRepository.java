@@ -19,8 +19,8 @@ public interface CardRepository extends JpaRepository<CardEntity, Long> {
     List<CardEntity> findNewCardsByDeckId(@Param("deckId") Long deckId);
 
     // ✅ 복습할 카드 (스터디 레벨 1 또는 2) 목록 가져오기
-    @Query("SELECT c FROM CardEntity c WHERE c.studyLevel IN (1, 2) AND c.deckEntity.deckId = :deckId")
-    List<CardEntity> findReviewCardsByDeckId(@Param("deckId") Long deckId);
+//    @Query("SELECT c FROM CardEntity c WHERE c.studyLevel IN (1, 2) AND c.deckEntity.deckId = :deckId")
+//    List<CardEntity> findReviewCardsByDeckId(@Param("deckId") Long deckId);
 
     // ✅ 특정 덱에서 studyLevel이 0인 카드 개수 조회
     int countByDeckEntity_DeckIdAndStudyLevel(Long deckId, int studyLevel);

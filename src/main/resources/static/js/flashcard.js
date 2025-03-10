@@ -1,6 +1,7 @@
 $(document).ready(function () {
     let studyTimerInterval;
     let studyTotalSeconds = 0;
+    let isAnswerViewed = false; // ✅ 정답을 본 적이 있는지 확인하는 변수 추가
 
     // ✅ 백엔드에서 전달된 deckId 가져오기
     let deckId = $("#deckId").val();
@@ -62,6 +63,7 @@ $(document).ready(function () {
         $(".flashcard-wrap").addClass("show-answer").removeClass("hide-answer");
         $(".answerBtn").hide();
         $(".backBtn").css("display", "flex");
+        isAnswerViewed = true; // ✅ 정답을 본 상태로 변경
     };
 
     // 🔄 새로운 단어로 변경하는 함수
@@ -80,7 +82,6 @@ $(document).ready(function () {
 
     // ✅ study_level 업데이트 함수
     function updateStudyLevel(cardId, studyLevel) {
-
         console.log("📌 서버로 보낼 데이터:", { cardId, studyLevel }); // 🔥 콘솔에 데이터 출력
 
         $.ajax({
@@ -96,7 +97,6 @@ $(document).ready(function () {
         });
     }
 
-    // ✅ 스터디 데이터 초기화 함수
     function resetStudyData(deckId) {
         let studyTime = $("#mainTimer").text(); // 타이머에서 시간 가져오기 (MM:SS 형식)
 
@@ -121,7 +121,7 @@ $(document).ready(function () {
         });
     }
 
-// ✅ ○ △ X 버튼 클릭 시 새로운 단어 가져오기 + 앞면 전환 + study_level 업데이트
+    // ✅ ○ △ X 버튼 클릭 시 새로운 단어 가져오기 + 앞면 전환 + study_level 업데이트
     $(".circleBtn, .triangleBtn, .xBtn").click(function () {
         $(".flashcard-wrap").removeClass("show-answer").addClass("hide-answer");
         $(".answerBtn").show();
@@ -135,7 +135,6 @@ $(document).ready(function () {
         // 🔥 study_level 업데이트 요청
         let cardId = $(".word-box span").attr("data-card-id"); // 카드 ID 가져오기
         updateStudyLevel(cardId, studyLevel);
-
         // 🔥 studyTimer 리셋 추가
         resetStudyTimer();
 
@@ -154,32 +153,38 @@ $(document).ready(function () {
             });
     });
 
-    // ✅ goHome()을 전역 함수로 선언
+    // ✅ goHome()을 수정하여 answerBtn이 눌렸을 때만 저장되도록 함
     window.goHome = function () {
         let studyTime = $("#mainTimer").text(); // 타이머에서 시간 가져오기 (MM:SS 형식)
-
         // "00:05" → 5초로 변환
         let timeParts = studyTime.split(":");
         let totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
 
         console.log("📌 서버로 보낼 데이터:", { deckId, studyTime: totalSeconds });
 
-        $.ajax({
-            url: "/flashcard/saveStudyTime",
-            method: "POST",
-            data: { deckId: deckId, studyTime: totalSeconds },
-            success: function (response) {
-                console.log("✅ study_time 저장 완료:", response);
-                window.location.href = "/home"; // 저장 후 홈으로 이동
-            },
-            error: function (error) {
-                console.error("❌ study_time 저장 실패:", error);
-            }
-        });
+        if (isAnswerViewed) {
+            // ✅ 정답을 확인한 경우에만 학습 시간 저장 후 이동
+            $.ajax({
+                url: "/flashcard/saveStudyTime",
+                method: "POST",
+                data: { deckId: deckId, studyTime: totalSeconds },
+                success: function (response) {
+                    console.log("✅ study_time 저장 완료:", response);
+                    window.location.href = "/home"; // 저장 후 홈으로 이동
+                },
+                error: function (error) {
+                    console.error("❌ study_time 저장 실패:", error);
+                    window.location.href = "/home"; // 저장 실패해도 홈으로 이동
+                }
+            });
+        } else {
+            // ✅ 정답을 보지 않았다면 저장 없이 바로 이동
+            console.log("⚠️ 정답을 확인하지 않았으므로 저장 없이 이동합니다.");
+            window.location.href = "/home";
+        }
     };
 
 
-    // 타이머 실행
     startTimer("mainTimer");
     startTimer("studyTimer");
 });
