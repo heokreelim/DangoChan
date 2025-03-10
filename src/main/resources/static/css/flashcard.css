@@ -81,14 +81,16 @@ body {
 }
 
 /* ✅ 카드 앞면과 뒷면 */
-.front, .back {
+.front,
+.back {
     width: 100%;
     height: 100%;
     border-radius: 10px;
     position: absolute;
     top: 0;
     left: 0;
-    backface-visibility: hidden; /* 텍스트 반전 방지 */
+    backface-visibility: hidden;
+    /* 텍스트 반전 방지 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,22 +129,26 @@ input {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around; /* 요소들이 고르게 배치되도록 설정 */
+    justify-content: space-around;
+    /* 요소들이 고르게 배치되도록 설정 */
     align-items: center;
-    gap: 10px; /* 요소들 사이 간격 */
+    gap: 10px;
+    /* 요소들 사이 간격 */
 }
 
 /* ✅ 플래시카드 뒷면 레이아웃 */
 .content {
     display: flex;
     align-items: center;
-    gap: 20px; /* 단어와 정보 사이 간격 */
+    gap: 20px;
+    /* 단어와 정보 사이 간격 */
 }
 
 /* ✅ 한자 + 히라가나 + 품사 + 의미를 포함하는 컨테이너 */
 .word-container {
     display: flex;
-    flex-direction: column; /* 세로 정렬 */
+    flex-direction: column;
+    /* 세로 정렬 */
     align-items: center;
     justify-content: center;
     background-color: #fdf4f1;
@@ -156,7 +162,7 @@ input {
 ruby {
     display: inline-block;
     text-align: center;
-    font-size: 80px;;
+    font-size: 50px;
 }
 
 /* ✅ 히라가나 스타일 */
@@ -168,21 +174,25 @@ rt {
 /* ✅ 품사 & 의미를 한자 아래에 가로로 배치 */
 .pos-meaning-container {
     display: flex;
-    flex-direction: row; /* 가로 정렬 */
+    flex-direction: row;
+    /* 가로 정렬 */
     justify-content: center;
     gap: 30px;
-    margin-top: 10px; /* 한자 아래 여백 추가 */
+    margin-top: 10px;
+    /* 한자 아래 여백 추가 */
 }
 
 /* ✅ 품사 & 의미 스타일 */
-.pos-box, .meaning-box {
+.pos-box,
+.meaning-box {
     background-color: #fdf4f1;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
     font-size: 40px;
     font-weight: bold;
-    width: auto; /* 내용에 맞게 크기 조정 */
+    width: auto;
+    /* 내용에 맞게 크기 조정 */
     min-width: 80px;
 }
 
@@ -195,7 +205,8 @@ rt {
     margin-top: 20px;
 }
 
-.example-jp-box, .example-kr-box {
+.example-jp-box,
+.example-kr-box {
     background-color: #fdf4f1;
     border-radius: 5px;
     padding: 10px;
@@ -241,16 +252,18 @@ rt {
     gap: 10px;
 }
 
-.flashcard-wrap.show-answer ~ .buttons .frontBtn {
+.flashcard-wrap.show-answer~.buttons .frontBtn {
     display: none;
 }
 
-.flashcard-wrap.show-answer ~ .buttons .backBtn {
+.flashcard-wrap.show-answer~.buttons .backBtn {
     display: flex;
 }
 
 /* ✅ ○ △ X 개별 버튼 스타일 */
-.circleBtn, .triangleBtn, .xBtn {
+.circleBtn,
+.triangleBtn,
+.xBtn {
     background-color: #fdf4f1;
     padding: 10px 20px;
     border-radius: 5px;
@@ -273,8 +286,36 @@ rt {
 }
 
 /* ✅ ⭕ 버튼 비활성화 스타일 */
-.circleBtn:disabled, .circleBtn.disabled-btn {
+.circleBtn:disabled,
+.circleBtn.disabled-btn {
     background-color: #ccc;
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+
+/* modal */
+/* 모달 외부 */
+.modal {
+    position: absolute;
+    display: none;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 모달 내부 */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    transform: translateY(-50%);
 }

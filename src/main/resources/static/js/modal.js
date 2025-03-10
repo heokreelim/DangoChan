@@ -123,6 +123,8 @@ $(document).ready(function () {
         });
         // 덱 이름 초기화
         $('#deckName_A2, #deckName_I2').val('');
+        location.reload(true);
+
     });
 
 
@@ -175,6 +177,7 @@ $(document).ready(function () {
             let editBtn = $('<button>').text('편집').on('click', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
+                $('.modal_editing_card').attr("data-mode", "home");
                 openEditCardModal(tr);
             });
 
@@ -304,6 +307,7 @@ $(document).ready(function () {
                     let editBtn = $('<button>').text('편집').on('click', function (event) {
                         event.preventDefault();
                         event.stopPropagation();
+                        $('.modal_editing_card').attr("data-mode", "home");
                         openEditCardModal(tr);
                     });
 
@@ -373,26 +377,68 @@ $(document).ready(function () {
     }
 
     // 카드 수정 완료 버튼 클릭
+    // mode가 home일일 때
     $('.btn-save-card').on('click', function () {
-        if (!editingRow) return;
+        let mode = $('.modal_editing_card').attr("data-mode");
 
-        let word = $('#editCardWord').val().trim();
-        let pos = $('#editCardPos').val().trim();
-        let meaning = $('#editCardMeaning').val().trim();
-        let exampleJp = $('#editCardExampleJp').val().trim();
-        let exampleKr = $('#editCardExampleKr').val().trim();
+        if (mode === "home") {
+            if (!editingRow) return;
+            // 화면에만 반영
+            let word = $('#editCardWord').val().trim();
+            let pos = $('#editCardPos').val().trim();
+            let meaning = $('#editCardMeaning').val().trim();
+            let exampleJp = $('#editCardExampleJp').val().trim();
+            let exampleKr = $('#editCardExampleKr').val().trim();
 
-        // 수정된 내용 원래 행에 반영
-        editingRow.find('td:eq(1)').text(word);
-        editingRow.find('td:eq(2)').text(pos);
-        editingRow.find('td:eq(3)').text(meaning);
-        editingRow.find('td:eq(4)').text(exampleJp);
-        editingRow.find('td:eq(5)').text(exampleKr);
+            // 수정된 내용 원래 행에 반영
+            editingRow.find('td:eq(1)').text(word);
+            editingRow.find('td:eq(2)').text(pos);
+            editingRow.find('td:eq(3)').text(meaning);
+            editingRow.find('td:eq(4)').text(exampleJp);
+            editingRow.find('td:eq(5)').text(exampleKr);
 
-        // 모달 닫기
-        $('.modal_editing_card').css("display", "none");
+            // 모달 닫기
+            $('.modal_editing_card').css("display", "none");
+
+        } else if (mode === "flashcard") {
+            // 서버로 수정된 데이터 전송
+            console.log('저장 보내기');
+            let cardDTO = {
+                cardId: $('#editCardId').val(),
+                word: $('#editCardWord').val().trim(),
+                pos: $('#editCardPos').val().trim(),
+                meaning: $('#editCardMeaning').val(),
+                exampleJp: $('#editCardExampleJp').val(),
+                exampleKr: $('#editCardExampleKr').val()
+            };
+            console.log(cardDTO);
+
+            // 서버로 수정된 데이터 전송
+            $.ajax({
+                type: "POST",
+                url: "/flashcard/updateFlashcard", // 백엔드의 업데이트 API 경로
+                contentType: "application/json",
+                data: JSON.stringify(cardDTO),
+                success: function (response) {
+                    alert("카드가 성공적으로 수정되었습니다.");
+                    $('.modal_editing_card').css("display", "none");
+                },
+                error: function (xhr, status, error) {
+                    alert("카드 수정 중 오류가 발생했습니다. 다시 시도해주세요.");
+                }
+            });
+
+            // 모달 닫기
+            $('.modal_editing_card').css("display", "none");
+        }
+
+        editingRow = null;
     });
 
+    $('.btn-close-modal').on('click', function () {
+        $('.modal_editing_card').css("display", "none");
+        editingRow = null;
+    });
 
 
 
@@ -452,6 +498,33 @@ $(document).ready(function () {
             alert("덱 또는 카드 수정 중 오류 발생.");
         });
     });
+
+    $('.cardBtn').on('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        openEditCardModal2();
+    });
+
+    function openEditCardModal2() {
+        editingRow = $(this).closest('.flashcard-wrap'); // 카드 정보가 있는 컨테이너
+        let cardId = $('.word-box span').attr('data-card-id');
+        let word = $('.word').val();
+        let pos = $('.pos-box').text().trim();
+        let meaning = $('.meaning-box').text();
+        let exampleJp = $('.example-jp-box').text();
+        let exampleKr = $('.example-kr-box').text();
+
+        $('#editCardId').val(cardId);
+        $('#editCardWord').val(word);
+        $('#editCardPos').val(pos);
+        $('#editCardMeaning').val(meaning);
+        $('#editCardExampleJp').val(exampleJp);
+        $('#editCardExampleKr').val(exampleKr);
+
+        $('.modal_editing_card').attr("data-mode", "flashcard");
+        $('.modal_editing_card').css("display", "flex");
+    }
+
 
 
 
@@ -529,3 +602,10 @@ $(document).ready(function () {
         }
     });
 });
+
+
+
+
+
+
+
