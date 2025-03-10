@@ -243,6 +243,20 @@ public class FlashCardController {
 	
 	//AYH start
 	
+		@ResponseBody
+		@PostMapping("/updateFlashcard")
+		public ResponseEntity<String> updateFlashcard(@RequestBody CardDTO cardDTO) {
+	        boolean isUpdated = flashCardService.updateCard(cardDTO);
+	        
+	        if (isUpdated) {
+	            return ResponseEntity.ok("카드가 성공적으로 수정되었습니다.");
+	        } else {
+	            return ResponseEntity.badRequest().body("카드 수정 중 오류가 발생했습니다.");
+	        }
+	    }
+		
+		
+		
 	//AYH end
 	
 	//SYH start
