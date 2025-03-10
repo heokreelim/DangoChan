@@ -1,8 +1,10 @@
 package net.scit.DangoChan.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -89,75 +91,75 @@ public class FlashCardService {
 
 	// PJB start
 //userId 를 전달하여 해당 유저가 소유한 Category 를 리스트로 반환
+
 	public List<CategoryDTO> getCategoryListByUser(Long userId) {
 		List<CategoryEntity> temp = categoryRepository.findAllByUserEntity_UserId(userId);
+	
+	log.info("CategoryEntityList Size ==={}", temp.size());
+    List<CategoryDTO> categoryList = new ArrayList<>();
+    
+    for (CategoryEntity categoryEntity : temp) {
+    	// 1) categoryEntity 안에 있는 deckEntityList를 get
+    			List<DeckEntity> deckEntityList = categoryEntity.getDeckEntityList();
+    			
+    	// 2) List<DeckInfoDTO> deckInfoDTOList 객체를 new로 하나 만들어 지역변수에 할당
+    			List<DeckInfoDTO> deckInfoDTOList = new ArrayList<>();
+    			
+    	// 3) deckEntityList foreach 문 만들기 
+    			for (DeckEntity deckEntity : deckEntityList) {
+    				// 각 deckEntity에서 deckId를 get => DeckInfoDTO의 deckId 값
+    				Long deckId = deckEntity.getDeckId();
+    				// 각 deckEntity에서 deckName을 get => DeckInfoDTO의 deckName 값
+    				String deckName = deckEntity.getDeckName();
+    				// deckEntity의 cardEntityList의 size를 get => DeckInfoDTO의 deckCardCount 값
+    				List<CardEntity> cardEntityList = deckEntity.getCardEntityList();
+    				Integer deckCardCount = cardEntityList.size();
+    				
+    				// studiedCardCount 각 값 선언
+    				Integer studiedCardCountOk = 0;
+    				Integer studiedCardCountYet = 0;
+    				Integer studiedCardCountNo = 0;
+    				Integer newCard = 0; // 공부 기록이 없는 새로 추가된 카드
+    				
+    				// deckEntity의 cardEntityList foreach 문
+    				for (CardEntity cardEntity : cardEntityList) {
+    					// 각 카드의 studyLevel 값에 따라 카운트 증가 (가정: 3 = ○, 2 = △, 1 = ×, 0 = ?)
+    					Integer studyLevel = cardEntity.getStudyLevel();
+    					if (studyLevel != null) {
+    						if (studyLevel == 3) {
+    							studiedCardCountOk++;
+    						} else if (studyLevel == 2) {
+    							studiedCardCountYet++;
+    						} else if (studyLevel == 1) {
+    							studiedCardCountNo++;
+    						} else if ( studyLevel == 0) {
+    							newCard++;
+    						}
+    					}
+    				} // deckEntity의 cardEntityList foreach 문 끝 ---
+    				
+    				// (studiedCardCountOk, studiedCardCountYet, studiedCardCountNo)의 합을 deckCardCount으로 나눈 값을 구함 => DeckInfoDTO의 cardStudyRate 값
+    				Double cardStudyRate = 0.0;
+    				if (deckCardCount > 0) {
+    					cardStudyRate = (studiedCardCountOk + studiedCardCountYet + studiedCardCountNo) / (double) deckCardCount;
+    				}
+    				
+    				// DeckInfoDTO.toDTO()를 호출하여 DeckInfoDTO 객체 생성 후 deckInfoDTOList에 추가
+    				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckId, deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, newCard, cardStudyRate);
+    				deckInfoDTOList.add(deckInfoDTO);
+    			} // deckEntityList foreach 문 끝 -----
+    			
+    			// CategoryDTO.toDTO()를 호출할 때 deckInfoDTOList를 전달하여 CategoryDTO 객체 생성 후 categoryList에 추가
+    			categoryList.add(CategoryDTO.toDTO(categoryEntity, deckInfoDTOList));
+    		}
+    	    
+    	    return categoryList;
+    	}
 
-		log.info("CategoryEntityList Size ==={}", temp.size());
-		List<CategoryDTO> categoryList = new ArrayList<>();
-
-		for (CategoryEntity categoryEntity : temp) {
-			// 1) categoryEntity 안에 있는 deckEntityList를 get
-			List<DeckEntity> deckEntityList = categoryEntity.getDeckEntityList();
-
-			// 2) List<DeckInfoDTO> deckInfoDTOList 객체를 new로 하나 만들어 지역변수에 할당
-			List<DeckInfoDTO> deckInfoDTOList = new ArrayList<>();
-
-			// 3) deckEntityList foreach 문 만들기
-			for (DeckEntity deckEntity : deckEntityList) {
-				// 각 deckEntity에서 deckId를 get => DeckInfoDTO의 deckId 값
-				Long deckId = deckEntity.getDeckId();
-				// 각 deckEntity에서 deckName을 get => DeckInfoDTO의 deckName 값
-				String deckName = deckEntity.getDeckName();
-				// deckEntity의 cardEntityList의 size를 get => DeckInfoDTO의 deckCardCount 값
-				List<CardEntity> cardEntityList = deckEntity.getCardEntityList();
-				Integer deckCardCount = cardEntityList.size();
-
-				// studiedCardCount 각 값 선언
-				Integer studiedCardCountOk = 0;
-				Integer studiedCardCountYet = 0;
-				Integer studiedCardCountNo = 0;
-
-				// deckEntity의 cardEntityList foreach 문
-				for (CardEntity cardEntity : cardEntityList) {
-					// 각 카드의 studyLevel 값에 따라 카운트 증가 (가정: 3 = ○, 2 = △, 1 = ×)
-					Integer studyLevel = cardEntity.getStudyLevel();
-					if (studyLevel != null) {
-						if (studyLevel == 3) {
-							studiedCardCountOk++;
-						} else if (studyLevel == 2) {
-							studiedCardCountYet++;
-						} else if (studyLevel == 1) {
-							studiedCardCountNo++;
-						}
-					}
-				} // deckEntity의 cardEntityList foreach 문 끝 ---
-
-				// (studiedCardCountOk, studiedCardCountYet, studiedCardCountNo)의 합을
-				// deckCardCount으로 나눈 값을 구함 => DeckInfoDTO의 cardStudyRate 값
-				Double cardStudyRate = 0.0;
-				if (deckCardCount > 0) {
-					cardStudyRate = (studiedCardCountOk + studiedCardCountYet + studiedCardCountNo)
-							/ (double) deckCardCount;
-				}
-
-				// DeckInfoDTO.toDTO()를 호출하여 DeckInfoDTO 객체 생성 후 deckInfoDTOList에 추가
-				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckId, deckName, deckCardCount, studiedCardCountOk,
-						studiedCardCountYet, studiedCardCountNo, cardStudyRate);
-				deckInfoDTOList.add(deckInfoDTO);
-			} // deckEntityList foreach 문 끝 -----
-
-			// CategoryDTO.toDTO()를 호출할 때 deckInfoDTOList를 전달하여 CategoryDTO 객체 생성 후
-			// categoryList에 추가
-			categoryList.add(CategoryDTO.toDTO(categoryEntity, deckInfoDTOList));
-		}
-
-		return categoryList;
-	}
-
-	// categoryId 를 전달받아 해당 카테고리를 DB에서 삭제
-	public void deleteCategory(Long categoryId) {
-		categoryRepository.deleteById(categoryId);
-	}
+		// categoryId 를 전달받아 해당 카테고리를 DB에서 삭제
+			public void deleteCategory(Long categoryId) {
+				categoryRepository.deleteById(categoryId);
+			}
 
 	// PJB end
 
@@ -342,30 +344,56 @@ public class FlashCardService {
 
 	// AYH end
 
-	// SYH start
-	// ✅ Entity에서 데이터를 가져와 DTO로 변환
-	public CardDTO getCardByDeckId(Long deckId) {
-		// ✅ DB에서 `CardEntity` 가져오기
-		CardEntity cardEntity = cardRepository.findCardByDeckId(deckId)
-				.orElseThrow(() -> new RuntimeException("해당 덱에 카드가 없습니다."));
+	//SYH start
+	// ✅ 새로운 카드 (스터디 레벨 0) 중 랜덤 카드 선택
+	public Optional<CardDTO> getRandomNewCard(Long deckId) {
+		List<CardEntity> newCards = cardRepository.findNewCardsByDeckId(deckId);
+		if (newCards.isEmpty()) {
+			return Optional.empty();
+		}
+		CardEntity selectedCard = newCards.get(new Random().nextInt(newCards.size()));
 
-		// ✅ 디버깅 로그 추가
-		System.out.println("🔥 [DEBUG] 랜덤으로 가져온 CardEntity: " + cardEntity);
+		return Optional.of(CardDTO.toDTO(selectedCard));
+	}
 
-		// ✅ Entity → DTO 변환 (CardDTO의 toDTO() 메서드 활용)
-		CardDTO cardDTO = CardDTO.toDTO(cardEntity);
+//	// ✅ 복습해야 할 카드 목록 (스터디 레벨 1 또는 2) 가져오기
+//	public List<CardEntity> getReviewCards(Long deckId) {
+//		return cardRepository.findReviewCardsByDeckId(deckId);
+//	}
+//
+//	// ✅ 복습 카드 (스터디 레벨 1 또는 2) 중 랜덤으로 하나 선택
+//	public Optional<CardEntity> getRandomReviewCard(Long deckId) {
+//		List<CardEntity> reviewCards = cardRepository.findReviewCardsByDeckId(deckId);
+//		if (reviewCards.isEmpty()) {
+//			return Optional.empty();
+//		}
+//		return Optional.of(reviewCards.get(new Random().nextInt(reviewCards.size())));
+//	}
 
-		// ✅ DTO로 변환된 데이터 확인
-		System.out.println("🔥 [DEBUG] 변환된 CardDTO: " + cardDTO);
+	// ✅ 스터디 레벨 0인 카드가 남아 있는지 확인
+	public boolean isAllCardsStudied(Long deckId) {
+		return cardRepository.countByDeckEntity_DeckIdAndStudyLevel(deckId, 0) == 0;
+	}
 
-		return cardDTO;
+	// ✅ 모든 카드의 studyLevel과 studiedAt 초기화
+	@Transactional
+	public void resetStudyData(Long deckId) {
+		List<CardEntity> cards = cardRepository.findByDeckEntity_DeckId(deckId);
+
+		for (CardEntity card : cards) {
+			card.setStudyLevel(0);  // studyLevel 초기화
+			card.setStudiedAt(null);  // studiedAt 초기화
+		}
+
+		cardRepository.saveAll(cards);
 	}
 
 	@Transactional
-	public void updateStudyLevel(Long cardId, Integer studyLevel) {
-		Optional<CardEntity> cardEntity = cardRepository.findById(cardId); // optional로 null 체크
+    public void updateStudyLevel(Long cardId, Integer studyLevel) {
+		Optional<CardEntity> cardEntity = cardRepository.findById(cardId); //카드 조회
 		cardEntity.ifPresent(card -> {
 			card.setStudyLevel(studyLevel);
+			card.setStudiedAt(LocalDate.now());
 			cardRepository.save(card);
 		});
 	}

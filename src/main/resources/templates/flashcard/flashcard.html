@@ -12,54 +12,56 @@
 </head>
 
 <body>
+    <input type="hidden" id="deckId" th:value="${deckId}">
     <div class="container">
         <div class="timer" id="mainTimer">00:00</div>
         <button class="close" type="button" onclick="goHome()">&#10006;</button>
         <div class="flashcard-wrap">
-            <input type="hidden" name="word" class="word" th:value="${flashcard.word}">
             <!-- 앞면 (한자) -->
             <div class="front">
                 <div class="word-box">
+                    <input type="hidden" name="word" class="word" th:value="${flashcard.word}">
                     <span th:text="${flashcard.kanji}" th:attr="data-card-id=${flashcard.cardId}"></span>
                 </div>
-            </div>
-            <!-- 뒷면 (품사 + 의미 + 예문) -->
-            <div class="back">
-                <div class="content">
-                    <!-- ✅ 단어 박스 (한자 + 후리가나 + 품사 + 의미) -->
-                    <div class="word-container">
-                        <span class="ruby" th:utext="${flashcard.formattedRuby}"></span>
-                        <!--                    <ruby>-->
-                        <!--                        <rt id="wordFurigana" th:text="${flashcard.furigana}"></rt>-->
-                        <!--                        <rb id="wordText" th:text="${flashcard.kanji}"></rb>-->
-                        <!--                    </ruby>-->
-                        <div class="pos-meaning-container">
-                            <div class="pos-box" id="pos" th:text="${flashcard.pos}">명사</div>
-                            <div class="meaning-box" id="meaning" th:text="${flashcard.meaning}">학생</div>
+                <!-- 뒷면 (품사 + 의미 + 예문) -->
+                <div class="back">
+                    <div class="content">
+                        <!-- ✅ 단어 박스 (한자 + 후리가나 + 품사 + 의미) -->
+                        <div class="word-container">
+                            <span class="ruby" th:utext="${flashcard.formattedRuby}"></span>
+                            <!--                    <ruby>-->
+                            <!--                        <rt id="wordFurigana" th:text="${flashcard.furigana}"></rt>-->
+                            <!--                        <rb id="wordText" th:text="${flashcard.kanji}"></rb>-->
+                            <!--                    </ruby>-->
+                            <div class="pos-meaning-container">
+                                <div class="pos-box" id="pos" th:text="${flashcard.pos}">명사</div>
+                                <div class="meaning-box" id="meaning" th:text="${flashcard.meaning}">학생</div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- ✅ 예문 박스 -->
-                    <div class="example-container">
-                        <div class="example-jp-box" id="example_jp" th:text="${flashcard.exampleJp}">学生が学校に行きます</div>
-                        <div class="example-kr-box" id="example_kr" th:text="${flashcard.exampleKr}">학생이 학교에 갑니다</div>
+                        <!-- ✅ 예문 박스 -->
+                        <div class="example-container">
+                            <div class="example-jp-box" id="example_jp" th:text="${flashcard.exampleJp}">学生が学校に行きます
+                            </div>
+                            <div class="example-kr-box" id="example_kr" th:text="${flashcard.exampleKr}">학생이 학교에 갑니다
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="buttons">
-            <button class="cardBtn" type="button">편집</button>
-            <div class="frontBtn">
-                <button class="answerBtn center" type="button" onclick="showAnswer()">정답 보기</button>
+            <div class="buttons">
+                <button class="cardBtn" type="button">편집</button>
+                <div class="frontBtn">
+                    <button class="answerBtn center" type="button" onclick="showAnswer()">정답 보기</button>
+                </div>
+                <div class="backBtn" style="display: none;">
+                    <button class="circleBtn" type="button">&#9675;</button>
+                    <button class="triangleBtn" type="button">&#9651;</button>
+                    <button class="xBtn" type="button">&#10006;</button>
+                </div>
             </div>
-            <div class="backBtn" style="display: none;">
-                <button class="circleBtn" type="button">&#9675;</button>
-                <button class="triangleBtn" type="button">&#9651;</button>
-                <button class="xBtn" type="button">&#10006;</button>
-            </div>
+            <div class="study-timer" id="studyTimer">00:00</div>
         </div>
-        <div class="study-timer" id="studyTimer">00:00</div>
-    </div>
 </body>
 <!-- modal -->
 <div class="modal-wrap" th:replace="modal"></div>
