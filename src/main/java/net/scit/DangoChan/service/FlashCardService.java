@@ -299,8 +299,12 @@ public class FlashCardService {
 
 		// 새 카드 저장
 		for (ExportCardDTO card : newCards) {
-			Optional<DeckEntity> tempDeck = deckRepository.findById(card.getDeckId());
-			tempDeck.ifPresent(deckEntity -> cardRepository.save(CardEntity.toEntity(card, deckEntity)));
+
+			card.setStudyLevel(0);
+		    Optional<DeckEntity> tempDeck = deckRepository.findById(card.getDeckId());
+		   
+		    tempDeck.ifPresent(deckEntity -> cardRepository.save(CardEntity.toEntity(card, deckEntity)));
+
 		}
 
 		// 기존 카드 업데이트

@@ -238,6 +238,8 @@ public class FlashCardController {
 			
 			return "redirect:/home";
 		}
+		
+		// 
 	//PJB end
 	
 	//deck end
@@ -310,7 +312,7 @@ public class FlashCardController {
 
 	// ✅ study_level 업데이트 API (AJAX 요청 처리)
 	@PostMapping("/updateStudyLevel")
-	public ResponseEntity<String> updateStudyLevel(@RequestParam Long cardId, @RequestParam Integer studyLevel) {
+	public ResponseEntity<String> updateStudyLevel(@RequestParam(name = "cardId") Long cardId, @RequestParam(name = "studyLevel") Integer studyLevel) {
 
 		flashCardService.updateStudyLevel(cardId, studyLevel);
 		return ResponseEntity.ok("✅ study_level 업데이트 성공");

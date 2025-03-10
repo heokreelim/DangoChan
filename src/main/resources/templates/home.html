@@ -53,7 +53,7 @@
                       <div class="deck-wrap">
                         <div class="deck-top">
                           <input type="hidden" class="dekcId" th:value="${deck.deckId}">
-                          <span><a th:href="@{flashcard/flashcard(deckId=${deck.deckId})}"><b th:text="${deck.deckName}"></b></a></span>
+                          <span><a class="flashcard-link" th:href="@{flashcard/flashcard(deckId=${deck.deckId})}"><b th:text="${deck.deckName}"></b></a></span>
                           <div class="dropdown">
                             <i class="fa-solid fa-ellipsis-vertical menu-icon"></i>
                             <div class="dropdown-menu">
@@ -80,7 +80,7 @@
                           </div>
                           <div class="icon-box">
                             <i class="fa-solid fa-question"></i>
-                            <span>([[${deck.studiedCardCountNo}]])</span>
+                            <span>([[${deck.newCard}]])</span>
                           </div>
                           <div class="percentage-box">
                             <span class="percentage-text percent50">[[${deck.cardStudyRate}]]%</span>
