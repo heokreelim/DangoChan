@@ -8,14 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import net.scit.DangoChan.dto.CardDTO;
 import net.scit.DangoChan.dto.ExportCardDTO;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -24,6 +22,7 @@ import net.scit.DangoChan.dto.ExportCardDTO;
 @Getter
 @ToString
 @Builder
+@Data
 @Table(name="card")
 public class CardEntity {
 	@Id
@@ -46,8 +45,13 @@ public class CardEntity {
     @Column(name = "example_kr")
     private String exampleKr;
     
-    @Column(name = "study_level", columnDefinition = "INT default 0")
-    private Integer studyLevel;
+    @Column(name = "study_level")
+	@ColumnDefault("0")
+	@Builder.Default
+    private Integer studyLevel = 0;
+
+	@Column(name = "studied_at")
+	private LocalDate studiedAt;
 
 	@ManyToOne
     @JoinColumn(name = "deck_id", referencedColumnName = "deckId", nullable = false)
@@ -63,7 +67,8 @@ public class CardEntity {
 				.meaning(cardDTO.getMeaning())				
 				.exampleJp(cardDTO.getExampleJp())				
 				.exampleKr(cardDTO.getExampleKr())				
-				.studyLevel(cardDTO.getStudyLevel())				
+				.studyLevel(cardDTO.getStudyLevel())
+				.studiedAt(cardDTO.getStudiedAt())
 				.build();
 	}
 

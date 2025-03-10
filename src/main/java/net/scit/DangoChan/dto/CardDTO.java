@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import net.scit.DangoChan.entity.CardEntity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,6 +33,8 @@ public class CardDTO {
     private String exampleKr;
     private Integer studyLevel;
 
+	private LocalDate studiedAt;
+
 	private String kanji;
 	private String furigana;
 	private String formattedRuby; // ✅ 한자+후리가나 자동 생성 필드
@@ -52,6 +55,7 @@ public class CardDTO {
 				.exampleJp(cardEntity.getExampleJp())
 				.exampleKr(cardEntity.getExampleKr())
 				.studyLevel(cardEntity.getStudyLevel())
+				.studiedAt(cardEntity.getStudiedAt())
 				.build();
     }
 

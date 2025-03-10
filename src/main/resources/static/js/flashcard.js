@@ -2,6 +2,10 @@ $(document).ready(function () {
     let studyTimerInterval;
     let studyTotalSeconds = 0;
 
+    // ✅ 백엔드에서 전달된 deckId 가져오기
+    let deckId = $("#deckId").val();
+    console.log("📌 서버에서 받은 deckId:", deckId);
+
     function startTimer(timerId) {
         let totalSeconds = 0;
         const $timerElement = $("#" + timerId);
@@ -62,7 +66,7 @@ $(document).ready(function () {
 
     // 🔄 새로운 단어로 변경하는 함수
     function updateFlashcard(data) {
-        $(".word-box span").text(data.kanji);
+        $(".word-box span").text(data.kanji).attr("data-card-id", data.cardId);
         setTimeout(() => {
             $("#wordText").text(data.kanji);
             $("#wordFurigana").text(data.furigana);
@@ -84,10 +88,35 @@ $(document).ready(function () {
             method: "POST",
             data: { cardId: cardId, studyLevel: studyLevel },
             success: function (response) {
-                console.log("✅ study_level 업데이트 성공:", response);
+                console.log("✅ study_level 및 studied_at 업데이트 성공:", response);
             },
             error: function (error) {
-                console.error("❌ study_level 업데이트 실패:", error);
+                console.error("❌ study_level 및 studied_at 업데이트 실패:", error);
+            }
+        });
+    }
+
+    // ✅ 스터디 데이터 초기화 함수
+    function resetStudyData(deckId) {
+        let studyTime = $("#mainTimer").text(); // 타이머에서 시간 가져오기 (MM:SS 형식)
+
+        // "00:05" → 5초로 변환
+        let timeParts = studyTime.split(":");
+        let totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+
+        console.log("📌 서버로 보낼 데이터:", { deckId, studyTime: totalSeconds });
+
+        $.ajax({
+            url: "/flashcard/resetStudyData",
+            method: "POST",
+            data: { deckId: deckId, studyTime: totalSeconds},
+            success: function (response) {
+                console.log("✅ 스터디 데이터 초기화 성공:", response);
+                alert("🎉 모든 단어 학습 완료! 스터디 데이터를 초기화합니다.");
+                window.location.href = "/home"
+            },
+            error: function (error) {
+                console.error("❌ 스터디 데이터 초기화 실패:", error);
             }
         });
     }
@@ -98,7 +127,7 @@ $(document).ready(function () {
         $(".answerBtn").show();
         $(".backBtn").css("display", "none");
 
-        let studyLevel = 1; // 기본값
+        let studyLevel = 0; // 기본값
         if ($(this).hasClass("circleBtn")) studyLevel = 3; // ○
         if ($(this).hasClass("triangleBtn")) studyLevel = 2; // △
         if ($(this).hasClass("xBtn")) studyLevel = 1; // ✕
@@ -111,7 +140,7 @@ $(document).ready(function () {
         resetStudyTimer();
 
         // 🔥 새로운 단어 불러오기
-        fetchNewFlashcard(1)
+        fetchNewFlashcard(deckId)
             .done((data) => {
                 console.log("🔄 새 단어 데이터:", data);
                 $(".word-box span").text(data.kanji);
@@ -120,7 +149,8 @@ $(document).ready(function () {
                 }, 500);
             })
             .fail((error) => {
-                console.error("❌ 단어 로드 실패:", error);
+                console.log("📌 모든 단어를 학습했습니다. 초기화 진행!");
+                resetStudyData(deckId); // ✅ 초기화 함수 실행
             });
     });
 
@@ -131,8 +161,6 @@ $(document).ready(function () {
         // "00:05" → 5초로 변환
         let timeParts = studyTime.split(":");
         let totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
-
-        let deckId = 1; // 실제 deckId로 변경 필요
 
         console.log("📌 서버로 보낼 데이터:", { deckId, studyTime: totalSeconds });
 

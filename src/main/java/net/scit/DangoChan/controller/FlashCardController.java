@@ -2,7 +2,9 @@ package net.scit.DangoChan.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
+import net.scit.DangoChan.entity.CardEntity;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -120,6 +122,7 @@ public class FlashCardController {
         DeckDTO savedDeckId = flashCardService.insertDeck(deckDTO);
         for (CardDTO cardDTO : cardDTOList) {
         	cardDTO.setDeckId(savedDeckId.getDeckId()); // 백엔드에서 저장 후 ID 업데이트 필요
+			cardDTO.setStudyLevel(0);
             System.out.println("▶ 카드 저장: " + cardDTO);
             flashCardService.insertCard(cardDTO);
         }
@@ -246,44 +249,62 @@ public class FlashCardController {
 	//AYH end
 	
 	//SYH start
-	// ✅ 플래시카드 페이지 (HTML 렌더링)
-	@GetMapping("/flashcard") // ❗ 변경: /flashcard/flashcard 로 맞춤
-	public String flashcard(@RequestParam(name = "deckId", defaultValue = "1") Long deckId, Model model) {
-//		if (deckId == null) {
-//			deckId = 1L; // 기본 덱 ID 설정
-//		}
-		CardDTO card = flashCardService.getCardByDeckId(deckId);
-		System.out.println(card.toString());
-		model.addAttribute("flashcard", card);
-		return "flashcard/flashcard"; // ✅ 템플릿: src/main/resources/templates/flashcard/flashcard.html
+	// ✅ 플래시카드 페이지
+	@GetMapping("/flashcard")
+	public String flashcard(@RequestParam(name = "deckId") Long deckId, Model model) {
+
+		Optional<CardDTO> card = flashCardService.getRandomNewCard(deckId);	//랜덤 카드 가져오기
+
+		System.out.println("📌 [DEBUG] 가져온 카드: " + card); // ✅ 카드가 null인지 확인
+
+		if (card.isEmpty()) {
+			model.addAttribute("flashcard", null);
+		} else {
+			model.addAttribute("flashcard", card.get());
+		}
+
+		model.addAttribute("deckId", deckId);
+		return "flashcard/flashcard";
 	}
 
 	// ✅ AJAX 요청 (랜덤 단어 반환)
 	// ✅ JSON 데이터 반환 (랜덤 단어 가져오기)
 	@GetMapping(value = "/json", produces = "application/json")
-	public ResponseEntity<CardDTO> getRandomFlashcard(@RequestParam(name = "deckId", defaultValue = "26") Long deckId) {
-		if (deckId == null) {
-			deckId = 26L; // 기본 덱 ID 설정
-		}
+	public ResponseEntity<CardDTO> getRandomFlashcard(@RequestParam(name = "deckId") Long deckId) {
 
 		// ✅ DTO 변환된 데이터 가져오기
-		CardDTO card = flashCardService.getCardByDeckId(deckId);
+		Optional<CardDTO> card = flashCardService.getRandomNewCard(deckId);
 		// ✅ 디버깅 로그 추가 (JSON 응답 확인)
 		System.out.println("🔥 [DEBUG] 응답 JSON: " + card);
 
-		return ResponseEntity.ok(card);
+		return ResponseEntity.ok(card.get());
+	}
+
+	@PostMapping("/resetStudyData")
+	public ResponseEntity<String> resetStudyData(@RequestParam(name = "deckId") Long deckId,
+												 @RequestParam Integer studyTime) {
+		boolean allStudied = flashCardService.isAllCardsStudied(deckId);
+
+		if (allStudied) {
+			flashCardService.resetStudyData(deckId);
+			deckStudyTimeService.saveStudyTime(deckId, studyTime);
+			return ResponseEntity.ok("✅ 모든 단어 학습 완료! 스터디 데이터 초기화됨.");
+		} else {
+			return ResponseEntity.ok("📌 아직 학습이 완료되지 않음.");
+		}
 	}
 
 	// ✅ study_level 업데이트 API (AJAX 요청 처리)
 	@PostMapping("/updateStudyLevel")
 	public ResponseEntity<String> updateStudyLevel(@RequestParam Long cardId, @RequestParam Integer studyLevel) {
+
 		flashCardService.updateStudyLevel(cardId, studyLevel);
 		return ResponseEntity.ok("✅ study_level 업데이트 성공");
 	}
 
 	@PostMapping("/saveStudyTime")
-	public ResponseEntity<String> saveStudyTime(@RequestParam(required = false) Long deckId,
-												@RequestParam(required = false) Integer studyTime) {
+	public ResponseEntity<String> saveStudyTime(@RequestParam(name = "deckId") Long deckId,
+												@RequestParam Integer studyTime) {
 		if (deckId == null || studyTime == null) {
 			return ResponseEntity.badRequest().body("❌ deckId 또는 studyTime이 누락됨");
 		}
