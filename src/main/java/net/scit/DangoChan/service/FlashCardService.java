@@ -116,10 +116,11 @@ public List<CategoryDTO> getCategoryListByUser(Long userId) {
     				Integer studiedCardCountOk = 0;
     				Integer studiedCardCountYet = 0;
     				Integer studiedCardCountNo = 0;
+    				Integer newCard = 0; // 공부 기록이 없는 새로 추가된 카드
     				
     				// deckEntity의 cardEntityList foreach 문
     				for (CardEntity cardEntity : cardEntityList) {
-    					// 각 카드의 studyLevel 값에 따라 카운트 증가 (가정: 3 = ○, 2 = △, 1 = ×)
+    					// 각 카드의 studyLevel 값에 따라 카운트 증가 (가정: 3 = ○, 2 = △, 1 = ×, 0 = ?)
     					Integer studyLevel = cardEntity.getStudyLevel();
     					if (studyLevel != null) {
     						if (studyLevel == 3) {
@@ -128,6 +129,8 @@ public List<CategoryDTO> getCategoryListByUser(Long userId) {
     							studiedCardCountYet++;
     						} else if (studyLevel == 1) {
     							studiedCardCountNo++;
+    						} else if ( studyLevel == 0) {
+    							newCard++;
     						}
     					}
     				} // deckEntity의 cardEntityList foreach 문 끝 ---
@@ -139,7 +142,7 @@ public List<CategoryDTO> getCategoryListByUser(Long userId) {
     				}
     				
     				// DeckInfoDTO.toDTO()를 호출하여 DeckInfoDTO 객체 생성 후 deckInfoDTOList에 추가
-    				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckId, deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, cardStudyRate);
+    				DeckInfoDTO deckInfoDTO = DeckInfoDTO.toDTO(deckId, deckName, deckCardCount, studiedCardCountOk, studiedCardCountYet, studiedCardCountNo, newCard, cardStudyRate);
     				deckInfoDTOList.add(deckInfoDTO);
     			} // deckEntityList foreach 문 끝 -----
     			

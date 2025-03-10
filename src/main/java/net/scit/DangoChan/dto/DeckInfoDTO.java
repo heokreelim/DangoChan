@@ -22,6 +22,7 @@ public class DeckInfoDTO {
 	private Integer studiedCardCountOk;		// ○, 3
 	private Integer studiedCardCountYet;		// △, 3
 	private Integer studiedCardCountNo;		// ×, 1
+	private Integer newCard;									// ？, 0
 	private Double cardStudyRate;						//  진행률 
 	
 	
@@ -33,6 +34,7 @@ public class DeckInfoDTO {
 			Integer studiedCardCountOk,
 			Integer studiedCardCountYet,
 			Integer studiedCardCountNo,
+			Integer newCard,
 			Double cardStudyRate
 			) {
 		
@@ -43,6 +45,7 @@ public class DeckInfoDTO {
 				.studiedCardCountOk(studiedCardCountOk)
 				.studiedCardCountYet(studiedCardCountYet)
 				.studiedCardCountNo(studiedCardCountNo)
+				.newCard(newCard)
 				.cardStudyRate(cardStudyRate)
 				.build();
 	}
