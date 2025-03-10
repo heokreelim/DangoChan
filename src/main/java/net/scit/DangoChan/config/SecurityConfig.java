@@ -73,9 +73,11 @@ public class SecurityConfig {
 					);
 		
 		http
-	    .sessionManagement(session -> session
-	        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // ✅ 세션 유지 설정
-	    );
+		    .sessionManagement(session -> session
+		        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // ✅ 세션 유지 설정
+		    )
+		    .securityContext(security -> security
+		            .requireExplicitSave(false)); // ✅ SecurityContext 자동 저장 활성화
 		
 		http
 			.csrf((auth) -> auth.disable());

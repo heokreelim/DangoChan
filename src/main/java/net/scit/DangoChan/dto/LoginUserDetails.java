@@ -98,6 +98,7 @@ public class LoginUserDetails implements OAuth2User, UserDetails {
 								.authType(entity.getAuthType())
 								.roles(entity.getRoles())
 								.createdAt(entity.getCreatedAt())
+								.providerId(entity.getProviderId())
 								.build();
 	}
 	
