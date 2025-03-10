@@ -54,7 +54,7 @@ function output(resp) {
             : '';
         // parentReplyId가 0일 경우에만 답글 버튼 출력 -- 0이 아닐 경우 답글 버튼 출력X
         let replyButton = !isChild ? `<button type="button" class="btn btn-info replyChildBtn"
-                            data-seq="${item['replyId']}"> 답글 </button>`
+                            data-seq="${item['replyId']}"> 댓글 </button>`
             : '';
 
         tag += `
