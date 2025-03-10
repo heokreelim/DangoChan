@@ -100,11 +100,69 @@ a:hover {
     color: #fff;
 }
 
-/* 댓글 목록 테이블 */
+/* 댓글 목록 영역 */
 #reply_list {
     margin-top: 20px;
 }
 
+/* ▼▼▼ div 기반 댓글/대댓글 레이아웃 ▼▼▼ */
+.comment-list {
+    /* 전체 댓글 목록을 감싸는 영역 스타일 */
+    width: 1000px;
+    margin: 0;
+    padding: 0;
+}
+
+.comment-item {
+    border-bottom: 1px solid #ddd;
+    padding: 8px 0;
+}
+
+.comment-header {
+    /* 작성자와 날짜가 한 줄에 오도록 */
+    display: flex;
+    gap: 10px;
+    font-weight: bold;
+}
+
+.comment-writer {
+    /* 글쓴이 */
+    color: #333;
+}
+
+.comment-date {
+    /* 날짜 */
+    color: #999;
+    font-size: 0.9em;
+}
+
+.comment-content {
+    margin: 4px 0 8px 0;
+    line-height: 1.4;
+}
+
+.comment-buttons {
+    /* 버튼 영역 정렬 */
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+/* 최상위 댓글 */
+.comment-parent {
+    margin-left: 0;
+}
+
+/* 대댓글 - 들여쓰기 및 배경 표시 */
+.comment-child {
+    margin-left: 30px; /* 필요 시 조정 */
+    background-color: #f9f9f9;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/* ▼▼▼ 기존 테이블 기반 댓글 목록 스타일 (필요 없으면 삭제/주석) ▼▼▼ */
+/*
 #reply_list table {
     width: 1000px;
     border-collapse: collapse;
@@ -116,6 +174,7 @@ a:hover {
     padding: 8px;
     border: 1px solid #dee2e6;
 }
+*/
 
 /* 대댓글 입력폼 (동적으로 생성됨) */
 .childReplyInputRow td {

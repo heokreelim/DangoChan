@@ -16,8 +16,8 @@
                     </a>
                 </div> <!-- profile-picture end -->
                 <div class="nickname">
-                    <p class="userName" id="userName" sec:authentication="name">
-                        🍡だんごちゃん
+                    <p class="userName" id="userName">
+                        [[${#authentication.principal.userName}]]
                     </p>
                 </div> <!-- nickname end -->
             </div> <!-- profile-wrap end -->

@@ -5,6 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/login_join_tmp.css}">
     <title>로그인 페이지</title>
+    <script>
+        function redirectToLineLogin() {
+            window.location.href = "/oauth2/authorization/line";
+        }
+
+        function redirectToGoogleLogin() {
+            window.location.href = "/oauth2/authorization/google";
+        }
+
+        async function guestLogin() {
+            const guestLoginKey = localStorage.getItem('guestLoginKey');
+            const response = await fetch('/user/guestlogin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: guestLoginKey ? JSON.stringify(guestLoginKey) : null
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('guestLoginKey', data);
+                
+                console.log('Guest login successful key:' + localStorage.getItem('guestLoginKey'));
+                
+                window.location.href = "/home";
+            } else {
+                console.error('Guest login failed');
+            }
+        }
+
+        function deleteGuestLoginKey() {
+            localStorage.removeItem('guestLoginKey');
+            console.log('guestLoginKey deleted from localStorage');
+        }
+    </script>
 </head>
 <body>
 	<div th:replace="fragment/head"></div>
@@ -39,15 +75,16 @@
                     </form>
                     <ul>
                         <li>
-                            <button>guest</button>
+                            <button onclick="guestLogin()">guest</button>
+                            <button onclick="deleteGuestLoginKey()">guest delete</button>
                         </li>
                     </ul>
                     <ul class="social-login">
                         <li>
-                            <button class="google">google</button>
+                            <button class="google" onclick="redirectToGoogleLogin()">google</button>
                         </li>
                         <li>
-                            <button class="line">line</button>
+                            <button class="line" onclick="redirectToLineLogin()">line</button>
                         </li>
                     </ul>
                 </div>

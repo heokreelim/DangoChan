@@ -13,7 +13,7 @@ CREATE TABLE `users` (
 	user_id	BIGINT	AUTO_INCREMENT PRIMARY KEY,
 	email	VARCHAR(50)	UNIQUE,
 	user_name	VARCHAR(50)	NOT NULL UNIQUE,
-	auth_type	VARCHAR(50) NOT NULL check(auth_type in ('LOCAL', 'GOOGLE', 'APPLE', 'LINE', 'GUEST')),
+	auth_type	VARCHAR(50) NOT NULL check(auth_type in ('LOCAL', 'GOOGLE', 'LINE', 'GUEST')),
 	password	VARCHAR(255),
 	provider_id	VARCHAR(255),
 	roles    varchar(50) DEFAULT 'ROLE_USER' check(roles in ('ROLE_USER', 'ROLE_ADMIN')),
@@ -157,8 +157,8 @@ INSERT INTO `card` (`card_id`, `deck_id`, `word`, `pos`, `meaning`, `example_jp`
 
 -- deckStudyTime 테이블 데이터 삽입
 INSERT INTO `deck_study_time` (`study_time_id`, `deck_id`, `study_time`, `date`) VALUES
-(1, 1, NOW(), CURDATE()),
-(2, 2, NOW(), CURDATE());
+(1, 1, 0, CURDATE()),
+(2, 2, 0, CURDATE());
 
 -- board 테이블 데이터 삽입
 INSERT INTO `board` (`board_id`, `user_id`, `title`, `word_count`, `views`, `original_file_name`, `create_date`, `modify_date`) VALUES
