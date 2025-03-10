@@ -116,6 +116,7 @@ $(document).ready(function () {
             success: function (response) {
                 alert("덱이 성공적으로 저장되었습니다!");
                 console.log(response);
+                window.location.href = "/home";
             },
             error: function (xhr, status, error) {
                 console.error("오류 발생:", error);

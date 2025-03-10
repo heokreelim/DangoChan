@@ -24,16 +24,40 @@ $(document).ready(function () {
   });
 
   /***************** 덱 리스트 토글 *****************/
-  $('.category .category-right a i.fa-chevron-up, .category .category-right a i.fa-chevron-down').on('click', function(e) {
-    e.preventDefault();
-    
-    // 현재 아이콘의 부모 .category 요소에서 바로 다음에 위치한 deckList를 선택하여 토글
-    $(this).closest('.category').next('.deckList').slideToggle(300);
-    
-    // 아이콘 클래스 토글: fa-chevron-up -> fa-chevron-down, 반대로 전환
-    $(this).toggleClass('fa-chevron-up fa-chevron-down');
+  // 토글 아이콘 클릭 시: chevron 아이콘을 대상으로 함
+  $('.category .category-right a i.fa-chevron-up, .category .category-right a i.fa-chevron-down')
+    .on('click', function(e) {
+      e.preventDefault();
+      var $icon = $(this);
+      var $category = $icon.closest('.category');
+      // 카테고리 ID를 hidden input으로부터 가져옴
+      var categoryId = $category.find('.categoryId').val();
+      var $deckList = $category.next('.deckList');
+      
+      // 토글 실행 후 상태 저장
+      $deckList.slideToggle(300, function() {
+         if ($deckList.is(':visible')) {
+           localStorage.setItem('openCategory-' + categoryId, 'true');
+         } else {
+           localStorage.removeItem('openCategory-' + categoryId);
+         }
+      });
+      
+      // 아이콘 클래스 토글 (chevron-up <-> chevron-down)
+      $icon.toggleClass('fa-chevron-up fa-chevron-down');
+    });
+  
+  // 페이지 로드 시, 저장된 토글 상태 복원
+  $('.category').each(function() {
+    var $category = $(this);
+    var categoryId = $category.find('.categoryId').val();
+    if (localStorage.getItem('openCategory-' + categoryId) === 'true') {
+      $category.next('.deckList').show();
+      $category.find('.category-right a i.fa-chevron-up')
+        .removeClass('fa-chevron-up')
+        .addClass('fa-chevron-down');
+    }
   });
-
   /***************** 드롭다운 메뉴 *****************/
   $(document).on('click', '.menu-icon', function(e) {
     e.stopPropagation(); // 이벤트 버블링 방지
@@ -101,6 +125,18 @@ $(document).ready(function () {
        'stroke': newColor,
        'stroke-dashoffset': dashoffset
     });
+
+    // 덱 컨테이너(.deck-wrap)에 총 카드 수 저장 (나중에 a 태그 클릭 시 사용)
+    $this.closest('.deck-wrap').attr('data-total', totalCards);
+});
+
+/***************** 덱의 카드가 없을 경우, 링크 불가 *****************/
+$('.flashcard-link').on('click', function(e) {
+    var totalCards = $(this).closest('.deck-wrap').attr('data-total');
+    if(parseInt(totalCards, 10) === 0){
+        e.preventDefault();
+        alert("이 덱에는 카드가 없습니다. 먼저 카드를 추가하세요.");
+    }
 });
 
 });

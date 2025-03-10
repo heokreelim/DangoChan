@@ -267,6 +267,84 @@ body {
     font-size: 0.85em;
 }
 
+/* 마이페이지 달력 추가 디자인 */
+.calendar-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* 네오모피즘 스타일 버튼 */
+.calendar-btn {
+    width: 66px;
+    height: 66px;
+    border-radius: 17px;
+    background: #f0f0f3;
+    /* 연한 파스텔 배경 */
+    box-shadow:
+        8px 8px 15px rgba(0, 0, 0, 0.1),
+        -8px -8px 15px rgba(255, 255, 255, 0.7);
+    /* 입체감 강조 */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 호버 시 효과 */
+.calendar-btn:hover {
+    box-shadow:
+        inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+        inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+    background-color: #f0f0f3;
+    transform: translateY(2px);
+}
+
+/* 폰트어썸 아이콘 스타일 */
+.calendar-btn i {
+    font-size: 3em;
+    color: #6b6b6b;
+    /* 기본은 차분한 그레이톤 */
+    transition: color 0.3s ease;
+}
+
+/* 호버 시 아이콘 색상 */
+.calendar-btn:hover i {
+    color: #ff7e67;
+    /* 포인트 색상 (파스텔 오렌지 핑크 톤) */
+}
+
+/* 이전 버튼 전용 색상 */
+#prevMonth {
+    background: linear-gradient(145deg, #a0e3f0, #c0f5ff);
+}
+
+#prevMonth:hover {
+    background: linear-gradient(145deg, #90d4e0, #b0e5f0);
+}
+
+#prevMonth i {
+    color: #2d8f9d;
+}
+
+/* 다음 버튼 전용 색상 */
+#nextMonth {
+    background: linear-gradient(145deg, #f9c5d1, #ffb6b9);
+}
+
+#nextMonth:hover {
+    background: linear-gradient(145deg, #f8a7b5, #ff9fa5);
+}
+
+#nextMonth i {
+    color: #d6425d;
+}
+
 /* header */
 /* nav가 없는 페이지에 header는 .header */
 .header {
@@ -419,7 +497,7 @@ body {
 
 .deckList>li {
     display: block;
-    margin: 8px 0;
+    margin: 12px 0;
     width: calc(100% * 4 / 5);
 }
 
@@ -454,6 +532,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.deck-wrap>.deck-bottom .deckCount-wrap{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex:1;
 }
 
 .deck-wrap>.deck-bottom .icon-box {
