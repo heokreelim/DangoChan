@@ -48,8 +48,8 @@
                       </a>
                     </div>
                   </div>
-                  <ul class="deckList" th:each="deck : ${category.deckInfoList}">
-                    <li>
+                  <ul class="deckList">
+                    <li th:each="deck : ${category.deckInfoList}">
                       <div class="deck-wrap">
                         <div class="deck-top">
                           <input type="hidden" class="dekcId" th:value="${deck.deckId}">
@@ -68,15 +68,19 @@
                         <div class="deck-bottom">
                           <div class="icon-box">
                             <i class="fa-regular fa-circle"></i>
-                            <span th:text="${deck.studiedCardCountOk}">○ 갯수 표시</span>
+                            <span>([[${deck.studiedCardCountOk}]])</span>
                           </div>
                           <div class="icon-box">
-                            <i class="fa-regular fa-circle"></i>
-                            <span th:text="${deck.studiedCardCountYet}">△ 갯수 표시</span>
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>([[${deck.studiedCardCountYet}]])</span>
                           </div>
                           <div class="icon-box">
-                            <i class="fa-regular fa-circle"></i>
-                            <span th:text="${deck.studiedCardCountNo}">× 갯수 표시</span>
+                            <i class="fa-solid fa-x"></i>
+                            <span>([[${deck.studiedCardCountNo}]])</span>
+                          </div>
+                          <div class="icon-box">
+                            <i class="fa-solid fa-question"></i>
+                            <span>([[${deck.studiedCardCountNo}]])</span>
                           </div>
                           <div class="percentage-box">
                             <span class="percentage-text percent50">[[${deck.cardStudyRate}]]%</span>
