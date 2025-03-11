@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
@@ -91,7 +95,12 @@ public class UserController {
 		if (userService.registerUser(dto))
 		{
 			// 회원가입 성공
-			returnPage = "redirect:/user/login";
+			// 자동 로그인 처리
+            UserDetails userDetails = loginUserDetailsService.loadUserByUsername(dto.getEmail()); // UserDetails 로드
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); // Authentication 객체 생성
+            SecurityContextHolder.getContext().setAuthentication(authentication); // SecurityContext에 Authentication 설정
+
+            returnPage = "redirect:/home"; // 로그인 후 이동할 페이지
 		}
 		else
 		{
@@ -100,6 +109,13 @@ public class UserController {
 		}
 		
 		return returnPage;
+	}
+	
+	@PostMapping("/idCheck")
+	@ResponseBody
+	public boolean isIdExist(@RequestParam(name="email") String email)
+	{
+		return userService.idDuplCheck(email);
 	}
 	
 	@PostMapping("/guestlogin")
@@ -114,5 +130,16 @@ public class UserController {
 		
 		return ResponseEntity.ok(UUID.fromString(stringKey));
     }
+	
+	@PostMapping("/nickNameChange")
+	@ResponseBody
+	public boolean nickNameChange(
+				//@AuthenticationPrincipal LoginUserDetails userDetails, 
+				@RequestParam(name="nickName") String nickName
+			)
+	{
+		//return userService.editNickname(userDetails.getUserId(), nickName);
+		return userService.editNickname(1L, nickName);
+	}
 	// LHR end
 }
