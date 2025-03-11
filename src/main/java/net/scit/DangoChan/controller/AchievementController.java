@@ -2,7 +2,6 @@ package net.scit.DangoChan.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,7 @@ public class AchievementController {
 	private final FlashCardService flashCardService;
 	private final DeckStudyTimeService deckStudyTimeService;
 	
-
+	// 출석정보 조회
 	@GetMapping("/attendance")
 	public ResponseEntity<List<String>> getAttendance(
 	        @RequestParam(name = "userId") Long userId,
@@ -47,6 +46,5 @@ public class AchievementController {
 	    return ResponseEntity.ok(dateStrList);
 	}
 
-    
     
 }

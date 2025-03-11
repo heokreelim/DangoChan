@@ -42,6 +42,11 @@ public interface CardRepository extends JpaRepository<CardEntity, Long> {
 		       "AND c.studyLevel = 3 " +
 		       "GROUP BY DATE(c.studiedAt)")
 		List<Object[]> findDailyLearnedWords(@Param("userId") Long userId);
+	// 누적 학습 단어 수용 쿼리
+		@Query("SELECT COUNT(c) FROM CardEntity c " +
+			       "WHERE c.studyLevel = :studyLevel " +
+			       "AND c.deckEntity.categoryEntity.userEntity.userId = :userId")
+			int countLearnedWords(@Param("userId") Long userId, @Param("studyLevel") int studyLevel);
 
 	// PJB end
 }

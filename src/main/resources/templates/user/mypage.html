@@ -35,14 +35,11 @@
             <div class="achievement-notice">
                 <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
                 <ul class="achievement-list">
-                    <li>
-                        <p>🏅 7일 연속 출석으로 업적 달성!</p>
+                    <li th:each="ach : ${personalAchievements}">
+                        <p>🏅 [[${ach}]]</p>
                     </li>
-                    <li>
-                        <p>🏅 일일 1,000개 단어 학습 업적 달성!</p>
-                    </li>
-                    <li>
-                        <p>🎉 게임 하이스코어 스코어 홀더!</p>
+                    <li th:each="ach : ${communityAchievements}">
+                        <p>🎉 [[${ach}]]</p>
                     </li>
                 </ul>
             </div>

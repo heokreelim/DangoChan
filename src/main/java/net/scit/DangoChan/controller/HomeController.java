@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.dto.DeckInfoDTO;
 import net.scit.DangoChan.dto.LoginUserDetails;
+import net.scit.DangoChan.service.AchievementService;
 import net.scit.DangoChan.service.DeckStudyTimeService;
 import net.scit.DangoChan.service.FlashCardService;
 import net.scit.DangoChan.service.UserService;
@@ -24,6 +25,7 @@ public class HomeController {
 	private final UserService userService;
 	private final FlashCardService flashCardService;
 	private final DeckStudyTimeService deckStudyTimeService;
+	private final AchievementService achievementService;
 	
 	// Home 화면으로 이동
 	@GetMapping("/home")
@@ -48,12 +50,21 @@ public class HomeController {
 				for (DeckInfoDTO deckInfoDTO : categoryDTO.getDeckInfoList()) {
 					log.info("deckName			=== {}", deckInfoDTO.getDeckName());
 					log.info("deckCardCount		=== {}", deckInfoDTO.getDeckCardCount());
-					log.info("studiedCardCount	=== ○ : {}, △ : {}, ×  : {} ", 
-								deckInfoDTO.getStudiedCardCountOk(), deckInfoDTO.getStudiedCardCountYet(), deckInfoDTO.getStudiedCardCountNo());
+					log.info("studiedCardCount	=== ○ : {}, △ : {}, ×  : {}, ？ : {}  ", 
+								deckInfoDTO.getStudiedCardCountOk(), deckInfoDTO.getStudiedCardCountYet(), deckInfoDTO.getStudiedCardCountNo(), deckInfoDTO.getNewCard());
 					log.info("cardStudyRate		=== {}", deckInfoDTO.getCardStudyRate());
 				}
 			}
-			
+    	 //  업적 및 출석 데이터 추가
+            List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+            List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+            int attendanceStreak = achievementService.getAttendanceStreak(userId);
+            String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+            model.addAttribute("personalAchievements", personalAchievements);
+            model.addAttribute("communityAchievements", communityAchievements);
+            model.addAttribute("attendanceStreak", attendanceStreak);
+            model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
         }	    
 		return "home"; 
 	}
