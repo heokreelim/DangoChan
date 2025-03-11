@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,26 +37,27 @@ import net.scit.DangoChan.dto.DeckResponseDTO;
 import net.scit.DangoChan.dto.ExportCardDTO;
 import net.scit.DangoChan.service.DeckStudyTimeService;
 import net.scit.DangoChan.service.FlashCardService;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/flashcard")
 @RequiredArgsConstructor
 @Slf4j
 public class FlashCardController {
-	
+
 	//private final Service variable start
 	private final FlashCardService flashCardService;
 	private final DeckStudyTimeService deckStudyTimeService;
 	//private final Service variable end
-	
+
 	//category start
-	
+
 	//AYH start
-	
+
 	@GetMapping("/modal")
 	public String modal()
 	{
-		return "modal"; 
+		return "modal";
 	}
 	/**
 	 *	카테고리 등록 요청
@@ -81,31 +83,31 @@ public class FlashCardController {
 	@GetMapping("/updateCategory")
 	public String updateCategory(@ModelAttribute CategoryDTO categoryDTO) {
 		flashCardService.updateCategory(categoryDTO);
-		
+
 		return "redirect:/home";
 	}
 
 
-	
+
 	//AYH end
-	
+
 	//PJB start
 	// 카테고리 삭제 요청
 	@GetMapping("/deleteCategory")
 	public String deleteCategory (
 			@RequestParam(name = "categoryId") Long categoryId
-			) {
+	) {
 		flashCardService.deleteCategory(categoryId);
-		
+
 		return "redirect:/home";
 	}
-	
+
 	//PJB end
-	
+
 	//category end
-	
+
 	//deck start
-	
+
 	//AYH start
 	/**
 	 * 덱을 저장하면서 함께 입력한 카드도 함께 저장되는 코드
@@ -114,26 +116,26 @@ public class FlashCardController {
 	 */
 	@ResponseBody
 	@PostMapping("/importDeck")
-    public String importDeck(@RequestBody DeckAndCardsRequest request) {
-        DeckDTO deckDTO = request.getDeckDTO();
-        List<CardDTO> cardDTOList = request.getCardDTOList();
+	public String importDeck(@RequestBody DeckAndCardsRequest request) {
+		DeckDTO deckDTO = request.getDeckDTO();
+		List<CardDTO> cardDTOList = request.getCardDTOList();
 
-        System.out.println("▶ Deck 저장: " + deckDTO);
-        DeckDTO savedDeckId = flashCardService.insertDeck(deckDTO);
-        for (CardDTO cardDTO : cardDTOList) {
-        	cardDTO.setDeckId(savedDeckId.getDeckId()); // 백엔드에서 저장 후 ID 업데이트 필요
+		System.out.println("▶ Deck 저장: " + deckDTO);
+		DeckDTO savedDeckId = flashCardService.insertDeck(deckDTO);
+		for (CardDTO cardDTO : cardDTOList) {
+			cardDTO.setDeckId(savedDeckId.getDeckId()); // 백엔드에서 저장 후 ID 업데이트 필요
 			cardDTO.setStudyLevel(0);
-            System.out.println("▶ 카드 저장: " + cardDTO);
-            flashCardService.insertCard(cardDTO);
-        }
-     // TODO: DB 저장 로직 추가 (Service & Repository 호출)
-        return "Deck and Cards saved successfully!";
+			System.out.println("▶ 카드 저장: " + cardDTO);
+			flashCardService.insertCard(cardDTO);
+		}
+		// TODO: DB 저장 로직 추가 (Service & Repository 호출)
+		return "Deck and Cards saved successfully!";
 	}
-	
-	
+
+
 	// 덱 내보내기 요청
 	/**
-	 * 덱 내보내기 요청 
+	 * 덱 내보내기 요청
 	 * 요청받은 카드 DB를 xlsx파일로 변환하여 저장
 	 * @param deckId
 	 * @param response
@@ -141,129 +143,127 @@ public class FlashCardController {
 	 */
 	@GetMapping("/exportDeck")
 	public void exportDeckToExcel(@RequestParam(name = "deckId") Long deckId, HttpServletResponse response) throws IOException {
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=deck_" + deckId + ".xlsx");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-Disposition", "attachment; filename=deck_" + deckId + ".xlsx");
 
-        List<ExportCardDTO> cardList = flashCardService.getCardsByDeckId(deckId);
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Flashcards");
+		List<ExportCardDTO> cardList = flashCardService.getCardsByDeckId(deckId);
+		Workbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("Flashcards");
 
-        // 헤더 작성
-        Row headerRow = sheet.createRow(0);
-        String[] columns = {"단어", "품사", "뜻", "예문 (일본어)", "예문 (한국어)"};
+		// 헤더 작성
+		Row headerRow = sheet.createRow(0);
+		String[] columns = {"단어", "품사", "뜻", "예문 (일본어)", "예문 (한국어)"};
 
-        for (int i = 0; i < columns.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            CellStyle style = workbook.createCellStyle();
-            Font font = workbook.createFont();
-            font.setBold(true);
-            style.setFont(font);
-            cell.setCellStyle(style);
-        }
+		for (int i = 0; i < columns.length; i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellValue(columns[i]);
+			CellStyle style = workbook.createCellStyle();
+			Font font = workbook.createFont();
+			font.setBold(true);
+			style.setFont(font);
+			cell.setCellStyle(style);
+		}
 
-        // 데이터 입력
-        int rowNum = 1;
-        for (ExportCardDTO card : cardList) {
-        	System.out.println(card.toString());
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(card.getWord());
-            row.createCell(1).setCellValue(card.getPos());
-            row.createCell(2).setCellValue(card.getMeaning());
-            row.createCell(3).setCellValue(card.getExampleJp());
-            row.createCell(4).setCellValue(card.getExampleKr());
-        }
+		// 데이터 입력
+		int rowNum = 1;
+		for (ExportCardDTO card : cardList) {
+			System.out.println(card.toString());
+			Row row = sheet.createRow(rowNum++);
+			row.createCell(0).setCellValue(card.getWord());
+			row.createCell(1).setCellValue(card.getPos());
+			row.createCell(2).setCellValue(card.getMeaning());
+			row.createCell(3).setCellValue(card.getExampleJp());
+			row.createCell(4).setCellValue(card.getExampleKr());
+		}
 
-        // 자동 열 너비 조정
-        for (int i = 0; i < columns.length; i++) {
-            sheet.autoSizeColumn(i);
-        }
+		// 자동 열 너비 조정
+		for (int i = 0; i < columns.length; i++) {
+			sheet.autoSizeColumn(i);
+		}
 
-        workbook.write(response.getOutputStream());
-        workbook.close();
-    }
-	
+		workbook.write(response.getOutputStream());
+		workbook.close();
+	}
+
 	// 덱 편집 요청
 	@ResponseBody
 	@GetMapping("/getDeck")
-    public DeckResponseDTO getDeck(@RequestParam(name="deckId") Long deckId) {
-        DeckDTO deck = flashCardService.getDeckByDeckId(deckId);
-        List<ExportCardDTO> cardList = flashCardService.getCardsByDeckId(deckId);
-        return new DeckResponseDTO(deck, cardList);
-    }
+	public DeckResponseDTO getDeck(@RequestParam(name="deckId") Long deckId) {
+		DeckDTO deck = flashCardService.getDeckByDeckId(deckId);
+		List<ExportCardDTO> cardList = flashCardService.getCardsByDeckId(deckId);
+		return new DeckResponseDTO(deck, cardList);
+	}
 
 	// 덱 편집 내역 저장
 	@ResponseBody
 	@PutMapping("/updateDeck")
-    public String updateDeck(@RequestBody DeckDTO deckDTO) {
+	public String updateDeck(@RequestBody DeckDTO deckDTO) {
 		System.out.println(deckDTO.toString());
 		flashCardService.updateDeck(deckDTO);
-        return "덱 정보가 성공적으로 수정되었습니다.";
-    }
+		return "덱 정보가 성공적으로 수정되었습니다.";
+	}
 
 	// 카드 편집
 	// 덱 편집 안의 단어 수정 내역 저장
 	@ResponseBody
-    @PutMapping("/updateCards")
-    public String updateCards(@RequestBody CardUpdateRequest request) {
+	@PutMapping("/updateCards")
+	public String updateCards(@RequestBody CardUpdateRequest request) {
 		List<ExportCardDTO> updatedCards = request.getUpdatedCards();
-	    List<Long> deletedCardIds = request.getDeletedCardIds();
-	    
-	 // 수정된 카드 출력 (디버깅용)
-	    for (ExportCardDTO exportCardDTO : updatedCards) {
-	        System.out.println("수정된 카드: " + exportCardDTO.toString());
-	    }
+		List<Long> deletedCardIds = request.getDeletedCardIds();
 
-	    // 삭제할 카드 ID 출력 (디버깅용)
-	    if (deletedCardIds != null && !deletedCardIds.isEmpty()) {
-	        System.out.println("삭제할 카드 ID 목록: " + deletedCardIds);
-	        flashCardService.deleteCard(deletedCardIds);
-	    }
-
-	    flashCardService.updateCards(updatedCards);
-	    return "카드 목록이 성공적으로 수정되었습니다.";
-	    
-    }
-	
-	//AYH end
-		
-	//PJB start
-		
-	// 덱 삭제 요청
-		@GetMapping("/deleteDeck")
-		public String deleteDeck (
-				@RequestParam(name = "deckId") Long deckId
-				) {
-			flashCardService.deleteDeck(deckId);
-			
-			return "redirect:/home";
+		// 수정된 카드 출력 (디버깅용)
+		for (ExportCardDTO exportCardDTO : updatedCards) {
+			System.out.println("수정된 카드: " + exportCardDTO.toString());
 		}
-		
-		// 
-	//PJB end
-	
-	//deck end
-	
-	//card start
-	
-	//AYH start
-	
-		@ResponseBody
-		@PostMapping("/updateFlashcard")
-		public ResponseEntity<String> updateFlashcard(@RequestBody CardDTO cardDTO) {
-	        boolean isUpdated = flashCardService.updateCard(cardDTO);
-	        
-	        if (isUpdated) {
-	            return ResponseEntity.ok("카드가 성공적으로 수정되었습니다.");
-	        } else {
-	            return ResponseEntity.badRequest().body("카드 수정 중 오류가 발생했습니다.");
-	        }
-	    }
-		
-		
-		
+
+		// 삭제할 카드 ID 출력 (디버깅용)
+		if (deletedCardIds != null && !deletedCardIds.isEmpty()) {
+			System.out.println("삭제할 카드 ID 목록: " + deletedCardIds);
+			flashCardService.deleteCard(deletedCardIds);
+		}
+
+		flashCardService.updateCards(updatedCards);
+		return "카드 목록이 성공적으로 수정되었습니다.";
+
+	}
+
 	//AYH end
-	
+
+	//PJB start
+
+	// 덱 삭제 요청
+	@GetMapping("/deleteDeck")
+	public String deleteDeck (
+			@RequestParam(name = "deckId") Long deckId
+	) {
+		flashCardService.deleteDeck(deckId);
+
+		return "redirect:/home";
+	}
+	//PJB end
+
+	//deck end
+
+	//card start
+
+	//AYH start
+
+	@ResponseBody
+	@PostMapping("/updateFlashcard")
+	public ResponseEntity<String> updateFlashcard(@RequestBody CardDTO cardDTO) {
+		boolean isUpdated = flashCardService.updateCard(cardDTO);
+
+		if (isUpdated) {
+			return ResponseEntity.ok("카드가 성공적으로 수정되었습니다.");
+		} else {
+			return ResponseEntity.badRequest().body("카드 수정 중 오류가 발생했습니다.");
+		}
+	}
+
+
+
+	//AYH end
+
 	//SYH start
 	// ✅ 플래시카드 페이지
 	@GetMapping("/flashcard")
@@ -293,7 +293,8 @@ public class FlashCardController {
 		// ✅ 디버깅 로그 추가 (JSON 응답 확인)
 		System.out.println("🔥 [DEBUG] 응답 JSON: " + card);
 
-		return ResponseEntity.ok(card.get());
+		return ResponseEntity.ok(card.orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "No flashcard found")));
+
 	}
 
 	@PostMapping("/resetStudyData")
@@ -312,7 +313,7 @@ public class FlashCardController {
 
 	// ✅ study_level 업데이트 API (AJAX 요청 처리)
 	@PostMapping("/updateStudyLevel")
-	public ResponseEntity<String> updateStudyLevel(@RequestParam(name = "cardId") Long cardId, @RequestParam(name = "studyLevel") Integer studyLevel) {
+	public ResponseEntity<String> updateStudyLevel(@RequestParam Long cardId, @RequestParam Integer studyLevel) {
 
 		flashCardService.updateStudyLevel(cardId, studyLevel);
 		return ResponseEntity.ok("✅ study_level 업데이트 성공");
@@ -329,7 +330,7 @@ public class FlashCardController {
 	}
 
 	//SYH end
-	
+
 	//card end
-	
+
 }
