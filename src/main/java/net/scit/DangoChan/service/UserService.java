@@ -70,8 +70,9 @@ public class UserService {
 	}
 	
 	// ID 중복체크
-	public boolean idDuplCheck(Long userId) {
-		boolean isUserIdExist = userRepository.existsById(userId);
+	public boolean idDuplCheck(String email) 
+	{
+		boolean isUserIdExist = userRepository.findByEmailAndAuthType(email, "LOCAL").isPresent();
 		
 		return !isUserIdExist; // 사용가능 여부는 등록된 유저가 없어야 하므로 ! 붙임
 	}
