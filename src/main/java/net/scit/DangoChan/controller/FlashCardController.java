@@ -331,14 +331,10 @@ public class FlashCardController {
 		return ResponseEntity.ok("✅ Study time 저장 완료");
 	}
 
-	@PostMapping("/check") // ✅ 요청 방식 변경
-	public ResponseEntity<Map<String, Boolean>> checkNoLevelZero(@RequestParam Long deckId) {
-		boolean isNoZeroCards = flashCardService.isNoStudyLevelZeroCards(deckId);
-
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("isNoZeroCards", isNoZeroCards);
-
-		return ResponseEntity.ok(response);
+	@GetMapping("/check") // ✅ 요청 방식 변경
+	@ResponseBody
+	public boolean checkNoLevelZero(@RequestParam (name = "deckId") Long deckId) {
+		return flashCardService.isNoStudyLevelZeroCards(deckId);
 	}
 
 	//SYH end
