@@ -1,5 +1,6 @@
 package net.scit.DangoChan.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.dto.UserDTO;
+import net.scit.DangoChan.service.AchievementService;
 import net.scit.DangoChan.service.LoginUserDetailsService;
 import net.scit.DangoChan.service.UserService;
 
@@ -33,6 +35,7 @@ public class UserController {
 	// private memberVariable start
 	private final UserService userService;
 	private final LoginUserDetailsService loginUserDetailsService;
+	private final AchievementService achievementService;
 	// private memberVariable end
 	
 	// PJB start	
@@ -44,9 +47,16 @@ public class UserController {
 		if (user != null) {
 			Long userId = user.getUserId();
 			model.addAttribute("userId",userId);
-			// ? 이전에 userId, userPwd 를 받아 검증 후 이동
-			// guest, social Login 의 경우, 토큰을 확인 후 이동하는 방법 고려중
-			// UserDTO userDTO = userService.
+			
+			List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+		    List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+		    int attendanceStreak = achievementService.getAttendanceStreak(userId);
+		    String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+		    model.addAttribute("attendanceStreak", attendanceStreak);
+		    model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+		    model.addAttribute("personalAchievements", personalAchievements);
+		    model.addAttribute("communityAchievements", communityAchievements);
 			
 ;		}
 		

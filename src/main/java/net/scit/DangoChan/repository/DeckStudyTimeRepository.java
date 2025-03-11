@@ -1,5 +1,6 @@
 package net.scit.DangoChan.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,7 +23,15 @@ public interface DeckStudyTimeRepository extends JpaRepository<DeckStudyTimeEnti
 		       "WHERE d.deckEntity.deckId IN :deckIds " +
 		       "GROUP BY DATE(d.date)")
 		List<Object[]> findDailyTotalStudyTime(@Param("deckIds") List<Long> deckIds);
-
+		
+		
+		@Query("SELECT SUM(d.studyTime) " +
+			       "FROM DeckStudyTimeEntity d " +
+			       "WHERE d.deckEntity.deckId IN :deckIds " +
+			       "AND d.date BETWEEN :start AND :end")
+			Integer sumStudyTimeByDeckIdsAndDateRange(@Param("deckIds") List<Long> deckIds,
+			                                          @Param("start") LocalDateTime start,
+			                                          @Param("end") LocalDateTime end);
 	
 	// PJB end
     
