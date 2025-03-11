@@ -10,7 +10,6 @@ import net.scit.DangoChan.dto.LoginUserDetails;
 @Slf4j
 @Controller
 public class MainController {
-	// 주석 테스트, comment test, コメントのテスト（検討）
 	@GetMapping("/")
 	public String index(@AuthenticationPrincipal LoginUserDetails userDetails)
 	{

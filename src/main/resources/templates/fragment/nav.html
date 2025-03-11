@@ -24,15 +24,23 @@
             </div> <!-- profile-wrap end -->
             <div class="statistics-wrap">
                 <ul class="statistics-list">
-                    <li>
-                        <p>217일 연속으로 학습중입니다.</p>
+                    <!-- 연속 출석일 -->
+                    <li th:if="${attendanceStreak != null}">
+                        <p>[[${attendanceStreak}]]일 연속으로 출석중입니다.</p>
                     </li>
-                    <li>
-                        <p>오늘 학습량 : 60분</p>
-                        <!-- (deckStudyTime.studyTime) -->
+                    <!-- 오늘 학습시간 -->
+                    <li th:if="${todayStudyTimeFormatted != null}">
+                        <p>오늘 학습량 : [[${todayStudyTimeFormatted}]]</p>
                     </li>
-                    <li>
-                        <p>🎉 게임 하이스코어 스코어 홀더!</p>
+                    <!-- 두 리스트가 모두 비어있을 경우 -->
+                    <li th:if="${#lists.isEmpty(personalAchievements)} and ${#lists.isEmpty(communityAchievements)}">
+                        <p>🎯 아직 달성한 업적이 없어요. 분발하세요!</p>
+                    </li>
+                    <li th:each="ach : ${personalAchievements}">
+                        <p>🏅 [[${ach}]]</p>
+                    </li>
+                    <li th:each="ach : ${communityAchievements}">
+                        <p>🎉 [[${ach}]]</p>
                     </li>
                 </ul>
             </div> <!-- statistics-wrap end -->

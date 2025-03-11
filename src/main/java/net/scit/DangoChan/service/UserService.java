@@ -70,10 +70,39 @@ public class UserService {
 	}
 	
 	// ID 중복체크
-	public boolean idDuplCheck(Long userId) {
-		boolean isUserIdExist = userRepository.existsById(userId);
+	public boolean idDuplCheck(String email) 
+	{
+		boolean isUserIdExist = userRepository.findByEmailAndAuthType(email, "LOCAL").isPresent();
 		
 		return !isUserIdExist; // 사용가능 여부는 등록된 유저가 없어야 하므로 ! 붙임
+	}
+	
+	// 닉네임 변경
+	public boolean editNickname(Long userId, String newNickName)
+	{
+		try {
+			Optional<UserEntity> entityOp = userRepository.findById(userId);
+			
+			if (entityOp.isPresent())
+			{
+				UserEntity entity = entityOp.get();
+				entity.setUserName(newNickName);
+				
+				UserEntity savedEntity = userRepository.save(entity);
+				
+				boolean nickNameChangeSucceeded = savedEntity != null && savedEntity.getUserId() != null;
+				
+				return nickNameChangeSucceeded;
+			}
+			else
+			{
+				log.info("======= 닉네임 변경 실패: 유저({})가 존재하지 않습니다.", userId);
+				return false;				
+			}
+		} catch (Exception e) {
+			log.info("======= UserService editNickname Error: {}", e.getMessage());
+			return false;
+		}
 	}
 	// LHR end
 }
