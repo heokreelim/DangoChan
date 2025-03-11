@@ -39,11 +39,11 @@ public class DeckStudyTimeService {
      */
     @Transactional
     public void saveStudyTime(Long deckId, int studyTimeSeconds) {
-        // 🟢 deckId로 DeckEntity 찾기
+        //deckId로 DeckEntity 찾기
         DeckEntity deckEntity = deckRepository.findById(deckId)
                 .orElseThrow(() -> new RuntimeException("Deck not found"));
 
-        // 🟢 새로운 DeckStudyTimeEntity 저장
+        //새로운 DeckStudyTimeEntity 저장
         DeckStudyTimeEntity studyTimeEntity = DeckStudyTimeEntity.builder()
                 .deckEntity(deckEntity)  // ✅ DeckEntity 저장
                 .studyTime(studyTimeSeconds)

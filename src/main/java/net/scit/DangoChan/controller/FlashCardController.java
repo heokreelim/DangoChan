@@ -1,7 +1,9 @@
 package net.scit.DangoChan.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import net.scit.DangoChan.entity.CardEntity;
@@ -327,6 +329,16 @@ public class FlashCardController {
 		}
 		deckStudyTimeService.saveStudyTime(deckId, studyTime);
 		return ResponseEntity.ok("✅ Study time 저장 완료");
+	}
+
+	@PostMapping("/check") // ✅ 요청 방식 변경
+	public ResponseEntity<Map<String, Boolean>> checkNoLevelZero(@RequestParam Long deckId) {
+		boolean isNoZeroCards = flashCardService.isNoStudyLevelZeroCards(deckId);
+
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("isNoZeroCards", isNoZeroCards);
+
+		return ResponseEntity.ok(response);
 	}
 
 	//SYH end

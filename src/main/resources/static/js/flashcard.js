@@ -90,6 +90,20 @@ $(document).ready(function () {
             data: { cardId: cardId, studyLevel: studyLevel },
             success: function (response) {
                 console.log("✅ study_level 및 studied_at 업데이트 성공:", response);
+
+                // ✅ 학습할 새로운 카드 불러오기
+                fetchNewFlashcard(deckId)
+                    .done((data) => {
+                        console.log("🔄 새 단어 데이터:", data);
+                        $(".word-box span").text(data.kanji);
+                        setTimeout(() => {
+                            updateFlashcard(data);
+                        }, 500);
+                    })
+                    .fail(() => {
+                        console.log("📌 모든 단어를 학습했습니다. 초기화 진행!");
+                        resetStudyData(deckId);
+                    });
             },
             error: function (error) {
                 console.error("❌ study_level 및 studied_at 업데이트 실패:", error);
@@ -138,20 +152,10 @@ $(document).ready(function () {
         // 🔥 studyTimer 리셋 추가
         resetStudyTimer();
 
-        // 🔥 새로운 단어 불러오기
-        fetchNewFlashcard(deckId)
-            .done((data) => {
-                console.log("🔄 새 단어 데이터:", data);
-                $(".word-box span").text(data.kanji);
-                setTimeout(() => {
-                    updateFlashcard(data);
-                }, 500);
-            })
-            .fail((error) => {
-                console.log("📌 모든 단어를 학습했습니다. 초기화 진행!");
-                resetStudyData(deckId); // ✅ 초기화 함수 실행
-            });
+
     });
+
+
 
     // ✅ goHome()을 수정하여 answerBtn이 눌렸을 때만 저장되도록 함
     window.goHome = function () {
