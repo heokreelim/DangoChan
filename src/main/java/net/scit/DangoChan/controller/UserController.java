@@ -103,7 +103,7 @@ public class UserController {
 	
 	@PostMapping("/idCheck")
 	@ResponseBody
-	public boolean IsIdExist(@RequestParam(name="email") String email)
+	public boolean isIdExist(@RequestParam(name="email") String email)
 	{
 		return userService.idDuplCheck(email);
 	}
@@ -120,5 +120,16 @@ public class UserController {
 		
 		return ResponseEntity.ok(UUID.fromString(stringKey));
     }
+	
+	@PostMapping("/nickNameChange")
+	@ResponseBody
+	public boolean nickNameChange(
+				//@AuthenticationPrincipal LoginUserDetails userDetails, 
+				@RequestParam(name="nickName") String nickName
+			)
+	{
+		//return userService.editNickname(userDetails.getUserId(), nickName);
+		return userService.editNickname(1L, nickName);
+	}
 	// LHR end
 }
