@@ -349,34 +349,41 @@ public class FlashCardService {
 	// AYH end
 
 	//SYH start
-	// ✅ 새로운 카드 (스터디 레벨 0) 중 랜덤 카드 선택
+	// ✅ 새로운 카드 중 랜덤 카드 선택
+	@Transactional
 	public Optional<CardDTO> getRandomNewCard(Long deckId) {
-		List<CardEntity> newCards = cardRepository.findNewCardsByDeckId(deckId);
+		LocalDate today = LocalDate.now();
+		LocalDate threeDaysLater = today.plusDays(3); // 3일 후 날짜 계산
+
+		// JPQL에서 날짜 필터링 후 가져오기
+		List<CardEntity> newCards = cardRepository.findNewCardsByDeckId(deckId, threeDaysLater);
+
 		if (newCards.isEmpty()) {
 			return Optional.empty();
 		}
+
+		// ✅ 랜덤 카드 선택
 		CardEntity selectedCard = newCards.get(new Random().nextInt(newCards.size()));
 
 		return Optional.of(CardDTO.toDTO(selectedCard));
 	}
 
-//	// ✅ 복습해야 할 카드 목록 (스터디 레벨 1 또는 2) 가져오기
-//	public List<CardEntity> getReviewCards(Long deckId) {
-//		return cardRepository.findReviewCardsByDeckId(deckId);
-//	}
-//
-//	// ✅ 복습 카드 (스터디 레벨 1 또는 2) 중 랜덤으로 하나 선택
-//	public Optional<CardEntity> getRandomReviewCard(Long deckId) {
-//		List<CardEntity> reviewCards = cardRepository.findReviewCardsByDeckId(deckId);
-//		if (reviewCards.isEmpty()) {
-//			return Optional.empty();
-//		}
-//		return Optional.of(reviewCards.get(new Random().nextInt(reviewCards.size())));
-//	}
-
-	// ✅ 스터디 레벨 0인 카드가 남아 있는지 확인
+	// ✅ 모든 카드가 학습 완료되었는지 확인
 	public boolean isAllCardsStudied(Long deckId) {
-		return cardRepository.countByDeckEntity_DeckIdAndStudyLevel(deckId, 0) == 0;
+		int totalCards = cardRepository.countByDeckEntity_DeckId(deckId);
+		int studiedCards = cardRepository.countByDeckEntity_DeckIdAndStudyLevel(deckId, 3);
+
+		return totalCards > 0 && totalCards == studiedCards;
+	}
+
+	//true 반환 → studyLevel == 0인 카드가 없음
+	//false 반환 → studyLevel == 0인 카드가 하나라도 있음
+	public boolean isNoStudyLevelZeroCards(Long deckId) {
+		LocalDate threeDaysLater = LocalDate.now().plusDays(3);
+		List<CardEntity> cards = cardRepository.findNewCardsByDeckId(deckId, threeDaysLater);
+
+		// studyLevel이 0인 카드가 하나도 없는지 확인
+		return cards.stream().noneMatch(card -> card.getStudyLevel() == 0);
 	}
 
 	// ✅ 모든 카드의 studyLevel과 studiedAt 초기화
@@ -398,7 +405,7 @@ public class FlashCardService {
 		cardEntity.ifPresent(card -> {
 			card.setStudyLevel(studyLevel);
 			card.setStudiedAt(LocalDate.now());
-			cardRepository.save(card);
+			cardRepository.saveAndFlush(card); // ✅ DB에 즉시 반영
 		});
 	}
 
