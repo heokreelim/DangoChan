@@ -108,7 +108,6 @@ $(document).ready(function () {
                         // 만약 응답이 빈 데이터라면 학습 끝
                         if (!data || Object.keys(data).length === 0) {
                             checkStudyLevel(deckId).done((allCompleted) => {
-                                console.log(allCompleted, typeof allCompleted);
                                 if (allCompleted) {
                                     console.log("📌 모든 단어를 학습했습니다. 초기화 진행!");
                                     resetStudyData(deckId);
