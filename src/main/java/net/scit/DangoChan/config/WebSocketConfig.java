@@ -20,9 +20,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // 클라이언트 -> 서버: /pub
         registry.setApplicationDestinationPrefixes("/pub");
-        // 서버 -> 클라이언트 broadcast: /sub
-        registry.enableSimpleBroker("/sub");
+        registry.enableSimpleBroker("/sub", "/queue"); // "/queue"를 포함해야 합니다.
+        registry.setUserDestinationPrefix("/user");   // 이 줄이 있어야 convertAndSendToUser가 정상 작동합니다.
     }
+
 }
