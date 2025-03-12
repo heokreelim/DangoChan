@@ -18,14 +18,33 @@ body {
     border-right: 1px solid #ddd;
     padding: 15px;
 }
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #d32f2f;
+    margin-bottom: 5px;
+}
+.prev-word {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 10px;
+}
 .chat-messages {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
     background-color: #fff;
     border-radius: 20px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     margin-bottom: 15px;
+    max-height: 200px;
 }
 .message {
     margin: 8px 0;
@@ -126,7 +145,7 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5);
 }
 .modal-content {
     background-color: #fff;

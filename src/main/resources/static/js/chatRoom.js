@@ -2,17 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let roomId = document.body.dataset.roomid;
     let userId = document.body.dataset.userid;
     let roomType = document.body.dataset.roomtype;
-    if (!roomId) {
-        console.error("roomId is not defined in data-roomid attribute");
-        return;
-    }
-    if (!userId) {
-        console.error("userId is not defined in data-userid attribute");
+    if (!roomId || !userId) {
+        console.error("roomId 또는 userId가 정의되지 않았습니다.");
         return;
     }
     window.chatRoomId = roomId;
-    window.sessionId = userId;  // 로그인한 사용자의 닉네임 사용
+    window.sessionId = userId;
     window.roomType = roomType;
+    window.gameStarted = false;
     console.log("DOMContentLoaded -> connect(), roomId = " + roomId + ", sessionId = " + userId + ", roomType = " + roomType);
     connect();
 
@@ -24,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 이모지 모달 관련 이벤트
+    // 이모지 모달 이벤트
     const emojiToggle = document.getElementById('emojiToggle');
     const emojiModal = document.getElementById('emojiModal');
     const closeEmojiModal = document.getElementById('closeEmojiModal');
@@ -39,9 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
             emojiModal.style.display = "none";
         }
     });
+
+    if (window.roomType === "shiritori") {
+        document.getElementById('gameStartBtn').style.display = "inline-block";
+    }
 });
 
 let stompClient = null;
+let turnTimerInterval;
 
 function connect() {
     console.log("Attempting to connect...");
@@ -55,12 +57,12 @@ function onConnected(frame) {
     stompClient.subscribe('/sub/chat/room/' + window.chatRoomId, (msg) => {
         onMessageReceived(JSON.parse(msg.body));
     });
+    stompClient.subscribe('/user/queue/private', (msg) => {
+        onPrivateMessageReceived(JSON.parse(msg.body));
+    });
     enterRoom();
-    // 게임 모드 안내 메시지
-    if (window.roomType === "shiritori") {
-        displaySystemMessage("끝말잇기 게임: 이전 단어의 마지막 글자에 맞춰 단어를 입력하세요.");
-    } else if (window.roomType === "quiz") {
-        displaySystemMessage("일본어 퀴즈: 질문에 대한 올바른 답을 입력하세요.");
+    if (window.roomType === "shiritori" && !window.gameStarted) {
+        displaySystemMessage("끝말잇기 게임: '게임 시작' 버튼을 눌러 게임을 시작하세요.");
     }
 }
 
@@ -122,7 +124,17 @@ function onMessageReceived(chatMessage) {
     if (chatMessage.type === "SYSTEM") {
         displaySystemMessage(chatMessage.message);
         updateUserList();
+        if (chatMessage.message.trim().endsWith("님 차례입니다.")) {
+            startTurnTimerUI();
+        }
+        if (chatMessage.message.indexOf("게임이 시작되었습니다.") !== -1) {
+            document.getElementById("prevWord").textContent = "이전 단어: 없음";
+        }
         return;
+    }
+    if (chatMessage.type === "TALK" && window.roomType === "shiritori") {
+        const prevWordElem = document.getElementById('prevWord');
+        prevWordElem.textContent = "이전 단어: " + chatMessage.message;
     }
     const chatMessages = document.getElementById('chatMessages');
     const div = document.createElement('div');
@@ -147,6 +159,10 @@ function onMessageReceived(chatMessage) {
     chatMessagesElem.scrollTop = chatMessagesElem.scrollHeight;
 }
 
+function onPrivateMessageReceived(privateMessage) {
+    displaySystemMessage(privateMessage.message);
+}
+
 function displaySystemMessage(message) {
     const chatMessages = document.getElementById('chatMessages');
     const div = document.createElement('div');
@@ -154,6 +170,20 @@ function displaySystemMessage(message) {
     div.innerHTML = message;
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function startTurnTimerUI() {
+    const timerElem = document.getElementById('timer');
+    let timeLeft = 30;
+    timerElem.textContent = timeLeft;
+    if (turnTimerInterval) clearInterval(turnTimerInterval);
+    turnTimerInterval = setInterval(() => {
+        timeLeft--;
+        timerElem.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(turnTimerInterval);
+        }
+    }, 1000);
 }
 
 function leaveRoom() {
@@ -207,4 +237,12 @@ function addEmoji(emoji) {
     const chatInput = document.getElementById('chatInput');
     chatInput.value += emoji;
     document.getElementById('emojiModal').style.display = "none";
+}
+
+function startGame() {
+    fetch(`/chat/room/${window.chatRoomId}/startGame`, {
+        method: 'POST'
+    }).then(() => {
+        window.gameStarted = true;
+    }).catch(err => console.error(err));
 }

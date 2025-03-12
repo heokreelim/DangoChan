@@ -7,16 +7,22 @@
     <title>채팅방</title>
     <link rel="stylesheet" th:href="@{/css/chatRoom.css}">
 </head>
-<!-- roomId, roomType, 로그인한 사용자의 닉네임을 data 속성에 저장 -->
 <body th:attr="data-roomid=${roomId}, data-roomtype=${roomType}, data-userid=${#authentication.name}">
 <div class="container">
     <div class="chat-area">
+        <!-- 게임 정보 영역: 타이머와 이전 단어 -->
+        <div class="game-info">
+            <div id="timer" class="timer">30</div>
+            <div id="prevWord" class="prev-word">이전 단어: 없음</div>
+        </div>
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input">
             <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()">
             <input type="text" id="chatInput" placeholder="메시지 입력">
             <button onclick="sendMessage()">전송</button>
             <button id="emojiToggle">😊</button>
+            <!-- 끝말잇기 모드이면 게임 시작 버튼 표시 -->
+            <button id="gameStartBtn" style="display:none;" onclick="startGame()">게임 시작</button>
         </div>
         <!-- 이모지 선택 모달 -->
         <div id="emojiModal" class="modal">
@@ -43,7 +49,6 @@
                     <span onclick="addEmoji('🥳')">🥳</span>
                     <span onclick="addEmoji('😴')">😴</span>
                     <span onclick="addEmoji('🤤')">🤤</span>
-                    <!-- 추가 이모지 원하는 만큼 -->
                 </div>
             </div>
         </div>
