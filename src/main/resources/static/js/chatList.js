@@ -1,4 +1,3 @@
-// 채팅방 목록을 불러와서 화면에 표시하는 함수
 function loadRooms() {
     fetch('/chat/rooms')
         .then(response => response.json())
@@ -12,8 +11,6 @@ function loadRooms() {
                 let roomTypeText = "";
                 if (room.roomType === "shiritori") {
                     roomTypeText = " (끝말잇기)";
-                } else if (room.roomType === "quiz") {
-                    roomTypeText = " (일본어 퀴즈)";
                 } else {
                     roomTypeText = " (수다)";
                 }
@@ -27,10 +24,10 @@ function loadRooms() {
         .catch(err => console.error(err));
 }
 
-// 모달창에서 방 생성 시 호출되는 함수
 function createRoomModal() {
     const roomName = document.getElementById('roomNameModal').value.trim();
     const roomType = document.getElementById('roomTypeModal').value;
+    const maxParticipants = document.getElementById('maxParticipantsModal').value.trim();
     if (!roomName) {
         alert("채팅방 이름을 입력하세요.");
         return;
@@ -38,6 +35,7 @@ function createRoomModal() {
     const formData = new FormData();
     formData.append('name', roomName);
     formData.append('roomType', roomType);
+    formData.append('maxParticipants', maxParticipants);
 
     fetch('/chat/room', {
         method: 'POST',
@@ -45,7 +43,6 @@ function createRoomModal() {
     })
         .then(response => response.json())
         .then(room => {
-            // 모달 닫기 (Bootstrap Modal API)
             var myModalEl = document.getElementById('createRoomModal');
             var modal = bootstrap.Modal.getInstance(myModalEl);
             if (modal) {
@@ -59,6 +56,7 @@ function createRoomModal() {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadRooms();
+    setInterval(loadRooms, 5000);
     const nameInput = document.getElementById('roomNameModal');
     nameInput.addEventListener('keydown', function(event) {
         if (event.key === "Enter" || event.keyCode === 13) {
