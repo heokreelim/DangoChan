@@ -301,7 +301,7 @@ public class FlashCardController {
 
 	@PostMapping("/resetStudyData")
 	public ResponseEntity<String> resetStudyData(@RequestParam(name = "deckId") Long deckId,
-												 @RequestParam Integer studyTime) {
+												 @RequestParam (name = "studyTime") Integer studyTime) {
 		boolean allStudied = flashCardService.isAllCardsStudied(deckId);
 
 		if (allStudied) {
@@ -315,7 +315,7 @@ public class FlashCardController {
 
 	// ✅ study_level 업데이트 API (AJAX 요청 처리)
 	@PostMapping("/updateStudyLevel")
-	public ResponseEntity<String> updateStudyLevel(@RequestParam Long cardId, @RequestParam Integer studyLevel) {
+	public ResponseEntity<String> updateStudyLevel(@RequestParam(name = "cardId") Long cardId, @RequestParam(name = "studyLevel") Integer studyLevel) {
 
 		flashCardService.updateStudyLevel(cardId, studyLevel);
 		return ResponseEntity.ok("✅ study_level 업데이트 성공");
@@ -323,7 +323,7 @@ public class FlashCardController {
 
 	@PostMapping("/saveStudyTime")
 	public ResponseEntity<String> saveStudyTime(@RequestParam(name = "deckId") Long deckId,
-												@RequestParam Integer studyTime) {
+												@RequestParam(name = "studyTime") Integer studyTime) {
 		if (deckId == null || studyTime == null) {
 			return ResponseEntity.badRequest().body("❌ deckId 또는 studyTime이 누락됨");
 		}
