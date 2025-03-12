@@ -1,14 +1,30 @@
 package net.scit.DangoChan.controller;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.dto.UserDTO;
+import net.scit.DangoChan.service.AchievementService;
+import net.scit.DangoChan.service.LoginUserDetailsService;
 import net.scit.DangoChan.service.UserService;
 
 @Controller
@@ -22,13 +38,31 @@ public class UserController {
 	
 	// private memberVariable start
 	private final UserService userService;
+	private final LoginUserDetailsService loginUserDetailsService;
+	private final AchievementService achievementService;
 	// private memberVariable end
 	
 	// PJB start	
 	
 	// 마이페이지 이동 
 	@GetMapping("/mypage")
-	public String mypage() {
+	public String mypage(@AuthenticationPrincipal LoginUserDetails user,
+			Model model) {
+		if (user != null) {
+			Long userId = user.getUserId();
+			model.addAttribute("userId",userId);
+			
+			List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+		    List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+		    int attendanceStreak = achievementService.getAttendanceStreak(userId);
+		    String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+		    model.addAttribute("attendanceStreak", attendanceStreak);
+		    model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+		    model.addAttribute("personalAchievements", personalAchievements);
+		    model.addAttribute("communityAchievements", communityAchievements);
+			
+;		}
 		
 	return "user/mypage";	
 	}
@@ -52,25 +86,60 @@ public class UserController {
 	}
 	
 	// 로그인 처리요청
-		@PostMapping("/joinProc")
-		public String registerProc(@ModelAttribute UserDTO dto) {
-			String returnPage;
-			
-			dto.setAuthType("Local");
-			
-			if (userService.registerUser(dto))
-			{
-				// 회원가입 성공
-				returnPage = "redirect:/user/login";
-			}
-			else
-			{
-				// 회원가입 실패
-				returnPage = "redirect:/user/join";
-			}
-			
-			return returnPage;
+	@PostMapping("/joinProc")
+	public String registerProc(@ModelAttribute UserDTO dto) {
+		String returnPage;
+		
+		dto.setAuthType("LOCAL");
+		
+		if (userService.registerUser(dto))
+		{
+			// 회원가입 성공
+			// 자동 로그인 처리
+            UserDetails userDetails = loginUserDetailsService.loadUserByUsername(dto.getEmail()); // UserDetails 로드
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); // Authentication 객체 생성
+            SecurityContextHolder.getContext().setAuthentication(authentication); // SecurityContext에 Authentication 설정
+
+            returnPage = "redirect:/home"; // 로그인 후 이동할 페이지
 		}
+		else
+		{
+			// 회원가입 실패
+			returnPage = "redirect:/user/join";
+		}
+		
+		return returnPage;
+	}
 	
+	@PostMapping("/idCheck")
+	@ResponseBody
+	public boolean isIdExist(@RequestParam(name="email") String email)
+	{
+		return userService.idDuplCheck(email);
+	}
+	
+	@PostMapping("/guestlogin")
+	@ResponseBody
+    public ResponseEntity<UUID> guestLogin(@RequestBody(required = false) UUID guestLoginKey) {
+        
+		LoginUserDetails userDetails = loginUserDetailsService.loadUserByGuestLoginKey(guestLoginKey);
+		
+		String stringKey = userDetails.getProviderId();
+		
+		log.info("========== 게스트 번호 : {}", stringKey);
+		
+		return ResponseEntity.ok(UUID.fromString(stringKey));
+    }
+	
+	@PostMapping("/nickNameChange")
+	@ResponseBody
+	public boolean nickNameChange(
+				//@AuthenticationPrincipal LoginUserDetails userDetails, 
+				@RequestParam(name="nickName") String nickName
+			)
+	{
+		//return userService.editNickname(userDetails.getUserId(), nickName);
+		return userService.editNickname(1L, nickName);
+	}
 	// LHR end
 }

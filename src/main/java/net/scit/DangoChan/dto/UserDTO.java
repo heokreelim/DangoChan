@@ -38,4 +38,13 @@ public class UserDTO {
 								   .createdAt(entity.getCreatedAt())
 								   .build();
 	}
+	
+	// For OAuth2 login
+	public static UserDTO toDTO(String userName, String authType, String providerId)
+	{
+		return UserDTO.builder().userName(userName)
+								   .authType(authType)
+								   .providerId(providerId)
+								   .build();
+	}
 }

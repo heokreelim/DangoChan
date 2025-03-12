@@ -1,27 +1,18 @@
 package net.scit.DangoChan.controller;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CategoryDTO;
-import net.scit.DangoChan.dto.DeckDTO;
-import net.scit.DangoChan.dto.DeckStudyTimeDTO;
+import net.scit.DangoChan.dto.DeckInfoDTO;
 import net.scit.DangoChan.dto.LoginUserDetails;
-import net.scit.DangoChan.dto.UserDTO;
-import net.scit.DangoChan.entity.DeckEntity;
+import net.scit.DangoChan.service.AchievementService;
 import net.scit.DangoChan.service.DeckStudyTimeService;
 import net.scit.DangoChan.service.FlashCardService;
 import net.scit.DangoChan.service.UserService;
@@ -34,32 +25,47 @@ public class HomeController {
 	private final UserService userService;
 	private final FlashCardService flashCardService;
 	private final DeckStudyTimeService deckStudyTimeService;
+	private final AchievementService achievementService;
 	
 	// Home 화면으로 이동
 	@GetMapping("/home")
 	public String home (@AuthenticationPrincipal LoginUserDetails user,
 		Model model) {
-		if (user != null) {
-            
+		if (user != null) { 
             Long userId = user.getUserId();
+            model.addAttribute("userId", userId);
+            
             // 서비스에서 해당 유저의 전체 카테고리 목록을 가져온다고 가정
     	    List<CategoryDTO> categoryList = flashCardService.getCategoryListByUser(userId);
     	    model.addAttribute("categoryList", categoryList);
-    	    model.addAttribute("userId", userId);
+    	    
     	    log.info("categoryList ==={}", categoryList.size());
     	    
-    	    /*
+    	    // 데이터 확인
     	    for (CategoryDTO categoryDTO : categoryList) {
-				for (DeckEntity deckEntity : categoryDTO.getDeckEntityList()) {
-					log.info("deckEntity  ==={}",deckEntity.toString());
-					
+    	    	// 카테고리 명 
+    	    	log.info("category name ====== {}", categoryDTO.getCategoryName());
+    	    	
+    	    	// 해당 카테고리에 속한 덱 정보
+				for (DeckInfoDTO deckInfoDTO : categoryDTO.getDeckInfoList()) {
+					log.info("deckName			=== {}", deckInfoDTO.getDeckName());
+					log.info("deckCardCount		=== {}", deckInfoDTO.getDeckCardCount());
+					log.info("studiedCardCount	=== ○ : {}, △ : {}, ×  : {}, ？ : {}  ", 
+								deckInfoDTO.getStudiedCardCountOk(), deckInfoDTO.getStudiedCardCountYet(), deckInfoDTO.getStudiedCardCountNo(), deckInfoDTO.getNewCard());
+					log.info("cardStudyRate		=== {}", deckInfoDTO.getCardStudyRate());
 				}
 			}
-			*/
-        }
-		
-		
-	    
+    	 //  업적 및 출석 데이터 추가
+            List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+            List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+            int attendanceStreak = achievementService.getAttendanceStreak(userId);
+            String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+            model.addAttribute("personalAchievements", personalAchievements);
+            model.addAttribute("communityAchievements", communityAchievements);
+            model.addAttribute("attendanceStreak", attendanceStreak);
+            model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+        }	    
 		return "home"; 
 	}
 	
@@ -81,18 +87,5 @@ public class HomeController {
 //	    
 //	    return attendanceList;
 //	}
-	
-	
-	/**
-	 * 카테고리 추가 요청
-	 * 클라이언트가 JSON 형태의 CategoryDTO를 전송하면,
-	 * FlashCardService의 insertCategory 메서드를 호출하여 DB에 저장합니다.
-	 */
-	@PostMapping("/insertCategory")
-	@ResponseBody
-	public ResponseEntity<CategoryDTO> insertCategory(@RequestBody CategoryDTO categoryDTO) {
-	    log.info("카테고리 추가 요청: {}", categoryDTO);
-	    flashCardService.insertCategory(categoryDTO);
-	    return ResponseEntity.ok(categoryDTO);
-	}
+
 }

@@ -14,28 +14,98 @@
         <div th:replace="fragment/header"></div>
         <div class="container">
           <div class="service-wrap">
-            <div class="category-wrap">
-              <input type="hidden" id="userId" th:value="${1}">
-              <!-- 카테고리 없을 경우 -->
+            <!-- 카테고리 목록을 감싸는 컨테이너 -->
+            <div class="category-container">
+              <!-- 카테고리가 없을 경우 -->
               <th:block th:if="${categoryList == null or categoryList.isEmpty()}">
-                  <p class="categoryEmpty">
-                    하단 플러스(+) 버튼을 클릭하여<br>
-                    카테고리를 추가하고 새로운 덱을 생성하세요.
-                  </p>
-                  <input type="button" id="addCategoryBtn" class="addCategoryBtn" data-userId="" value="&#43;">
+                <p class="categoryEmpty">
+                  하단 플러스(+) 버튼을 클릭하여<br>
+                  카테고리를 추가하고 새로운 덱을 생성하세요.
+                </p>
+                <input type="button" id="addCategoryBtn" class="btn-open-adding-category-modal addCategoryBtn" th:data-userId="${userId}" value="&#43;">
               </th:block>
-              <!-- 카테고리 있을 경우 -->
-              <div th:each="category : ${categoryList}">
-                카테고리명: [[${category.categoryName}]]
-                <div th:each="deck : ${category.deckEntityList}">
-                  덱ID: [[${deck.deckId}]]
-                  덱 이름: [[${deck.deckName}]]
+              <!-- 카테고리가 있을 경우 -->
+              <th:block th:unless="${categoryList == null or categoryList.isEmpty()}">
+                <div th:each="category : ${categoryList}">
+                  <div class="category">
+                    <div class="category-left">
+                      <input type="hidden" class="categoryId" th:value="${category.categoryId}">
+                      <i class="fa-solid fa-folder-open"></i>
+                      <span><b th:text="${category.categoryName}">카테고리 명</b></span>
+                    </div>
+                    <div class="category-right">
+                      <div class="dropdown">
+                        <i class="fa-solid fa-ellipsis-vertical menu-icon"></i>
+                        <div class="dropdown-menu">
+                          <ul>
+                            <li><button class="btn-open-editing-category-modal">편집</button></li>
+                            <li><button class="btn-delete-category"><a th:href="@{/flashcard/deleteCategory(categoryId=${category.categoryId})}">삭제</a></button></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <a href="#void">
+                        <i class="fa-solid fa-chevron-up"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <ul class="deckList">
+                    <li th:each="deck : ${category.deckInfoList}">
+                      <div class="deck-wrap">
+                        <div class="deck-top">
+                          <input type="hidden" class="dekcId" th:value="${deck.deckId}">
+                          <span><a class="flashcard-link" th:href="@{flashcard/flashcard(deckId=${deck.deckId})}"><b th:text="${deck.deckName}"></b></a></span>
+                          <div class="dropdown">
+                            <i class="fa-solid fa-ellipsis-vertical menu-icon"></i>
+                            <div class="dropdown-menu">
+                              <ul>
+                                <li><button class="btn-exporting-deck">공유</button></li>
+                                <li><button class="btn-open-editing-deck-modal">편집</button></li>
+                                <li><button class="btn-delete-deck"><a th:href="@{/flashcard/deleteDeck(deckId=${deck.deckId})}">삭제</a></button></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="deck-bottom">
+                          <div class="deckCount-wrap">
+                            <div class="icon-box">
+                              <i class="fa-regular fa-circle"></i>
+                              <span>([[${deck.studiedCardCountOk}]])</span>
+                            </div>
+                            <div class="icon-box">
+                              <i class="fa-solid fa-triangle-exclamation"></i>
+                              <span>([[${deck.studiedCardCountYet}]])</span>
+                            </div>
+                            <div class="icon-box">
+                              <i class="fa-solid fa-x"></i>
+                              <span>([[${deck.studiedCardCountNo}]])</span>
+                            </div>
+                            <div class="icon-box">
+                              <i class="fa-solid fa-question"></i>
+                              <span>([[${deck.newCard}]])</span>
+                            </div>
+                          </div>
+                          <div class="percentage-box">
+                            <span class="percentage-text percent50">[[${deck.cardStudyRate}]]%</span>
+                            <svg>
+                              <circle class="progress" cx="75" cy="75" r="60" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </div>
-               <!-- category-wrap end -->
-          </div> <!-- service-wrap end -->
+                <input type="button" id="plusBtn" class="addCategoryBtn btn-open-adding-menu-modal" th:data-userId="${userId}" value="&#43;">
+              </th:block>
+            </div> <!-- category-container -->
+          </div> <!-- service-wrap -->
         </div> <!-- container end -->
       </div> <!-- right-wrap end -->
     </div> <!-- page-wrap end -->
 </body>
+  <!-- modal -->
+  <div class="modal-wrap" th:replace="modal"></div> 
+  <!-- modal-wrap end -->
+
+  
 </html>

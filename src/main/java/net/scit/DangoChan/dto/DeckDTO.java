@@ -15,7 +15,7 @@ import net.scit.DangoChan.entity.DeckEntity;
 @ToString
 @Builder
 public class DeckDTO {
-	// variables
+		// variables
 	private Long deckId;
     private Long categoryId;
     private Long userId;

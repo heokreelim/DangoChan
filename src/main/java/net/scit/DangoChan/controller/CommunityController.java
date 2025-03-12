@@ -56,11 +56,19 @@ public class CommunityController {
 			@PageableDefault(page=1) Pageable pageable,
 			@RequestParam(name="searchItem", defaultValue = "title") String searchItem,
 			@RequestParam(name="searchWord", defaultValue = "") String searchWord,
+	        @RequestParam(name = "primarySortField", defaultValue = "createDate") String primarySortField,
+	        @RequestParam(name = "primarySortOrder", defaultValue = "desc") String primarySortOrder,
+	        @RequestParam(name = "secondarySortField", defaultValue = "") String secondarySortField,
+	        @RequestParam(name = "secondarySortOrder", defaultValue = "") String secondarySortOrder,
 			Model model
 			) {
 		
 		// 2) 페이징 기능 + 검색 기능
-		Page<CommunityDTO> list = communityService.selectAll(pageable, searchItem, searchWord);
+		Page<CommunityDTO> list = communityService.selectAll(
+				pageable, searchItem, searchWord,
+				primarySortField, primarySortOrder,
+				secondarySortField, secondarySortOrder
+				);
 		
 	    if (list == null) {
 	        list = Page.empty(); // 빈 페이지 객체를 반환하여 NullPointerException 방지
@@ -75,6 +83,10 @@ public class CommunityController {
 		model.addAttribute("list", list);
 		model.addAttribute("searchItem", searchItem);
 		model.addAttribute("searchWord", searchWord);
+	    model.addAttribute("primarySortField", primarySortField);
+	    model.addAttribute("primarySortOrder", primarySortOrder);
+	    model.addAttribute("secondarySortField", secondarySortField);
+	    model.addAttribute("secondarySortOrder", secondarySortOrder);
 		model.addAttribute("navi", navi);
 		
 		//로그인 했니 안 했니 확인해서, 로그인하면 그 사람의 이름 출력
