@@ -5,7 +5,6 @@ import net.scit.DangoChan.dto.ChatMessage;
 import net.scit.DangoChan.dto.ChatRoom;
 import net.scit.DangoChan.repository.ChatRoomRepository;
 import net.scit.DangoChan.util.JishoValidator;
-import net.scit.DangoChan.util.JapaneseValidator;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,7 @@ public class ChatService {
             String newWord = chatMessage.getMessage().trim();
             if (newWord.isEmpty()) return;
             // 히라가나만 허용 검증
-            if (!JapaneseValidator.validateHiragana(newWord)) {
+            if (!JishoValidator.validateHiragana(newWord)) {
                 ChatMessage systemMsg = ChatMessage.builder()
                         .type(ChatMessage.MessageType.SYSTEM)
                         .roomId(room.getRoomId())
@@ -71,6 +70,17 @@ public class ChatService {
                 messagingTemplate.convertAndSendToUser(chatMessage.getSender(), "/queue/private", systemMsg);
                 return;
             }
+            // 추가 기능: 이미 사용한 단어인지 검사
+            if (shiritoriGameManager.isWordAlreadyUsed(room.getRoomId(), newWord)) {
+                ChatMessage systemMsg = ChatMessage.builder()
+                        .type(ChatMessage.MessageType.SYSTEM)
+                        .roomId(room.getRoomId())
+                        .sender("system")
+                        .message("이미 사용한 단어입니다.")
+                        .build();
+                messagingTemplate.convertAndSendToUser(chatMessage.getSender(), "/queue/private", systemMsg);
+                return;
+            }
             // 끝말잇기 규칙 검증
             boolean valid = shiritoriGameManager.isValidWord(room.getRoomId(), newWord);
             if (!valid) {
@@ -80,14 +90,17 @@ public class ChatService {
                         .sender("system")
                         .message("끝말잇기 규칙 위반: \"" + newWord + "\"은(는) 이전 단어의 마지막 글자와 맞지 않습니다.")
                         .build();
-                // 규칙 위반 메시지도 프라이빗으로 전송
                 messagingTemplate.convertAndSendToUser(chatMessage.getSender(), "/queue/private", systemMsg);
                 return;
             }
-            // 올바른 단어 입력 시 단어 메시지 전체 방송
+            // 단어 변환: 히라가나 단어를 조회하여 canonical 정보에 따라 표시 형식을 변환
+            String displayWord = JishoValidator.getDisplayForm(newWord);
+            chatMessage.setMessage(displayWord);
+
+            // 올바른 단어 입력 시 전체 채팅방에 메시지 방송
             messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
 
-            // 턴 전환: 약간의 지연 후에 "XX님 차례입니다." 메시지 전송
+            // 턴 전환: 약간의 지연 후 "XX님 차례입니다." 메시지 전송
             shiritoriGameManager.advanceTurn(room.getRoomId());
             String nextPlayer = shiritoriGameManager.getCurrentPlayer(room.getRoomId());
             if (nextPlayer != null && !nextPlayer.equals(chatMessage.getSender())) {
@@ -97,7 +110,6 @@ public class ChatService {
                         .sender("system")
                         .message(nextPlayer + "님 차례입니다.")
                         .build();
-                // 새 스레드를 통해 200ms 후 전송 (딜레이)
                 new Thread(() -> {
                     try {
                         Thread.sleep(200);
