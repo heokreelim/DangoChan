@@ -25,6 +25,7 @@ public class UserDTO {
 	private String providerId;
 	private String roles;
 	private LocalDateTime createdAt;
+	private Integer profileImage;
 	
 	public static UserDTO toDTO(UserEntity entity)
 	{
@@ -36,6 +37,7 @@ public class UserDTO {
 								   .providerId(entity.getProviderId())
 								   .roles(entity.getRoles())
 								   .createdAt(entity.getCreatedAt())
+								   .profileImage(entity.getProfileImage())
 								   .build();
 	}
 	

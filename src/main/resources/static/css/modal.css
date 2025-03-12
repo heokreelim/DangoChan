@@ -63,25 +63,146 @@
     white-space: nowrap;
 }
 
-table {
+.modal-wrap table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th,
-td {
+.modal-wrap th,
+.modal-wrap td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
 
-th {
+.modal-wrap th {
     background-color: #f2f2f2;
     position: sticky;
     top: 0;
     z-index: 2;
 }
 
-#importFile {
+.modal-wrap #importFile {
     display: none;
+}
+/* 프로필 사진 변경 모달 추가 */
+/* 모달 기본 스타일 */
+.modal_change_profile_image {
+    position: fixed;
+    /* 화면 전체 덮기 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    /* 기본은 숨김 */
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 어두운 배경 */
+    z-index: 1000;
+    /* 위에 표시 */
+}
+
+/* 모달 컨텐츠 박스 */
+.change_profile_image {
+    background-color: #fff;
+    width: 500px;
+    max-width: 90%;
+
+    padding: 30px;
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* 제목 스타일 */
+.change_profile_image h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* 프로필 이미지 리스트 박스 */
+.profile-image-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* 개별 프로필 이미지 선택 박스 */
+.profile-image-option {
+    width: 80px;
+    height: 80px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    border: 3px solid transparent;
+    /* 기본 테두리 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #f5f5f5;
+}
+
+/* 선택되었을 때 테두리 효과 */
+.profile-image-option.selected {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+}
+
+/* 프로필 이미지 자체 스타일 */
+.profile-image-option img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* 하단 버튼 영역 */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 공통 버튼 스타일 */
+.modal-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+/* 저장 버튼 */
+.modal-buttons .btn-confirm-profile-change {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.modal-buttons .btn-confirm-profile-change:hover {
+    background-color: #0056b3;
+}
+
+/* 닫기 버튼 */
+.modal-buttons .btn-close-modal {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.modal-buttons .btn-close-modal:hover {
+    background-color: #5a6268;
 }

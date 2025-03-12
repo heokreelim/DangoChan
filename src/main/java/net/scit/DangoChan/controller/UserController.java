@@ -1,8 +1,10 @@
 package net.scit.DangoChan.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.dto.UserDTO;
+import net.scit.DangoChan.entity.UserEntity;
 import net.scit.DangoChan.service.AchievementService;
 import net.scit.DangoChan.service.LoginUserDetailsService;
 import net.scit.DangoChan.service.UserService;
@@ -49,8 +52,12 @@ public class UserController {
 	public String mypage(@AuthenticationPrincipal LoginUserDetails user,
 			Model model) {
 		if (user != null) {
-			Long userId = user.getUserId();
-			model.addAttribute("userId",userId);
+	        Long userId = user.getUserId();
+	        model.addAttribute("userId", userId);
+	        
+	        // 추가: 로그인한 유저 정보 조회 (예시)
+	        UserEntity userEntity = userService.findById(userId);
+	        model.addAttribute("user", userEntity); 
 			
 			List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
 		    List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
@@ -67,6 +74,62 @@ public class UserController {
 	return "user/mypage";	
 	}
 	
+	// 프로필 이미지 변경 모달 실행
+    @GetMapping("/changeProfileImage")
+    public String changeProfileImagePage(@AuthenticationPrincipal LoginUserDetails user,
+                                         Model model) {
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        Long userId = user.getUserId();
+        Integer currentProfile = userService.getCurrentProfileImage(userId);
+
+        model.addAttribute("currentProfile", currentProfile);
+
+        // 기본 제공 프로필 목록 넘기기 (예: 0 ~ 7번)
+        model.addAttribute("profileImages", getProfileImageList());
+
+        return "user/changeProfileImage";
+    }
+
+    //  프로필 이미지 업데이트 처리
+    @PostMapping("/updateProfileImage")
+    @ResponseBody
+    public ResponseEntity<String> updateProfileImage(@AuthenticationPrincipal LoginUserDetails user,
+                                                     @RequestBody Map<String, Object> payload) {
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        Long userId = user.getUserId();
+
+        // 프론트에서 보낸 profileImageNumber 키 확인
+        Integer profileImage = (Integer) payload.get("profileImageNumber");
+
+        if (profileImage == null || !isValidProfileImage(profileImage)) {
+            return ResponseEntity.badRequest().body("잘못된 이미지 번호입니다.");
+        }
+
+        boolean updated = userService.updateProfileImage(userId, profileImage);
+
+        if (!updated) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+        }
+
+        return ResponseEntity.ok("프로필 이미지 변경 성공");
+    }
+
+    //  기본 프로필 이미지 번호 목록 반환
+    private Integer[] getProfileImageList() {
+        return new Integer[]{0, 1, 2, 3, 4, 5, 6, 7}; // 샘플: 프로필 이미지 번호 0~5
+    }
+
+    // 프로필 이미지 유효성 검사
+    private boolean isValidProfileImage(Integer profileImage) {
+        return profileImage != null && profileImage >= 0 && profileImage <= 5;
+    }
+    
 	// PJB end
 	
 	// LHR start

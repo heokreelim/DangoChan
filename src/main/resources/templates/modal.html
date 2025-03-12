@@ -288,6 +288,24 @@
             </div>
         </div>
 
+        <!-- 프로필 사진 변경 모달 -->
+        <div class="modal modal_change_profile_image">
+            <div class="modal-content change_profile_image">
+                <h2>프로필 이미지 선택</h2>
+        
+                <div class="profile-image-list">
+                    <div class="profile-image-option" th:each="num : ${#numbers.sequence(0, 4)}" th:data-img="${num}">
+                        <img th:src="@{'/images/profiles/profile_' + ${num} + '.jpg'}" th:alt="'프로필 ' + ${num} + ' 번'">
+                    </div>
+                </div>
+        
+                <div class="modal-buttons">
+                    <button type="button" class="btn-confirm-profile-change">저장</button>
+                    <button type="button" class="btn-close-modal">닫기</button>
+                </div>
+            </div>
+        </div>
+
     </div> <!-- modal-wrap end -->
 </body>
 

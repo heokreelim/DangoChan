@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CategoryDTO;
 import net.scit.DangoChan.dto.DeckInfoDTO;
 import net.scit.DangoChan.dto.LoginUserDetails;
+import net.scit.DangoChan.dto.UserDTO;
 import net.scit.DangoChan.service.AchievementService;
 import net.scit.DangoChan.service.DeckStudyTimeService;
 import net.scit.DangoChan.service.FlashCardService;
@@ -34,6 +35,10 @@ public class HomeController {
 		if (user != null) { 
             Long userId = user.getUserId();
             model.addAttribute("userId", userId);
+            
+         // 사용자 정보를 가져와 DTO로 변환
+            UserDTO userDTO = userService.findUserById(userId);
+            model.addAttribute("userInfo", userDTO);
             
             // 서비스에서 해당 유저의 전체 카테고리 목록을 가져온다고 가정
     	    List<CategoryDTO> categoryList = flashCardService.getCategoryListByUser(userId);
