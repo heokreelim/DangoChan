@@ -36,13 +36,19 @@ public class ShiritoriGameManager {
             return false;
         }
         String lastWord = lastWordByRoom.get(roomId);
+        // 처음 단어거나 lastWord가 비어있으면 저장 후 true 반환
         if (lastWord == null || lastWord.isEmpty()) {
             lastWordByRoom.put(roomId, newWord);
             return true;
         } else {
             char expected = normalizeChar(lastWord.charAt(lastWord.length() - 1));
             char actual = normalizeChar(newWord.charAt(0));
-            return expected == actual;
+            boolean valid = (expected == actual);
+            if (valid) {
+                // 올바른 단어이면 마지막 단어를 갱신
+                lastWordByRoom.put(roomId, newWord);
+            }
+            return valid;
         }
     }
 
