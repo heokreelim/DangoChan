@@ -12,8 +12,10 @@
                 <input type="hidden" name="userId" th:value="userId">
                 <div class="profile-picture">
                     <a th:href="@{/user/mypage}">
+                    <!-- 프로필 사진 표시 -->
+                    <img th:src="@{'/images/profiles/profile_' + ${userInfo.profileImage} + '.jpg'}" alt="프로필 이미지"
+                        style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
                     
-                    <!-- <img src="" alt="profile picture" id="profile"> -->
                     </a>
                 </div> <!-- profile-picture end -->
                 <div class="nickname">

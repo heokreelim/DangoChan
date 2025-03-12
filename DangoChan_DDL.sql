@@ -1,4 +1,6 @@
--- 2025-02-20
+-- 2025-03-11 
+-- users 테이블, profile_image 컬럼 추가
+-- drop table 하지말고 최하단 ALTER 문으로 추가
 -- 데이터베이스 사용 : scit
 create database DangoChan;
 
@@ -17,7 +19,8 @@ CREATE TABLE `users` (
 	password	VARCHAR(255),
 	provider_id	VARCHAR(255),
 	roles    varchar(50) DEFAULT 'ROLE_USER' check(roles in ('ROLE_USER', 'ROLE_ADMIN')),
-	created_at	DATETIME DEFAULT CURRENT_TIMESTAMP
+	created_at	DATETIME DEFAULT CURRENT_TIMESTAMP,
+	profile_image INT NOT NULL DEFAULT 0
 );
 
 -- 카테고리 테이블
@@ -127,10 +130,6 @@ CREATE TABLE `reply` (
     );
 
    
--- 추가 제작해야하는 테이블
--- 대댓글(답글) 테이블
--- 채팅 관련 테이블
-   
    
    
 -- 샘플 데이터
@@ -151,7 +150,7 @@ INSERT INTO `deck` (`deck_id`, `category_id`, `deck_name`) VALUES
 
 -- card 테이블 데이터 삽입
 INSERT INTO `card` (`card_id`, `deck_id`, `word`, `pos`, `meaning`, `example_jp`, `example_kr`, `study_level`, `studied_at`) VALUES
-(1, 1, '挑戦', '名詞', '도전', '新しい仕事に挑戦する。', '마ㅏ', 3, NOW()),
+(1, 1, '挑戦', '名詞', '도전', '新しい仕事に挑戦する。', '마마', 3, NOW()),
 (2, 2, '契約', '名詞', '계약', '新しい契約を締結する。', '아아', 2, NOW());
 
 
@@ -202,4 +201,33 @@ SELECT * FROM `board_likes`;
 
 -- reply 테이블 데이터 조회
 SELECT * FROM `reply`;
+
+
+-- study_time 변경 후 샘플 데이터
+
+INSERT INTO deck_study_time (study_time_id, deck_id, study_time, date)
+VALUES
+    (1, 1, 4000, '2025-03-04 09:00:00'),
+    (2, 1, 3800, '2025-03-05 09:00:00'),
+    (3, 1, 4500, '2025-03-06 09:00:00'),
+    (4, 1, 3900, '2025-03-07 09:00:00'),
+    (5, 1, 4100, '2025-03-08 09:00:00'),
+    (6, 1, 3700, '2025-03-09 09:00:00'),
+    (7, 1, 4200, '2025-03-10 09:00:00');
+
+INSERT INTO deck_study_time (study_time_id, deck_id, study_time, date)
+VALUES
+    (8, 2, 3600, '2025-03-04 10:00:00'),
+    (9, 2, 3900, '2025-03-05 10:00:00'),
+    (10, 2, 4200, '2025-03-06 10:00:00'),
+    (11, 2, 4300, '2025-03-07 10:00:00'),
+    (12, 2, 4400, '2025-03-08 10:00:00'),
+    (13, 2, 4000, '2025-03-09 10:00:00'),
+    (14, 2, 4100, '2025-03-10 10:00:00');
+
+use DangoChan;
+
+ALTER TABLE users
+ADD COLUMN profile_image INT NOT NULL DEFAULT 0 COMMENT '프로필 이미지 번호';
+
 

@@ -85,7 +85,16 @@ public class UserEntity {
 	@OneToMany(mappedBy="userEntity")
 	@ToString.Exclude
 	private List<BoardLikesEntity> boardLikesEntityList;
-
+	
+	@Column(name = "profile_image")
+	private Integer profileImage = 0;
+	
+//	@PrePersist
+//	private void setDefaultProfileImage() {
+//	    if (this.profileImage == null) {
+//	        this.profileImage = 0; // 안전하게 기본값 보장
+//	    }
+//	}
 	
 	public static UserEntity toEntity(UserDTO dto)
 	{
@@ -96,6 +105,7 @@ public class UserEntity {
 								   .authType(dto.getAuthType())
 								   .providerId(dto.getProviderId())
 								   .roles(dto.getRoles())
+								   .profileImage(dto.getProfileImage())
 								   .build();
 	}
 }

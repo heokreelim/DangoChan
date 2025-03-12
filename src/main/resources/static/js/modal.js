@@ -1,8 +1,28 @@
+// 전역 선언 (파일 가장 위쪽)
+let modals = [];
+
+
+// 모달 열기 함수
+function openModal(modal) {
+    closeOpenModals(); // 기존 모달 닫기
+    modal.css('display', 'flex');
+}
+
+// 모든 열려있는 모달 닫기 함수
+function closeOpenModals() {
+    modals.forEach(modal => {
+        if (modal.css("display") === "flex") {
+            modal.css("display", "none");
+        }
+    });
+}
+
+
 $(document).ready(function () {
 
     /***************** 공통 모달 관련 함수 *****************/
     // 열려있는 모달들을 저장한 배열
-    let modals = [
+        modals = [
         $('.modal_adding_category'),
         $('.modal_editing_category'),
         $('.modal_adding_menu'),
@@ -11,22 +31,11 @@ $(document).ready(function () {
         $('.modal_adding_card'),
         $('.modal_adding_card2'),
         $('.modal_editing_deck'),
-        $('.modal_editing_card')
-    ];
+        $('.modal_editing_card'),
+        $('.modal_change_profile_image')
+        ];
 
-    // 모달 열기 함수
-    function openModal(modal) {
-        modal.css("display", "flex");
-    }
 
-    // 모든 열려있는 모달 닫기 함수
-    function closeOpenModals() {
-        modals.forEach(modal => {
-            if (modal.css("display") === "flex") {
-                modal.css("display", "none");
-            }
-        });
-    }
     /***************** 모달 닫기 이벤트 *****************/
     // 모달 닫기 버튼 (공통)
     $('.btn-close-modal').on("click", function () {
@@ -602,6 +611,58 @@ $(document).ready(function () {
             $(this).text('이름 편집'); // 버튼 텍스트 복원
         }
     });
+
+    // ****** 프로필 사진 변경 추가 ****** //
+// 프로필 이미지 변경 버튼 클릭 시 모달 열기
+    $('#changePictureBtn').on('click', function () {
+        closeOpenModals(); // 열려있는 모달 닫기
+        openModal($('.modal_change_profile_image'));
+    });
+
+    // 프로필 이미지 선택 시 테두리 강조 및 선택 값 저장
+    let selectedProfileImage = 0; // 초기값 기본 세팅
+
+    // 프로필 이미지 옵션 클릭 시 선택 효과
+    $('.profile-image-option').on('click', function () {
+        // 기존 선택 해제
+        $('.profile-image-option').removeClass('selected');
+
+        // 현재 선택 추가
+        $(this).addClass('selected');
+
+        // 선택한 이미지 번호 저장 (필요 시)
+        selectedProfileImage = $(this).data('img');
+    });
+
+
+    
+
+    // 저장 버튼 클릭 시 서버에 전송
+    $('.btn-confirm-profile-change').on('click', function () {
+        if (selectedProfileImage === undefined || selectedProfileImage === null) {
+            alert("프로필 이미지를 선택해주세요.");
+            return;
+        }
+
+        $.ajax({
+            url: '/user/updateProfileImage',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "profileImageNumber": selectedProfileImage  // ✅ 서버에서 이 값을 기대합니다
+            }),
+            success: function (response) {
+                alert('프로필 이미지가 변경되었습니다!');
+                closeOpenModals();
+                location.reload();  // 또는 window.location.href = "/mypage";
+            },
+            error: function (xhr, status, error) {
+                alert('프로필 이미지 변경 실패: ' + xhr.responseText);
+            }
+        });
+    });
+
+
 });
 
 

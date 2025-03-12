@@ -1,5 +1,6 @@
 package net.scit.DangoChan.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +36,37 @@ public class UserService {
 		}
 		return UserDTO.toDTO(temp.get());
 	}
+	
+	// 유저 프로필 번호 변경 
+	public boolean updateProfileImage(Long userId, Integer profileImageNumber) {
+
+	    // Null 체크는 Controller에서 이미 처리됨, 여기서는 단순 업데이트만 수행
+	    int result = userRepository.updateProfileImage(userId, profileImageNumber);
+
+	    // result 값이 1이면 정상 업데이트, 0이면 실패
+	    return result > 0;
+	}
+	
+	// userId 로 User 조회
+	public UserDTO findUserById(Long userId) {
+	    UserEntity userEntity = userRepository.findById(userId)
+	                                          .orElseThrow(() -> new RuntimeException("사용자 없음"));
+	    return UserDTO.toDTO(userEntity);
+	}
+	
+	
+	// 유저 현재 프로필 번호 조회
+	public Integer getCurrentProfileImage(Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+        return user.getProfileImage();
+    }
+	
+	public UserEntity findById(Long userId) {
+	    return userRepository.findById(userId)
+	            .orElseThrow(() -> new NoSuchElementException("해당 사용자를 찾을 수 없습니다. userId=" + userId));
+	}
+	
 	// PJB end
 	
 	// LHR start
