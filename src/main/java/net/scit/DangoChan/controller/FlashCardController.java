@@ -337,6 +337,12 @@ public class FlashCardController {
 		return flashCardService.isNoStudyLevelZeroCards(deckId);
 	}
 
+	// ✅ 모든 카드가 학습 완료되었는지 확인하는 API
+	@GetMapping("/checkStudyLevel")
+	public ResponseEntity<Boolean> checkStudyLevel(@RequestParam Long deckId) {
+		boolean allCompleted = flashCardService.isAllCardsStudied(deckId);
+		return ResponseEntity.ok(allCompleted);
+	}
 	//SYH end
 
 	//card end
