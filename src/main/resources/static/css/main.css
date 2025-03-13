@@ -57,6 +57,46 @@ button:hover {
                 inset -6px -6px 12px rgba(255, 255, 255, 0.7);
 }
 
+.btn {
+    border-radius: 12px;
+    background: #f0f0f3;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1),
+        -8px -8px 15px rgba(255, 255, 255, 0.7);
+    transition: 0.3s;
+}
+
+.btn:hover {
+    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+                inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+}
+
+/* button color 버튼 컬러 */
+/* 저장, 긍정 */
+.btn.positiveBtn {
+    background-color: #007bff;
+    color: #fff;
+}
+.btn.positiveBtn:hover {
+    background-color: #0056b3;
+}
+/* 일반 */
+.btn.commonBtn {
+    background-color: #f0f0f3;
+    color: #121511;
+}
+
+.btn.commonBtn:hover {
+    background-color: #dddfe0;
+}
+/* 취소, 삭제, 부정 */
+.btn.negativeBtn {
+    background-color: #dc3545;
+    color: #fff;
+}
+.btn.negativeBtn:hover {
+    background-color: #c82333;
+}
+
 /* float을 쓸경우 부모 찾기 */
 .clearFix::after {
     content: "";
