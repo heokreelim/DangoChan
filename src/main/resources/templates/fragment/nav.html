@@ -5,17 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div th:fragment="nav" class="nav">
+    <div th:fragment="nav" class="nav glass-effect">
         <div class="nav-bg">
-            <div class="logo">로고</div>
+            <div class="logo">
+                <b>🍡だんごちゃん</b>
+            </div>
             <div class="profile-wrap">
                 <input type="hidden" name="userId" th:value="userId">
                 <div class="profile-picture">
                     <a th:href="@{/user/mypage}">
                     <!-- 프로필 사진 표시 -->
-                    <img th:src="@{'/images/profiles/profile_' + ${userInfo.profileImage} + '.jpg'}" alt="프로필 이미지"
-                        style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
+                    <!-- userInfo가 존재할 때만 렌더링 -->
+                    <th:block th:if="${userInfo != null}">
+                        <img th:src="@{'/images/profiles/profile_' + ${userInfo.profileImage} + '.jpg'}" alt="프로필 사진" />
+                    </th:block>
                     
+                    <!-- userInfo가 null일 경우 기본 이미지 출력 -->
+                    <th:block th:if="${userInfo == null}">
+                        <img th:src="@{/images/profiles/profile_0.jpg}" alt="기본 프로필 사진" />
+                    </th:block>
                     </a>
                 </div> <!-- profile-picture end -->
                 <div class="nickname">
@@ -36,7 +44,7 @@
                     </li>
                     <!-- 두 리스트가 모두 비어있을 경우 -->
                     <li th:if="${#lists.isEmpty(personalAchievements)} and ${#lists.isEmpty(communityAchievements)}">
-                        <p>🎯 아직 달성한 업적이 없어요. 분발하세요!</p>
+                        <p>🎯 아직 달성한 업적이 없어요.</p>
                     </li>
                     <li th:each="ach : ${personalAchievements}">
                         <p>🏅 [[${ach}]]</p>

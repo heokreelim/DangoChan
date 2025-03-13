@@ -43,6 +43,20 @@ address {
     font-style: normal;
 }
 
+/* button */
+button {
+    border-radius: 12px;
+    background: #f0f0f3;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1),
+                -8px -8px 15px rgba(255, 255, 255, 0.7);
+    transition: 0.3s;
+}
+
+button:hover {
+    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+                inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+}
+
 /* float을 쓸경우 부모 찾기 */
 .clearFix::after {
     content: "";
@@ -85,6 +99,7 @@ body {
     display: flex;
 }
 
+
 /* fragment */
 /* nav */
 .nav {
@@ -92,39 +107,48 @@ body {
 }
 
 .nav .nav-bg {
-    height: 100vh;
-    background-color: #FFF;
-    border-right: 1px solid #E0E0E0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border-radius: 0 20px 20px 0;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.nav .nav-bg {
-    padding: 20px 12px;
+    padding: 12px 7px;
+    transition: background 0.3s ease;
 }
 
 .nav .nav-bg>div {
-    margin: 8px 0;
+    margin: 3px 0;
 }
 
 .nav .logo {
-    margin: 12px 0;
+    margin: 20px 0;
 }
 
 .nav .profile-wrap {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    align-items: center;
 }
 
 .nav .profile-wrap>.profile-picture {
     width: 175px;
     height: 175px;
     border-radius: 50%;
-    background-color: #FF9EBE;
-    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav .profile-wrap>.profile-picture a {
@@ -136,64 +160,47 @@ body {
 
 .nav .profile-wrap>.profile-picture a::before {
     content: "마이페이지로 이동";
-    color: #F3F3F3;
-    font-size: 1.35em;
-    display: block;
-    width: 175px;
-    height: 175px;
-    top: 0;
-    left: 0;
-    text-align: center;
-    transform: translateX(-50%);
-    transform: translateY(45%);
+    color: #fff;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
     opacity: 0;
     transition: opacity 0.3s ease;
-    position: absolute;
-    z-index: 50;
 }
 
-.nav .profile-wrap>.profile-picture a::after {
-    content: "";
-    display: block;
-    width: 175px;
-    height: 175px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 0;
-    left: 0;
-    text-align: center;
-    filter: blur(3px);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 40;
-}
 
 .nav .profile-wrap>.profile-picture a:hover::before {
     opacity: 1;
 }
 
-.nav .profile-wrap>.profile-picture a:hover::after {
-    opacity: 1;
-}
 
 .nav .profile-wrap>.profile-picture a img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    overflow: hidden;
+    object-fit: cover;
+    object-position: center;
 }
 
+
 .nav .profile-wrap>.nickname {
-    width: 255px;
-    height: auto;
-    background-color: #B4D8E4;
-    line-height: 1.5;
+    width: 220px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
+                inset -4px -4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav .profile-wrap>.nickname .userName {
-    font-size: 1.38em;
+    font-size: 1.4em;
     font-weight: 600;
+    color: #333;
 }
 
 
@@ -201,6 +208,7 @@ body {
 /* nav가 있는 페이지에 header는 .right-wrap */
 .right-wrap {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -224,13 +232,42 @@ body {
 }
 
 /* statistics */
-.statistics-wrap>.statistics-list>li>p {
-    font-size: 0.85em;
+.statistics-wrap {
+    width: 100%;
+    margin-top: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 3px 8px;
+    border: 1px solid #d2d2d2;
+    text-align: left;
+    /* overflow: scroll; */
+}
+.statistics-wrap ul {
+    list-style: none;
+    padding: 0;
+}
+.statistics-wrap ul li {
+    padding: 5px 1px;
+    border-bottom: 1px solid #eee;
 }
 
-/* 업적 디자인 */
-.achievement-notice {
-    text-align: center;
+.statistics-wrap p {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+    line-height: 1.2;
+    text-indent: 4px;
+}
+
+.statistics-wrap p:last-child {
+    border-bottom: none;
+}
+/* 강조하는 부분에 아이콘과 텍스트 정렬 */
+.statistics-wrap p i {
+    margin-right: 8px;
+    vertical-align: middle;
 }
 
 /* 캘린더 디자인 */
@@ -250,8 +287,12 @@ body {
 .nav-calendar,
 .mypage-calendar {
     width: 100%;
-    border-collapse: collapse;
-    text-align: center;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
+                inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+    padding: 5px;
 }
 
 .nav-calendar th,
@@ -270,82 +311,27 @@ body {
     font-size: 0.85em;
 }
 
-/* 마이페이지 달력 추가 디자인 */
-.calendar-controls {
+/* authentication 로그인, 로그아웃 */
+.authentication-wrap {
+    margin-top: auto;
+    padding: 12px;
+}
+
+.authentication-wrap a {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+    color: #333;
+    font-weight: 600;
 }
 
-/* 네오모피즘 스타일 버튼 */
-.calendar-btn {
-    width: 66px;
-    height: 66px;
-    border-radius: 17px;
-    background: #f0f0f3;
-    /* 연한 파스텔 배경 */
-    box-shadow:
-        8px 8px 15px rgba(0, 0, 0, 0.1),
-        -8px -8px 15px rgba(255, 255, 255, 0.7);
-    /* 입체감 강조 */
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* 호버 시 효과 */
-.calendar-btn:hover {
-    box-shadow:
-        inset 6px 6px 12px rgba(0, 0, 0, 0.1),
-        inset -6px -6px 12px rgba(255, 255, 255, 0.7);
-    background-color: #f0f0f3;
-    transform: translateY(2px);
-}
-
-/* 폰트어썸 아이콘 스타일 */
-.calendar-btn i {
-    font-size: 3em;
-    color: #6b6b6b;
-    /* 기본은 차분한 그레이톤 */
-    transition: color 0.3s ease;
-}
-
-/* 호버 시 아이콘 색상 */
-.calendar-btn:hover i {
-    color: #ff7e67;
-    /* 포인트 색상 (파스텔 오렌지 핑크 톤) */
-}
-
-/* 이전 버튼 전용 색상 */
-#prevMonth {
-    background: linear-gradient(145deg, #a0e3f0, #c0f5ff);
-}
-
-#prevMonth:hover {
-    background: linear-gradient(145deg, #90d4e0, #b0e5f0);
-}
-
-#prevMonth i {
-    color: #2d8f9d;
-}
-
-/* 다음 버튼 전용 색상 */
-#nextMonth {
-    background: linear-gradient(145deg, #f9c5d1, #ffb6b9);
-}
-
-#nextMonth:hover {
-    background: linear-gradient(145deg, #f8a7b5, #ff9fa5);
-}
-
-#nextMonth i {
-    color: #d6425d;
+.authentication-wrap a:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 /* header */
