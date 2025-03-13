@@ -3,10 +3,11 @@ package net.scit.DangoChan.controller;
 import lombok.RequiredArgsConstructor;
 import net.scit.DangoChan.dto.ChatMessage;
 import net.scit.DangoChan.dto.ChatRoom;
+import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.repository.ChatRoomRepository;
+import net.scit.DangoChan.service.AchievementService;
 import net.scit.DangoChan.service.ChatService;
 import net.scit.DangoChan.service.UserService;
-import net.scit.DangoChan.dto.LoginUserDetails;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,20 @@ public class ChatController {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatService chatService;
     private final UserService userService;
+    private final AchievementService achievementService; // achievementService 추가
 
     @GetMapping("/chat")
     public ModelAndView chatListPage(@AuthenticationPrincipal LoginUserDetails user) {
         ModelAndView mv = new ModelAndView("chat/chatList");
         if (user != null) {
             mv.addObject("userInfo", userService.findById(user.getUserId()));
+            // achievement 데이터 추가
+            mv.addObject("attendanceStreak", achievementService.getAttendanceStreak(user.getUserId()));
+            mv.addObject("todayStudyTimeFormatted", achievementService.getTodayStudyTimeFormatted(user.getUserId()));
+            mv.addObject("personalAchievements", achievementService.getPersonalAchievements(user.getUserId()));
+            mv.addObject("communityAchievements", achievementService.getCommunityAchievements(user.getUserId()));
+            mv.addObject("userInfo", userService.findById(user.getUserId()));
+            mv.addObject("userId", user.getUserId());
         }
         return mv;
     }
