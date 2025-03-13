@@ -15,19 +15,19 @@
                 <ul class="gnb-list">
                 <!-- 인증하지 않은 사용자 -->
                 <th:block sec:authorize="isAnonymous()">
-                        <li><a th:href="@{/home}"><i data-lucide="book-open"></i> 학습하기</a></li>
-                        <li><a th:href="@{/community/communityBoardList}"><i data-lucide="users"></i> 커뮤니티</a></li>
-                        <li><a th:href="@{/chat}"><i data-lucide="message-circle"></i> 채팅</a></li>
-                        <li><a href="#void"><i data-lucide="puzzle"></i> 퍼즐</a></li>
-                        <li><a href="#void"><i data-lucide="bell"></i> 알림</a></li>
+                        <li><a th:href="@{/home}"><i class="fa-solid fa-pencil"></i></a></li>
+                        <li><a th:href="@{/community/communityBoardList}"><i class="fa-solid fa-people-group"></i></a></li>
+                        <li><a th:href="@{/chat}"><i class="fa-regular fa-comments"></i></a></li>
+                        <li><a href="#void"><i class="fa-solid fa-puzzle-piece"></i></a></li>
+                        <li><a href="#void"><i class="fa-solid fa-bell"></i></a></li>
                 </th:block>
-                <!-- 인증한 사용자 -->
+                <!-- 인증한한 사용자 -->
                 <th:block sec:authorize="isAuthenticated()">
-                        <li><a th:href="@{/home}"><i data-lucide="book-open"></i> 학습하기</a></li>
-                        <li><a th:href="@{/community/communityBoardList}"><i data-lucide="users"></i> 커뮤니티</a></li>
-                        <li><a th:href="@{/chat}"><i data-lucide="message-circle"></i> 채팅</a></li>
-                        <li><a href="#void"><i data-lucide="puzzle"></i> 퍼즐</a></li>
-                        <li><a href="#void"><i data-lucide="bell"></i> 알림</a></li>
+                        <li><a th:href="@{/home}"><i class="fa-solid fa-pencil"></i></a></li>
+                        <li><a th:href="@{/community/communityBoardList}"><i class="fa-solid fa-people-group"></i></a></li>
+                        <li><a th:href="@{/chat}"><i class="fa-regular fa-comments"></i></a></li>
+                        <li><a href="#void"><i class="fa-solid fa-puzzle-piece"></i></a></li>
+                        <li><a href="#void"><i class="fa-solid fa-bell"></i></a></li>
                 </th:block>
                 </ul>
             </div>
