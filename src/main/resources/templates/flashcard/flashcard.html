@@ -29,11 +29,7 @@
                 <div class="content">
                     <!-- ✅ 단어 박스 (한자 + 후리가나 + 품사 + 의미) -->
                     <div class="word-container">
-                        <span class="ruby" th:utext="${flashcard.formattedRuby}"></span>
-                        <!--                    <ruby>-->
-                        <!--                        <rt id="wordFurigana" th:text="${flashcard.furigana}"></rt>-->
-                        <!--                        <rb id="wordText" th:text="${flashcard.kanji}"></rb>-->
-                        <!--                    </ruby>-->
+                        <span class="furigana" th:utext="${flashcard.formattedFurigana}"></span>
                         <div class="pos-meaning-container">
                             <div class="pos-box" id="pos" th:text="${flashcard.pos}">명사</div>
                             <div class="meaning-box" id="meaning" th:text="${flashcard.meaning}">학생</div>
