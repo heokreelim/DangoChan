@@ -80,6 +80,16 @@ $(document).ready(function () {
         }, 500);
     }
 
+    // ✅ 모든 카드의 studyLevel이 3인지 확인하는 함수
+    function checkStudyLevel(deckId) {
+        return $.ajax({
+            url: "/flashcard/checkStudyLevel", // 🔥 서버 API 호출
+            method: "GET",
+            data: { deckId: deckId },
+            dataType: "json"
+        });
+    }
+
     // ✅ study_level 업데이트 함수
     function updateStudyLevel(cardId, studyLevel) {
         console.log("📌 서버로 보낼 데이터:", { cardId, studyLevel }); // 🔥 콘솔에 데이터 출력
@@ -95,15 +105,25 @@ $(document).ready(function () {
                 fetchNewFlashcard(deckId)
                     .done((data) => {
                         console.log("🔄 새 단어 데이터:", data);
+                        // 만약 응답이 빈 데이터라면 학습 끝
+                        if (!data || Object.keys(data).length === 0) {
+                            checkStudyLevel(deckId).done((allCompleted) => {
+                                if (allCompleted) {
+                                    console.log("📌 모든 단어를 학습했습니다. 초기화 진행!");
+                                    resetStudyData(deckId);
+                                } else {
+                                    console.log("오늘 학습 진행 완료!");
+                                    alert("오늘 학습 완료!! 홈으로 돌아갑니다");
+                                    goHome();
+                                }
+                            });
+                        }
+
                         $(".word-box span").text(data.kanji);
                         setTimeout(() => {
                             updateFlashcard(data);
                         }, 500);
                     })
-                    .fail(() => {
-                        console.log("📌 모든 단어를 학습했습니다. 초기화 진행!");
-                        resetStudyData(deckId);
-                    });
             },
             error: function (error) {
                 console.error("❌ study_level 및 studied_at 업데이트 실패:", error);
