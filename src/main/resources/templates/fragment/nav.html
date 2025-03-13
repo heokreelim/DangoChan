@@ -11,7 +11,7 @@
                 <b>🍡だんごちゃん</b>
             </div>
             <div class="profile-wrap">
-                <input type="hidden" name="userId" th:value="userId">
+                <input type="hidden" id="userId" name="userId" th:value="${userId}">
                 <div class="profile-picture">
                     <a th:href="@{/user/mypage}">
                     <!-- 프로필 사진 표시 -->
