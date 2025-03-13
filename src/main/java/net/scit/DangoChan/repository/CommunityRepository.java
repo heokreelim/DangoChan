@@ -21,5 +21,6 @@ public interface CommunityRepository extends JpaRepository<CommunityEntity, Inte
 	// PJB START	
     @Query("SELECT COUNT(c) FROM CommunityEntity c WHERE c.user.userId = :userId")
     int countCommunityByUserId(@Param("userId") Long userId);
-	// PJB END
+
+    // PJB END
 }
