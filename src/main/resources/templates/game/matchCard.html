@@ -18,12 +18,16 @@
     <script defer th:src="@{/js/matchCard.js}"></script>
 </head>
 <body>
+    <!-- header area-->
+    <div class="header" th:replace="fragment/header(title='카드 뒤집기 게임')"></div>
+    <br>
     <!-- 카드 게임 출력 화면-->
+    <h2 style="text-align: center; justify-content: center; font-weight: bold;">카드 뒤집기 게임</h2>
+    <div class="currentDeck"
+        style="text-align: center; justify-content: center; font-weight: bold;">
+        덱 이름</div>
     <div id="frame">
 
-    </div>
-    <div class="resetGame">
-        
     </div>
 </body>
 </html>
