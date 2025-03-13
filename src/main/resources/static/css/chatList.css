@@ -51,3 +51,10 @@ h1 {
     padding: 5px 10px;
     cursor: pointer;
 }
+
+.gnb-list a {
+    color: #121511 !important;
+    /* 기본 파란색 제거 */
+    text-decoration: none !important;
+    /* 밑줄 제거 */
+}
