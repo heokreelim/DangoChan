@@ -16,7 +16,7 @@ body {
 
 .page-wrap {
     display: flex;
-    width: 800px;
+    width: 100%;
     background: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -24,15 +24,17 @@ body {
 }
 
 .left-wrap {
-    width: 50%;
+    width: 40%;
     padding: 40px;
     box-sizing: border-box;
-    background-color: #ffffff;
+    background-color: #F0F0F3;
 }
 
 .right-wrap {
-    width: 50%;
+    /*
+    width: 70%;
     display: flex;
+    */
     justify-content: center;
     align-items: center;
     background-color: #e0e0e0;
