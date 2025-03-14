@@ -4,67 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div th:replace="fragment/head_chatHead"></div>
     <title>채팅방</title>
     <link rel="stylesheet" th:href="@{/css/chatRoom.css}">
+    <script defer th:src="@{/js/lib/sockjs.min.js}"></script>
+    <script defer th:src="@{/js/lib/stomp.min.js}"></script>
+    <script defer th:src="@{/js/chatRoom.js}"></script>
+    <script defer th:src="@{/js/calendar.js}"></script>
 </head>
 <body th:attr="data-roomid=${roomId}, data-roomtype=${roomType}, data-userid=${#authentication.name}">
-<div class="container">
-    <div class="chat-area">
-        <!-- 게임 정보 영역: 타이머와 이전 단어 -->
-        <div class="game-info">
-            <div id="timer" class="timer">30</div>
-            <div id="prevWord" class="prev-word">이전 단어: 없음</div>
+    <div class="page-wrap">
+        <div class="left-wrap">
+            <div th:replace="fragment/nav"></div>
         </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input">
-            <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()">
-            <input type="text" id="chatInput" placeholder="메시지 입력">
-            <button onclick="sendMessage()">전송</button>
-            <button id="emojiToggle">😊</button>
-            <!-- 끝말잇기 모드이면 게임 시작 버튼 표시 -->
-            <button id="gameStartBtn" style="display:none;" onclick="startGame()">게임 시작</button>
-        </div>
-        <!-- 이모지 선택 모달 -->
-        <div id="emojiModal" class="modal">
-            <div class="modal-content">
-                <span id="closeEmojiModal" class="close">&times;</span>
-                <div id="emojiPanel" class="emoji-panel">
-                    <span onclick="addEmoji('😀')">😀</span>
-                    <span onclick="addEmoji('😂')">😂</span>
-                    <span onclick="addEmoji('😅')">😅</span>
-                    <span onclick="addEmoji('😊')">😊</span>
-                    <span onclick="addEmoji('😍')">😍</span>
-                    <span onclick="addEmoji('😎')">😎</span>
-                    <span onclick="addEmoji('😉')">😉</span>
-                    <span onclick="addEmoji('😢')">😢</span>
-                    <span onclick="addEmoji('😭')">😭</span>
-                    <span onclick="addEmoji('😡')">😡</span>
-                    <span onclick="addEmoji('👍')">👍</span>
-                    <span onclick="addEmoji('👎')">👎</span>
-                    <span onclick="addEmoji('👏')">👏</span>
-                    <span onclick="addEmoji('🙌')">🙌</span>
-                    <span onclick="addEmoji('🤔')">🤔</span>
-                    <span onclick="addEmoji('🤗')">🤗</span>
-                    <span onclick="addEmoji('🤩')">🤩</span>
-                    <span onclick="addEmoji('🥳')">🥳</span>
-                    <span onclick="addEmoji('😴')">😴</span>
-                    <span onclick="addEmoji('🤤')">🤤</span>
+        <div class="right-wrap">
+            <div th:replace="fragment/header :: header('HOME')"></div>
+            <div class="container">
+                <div class="chat-area">
+                    <!-- 게임 정보 영역: 타이머와 이전 단어 -->
+                    <div class="game-info">
+                        <div id="timer" class="timer">30</div>
+                        <div id="prevWord" class="prev-word">이전 단어: 없음</div>
+                    </div>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input">
+                        <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()">
+                        <input type="text" id="chatInput" placeholder="메시지 입력">
+                        <button onclick="sendMessage()">전송</button>
+                        <button id="emojiToggle">😊</button>
+                        <!-- 끝말잇기 모드이면 게임 시작 버튼 표시 -->
+                        <button id="gameStartBtn" style="display:none;" onclick="startGame()">게임 시작</button>
+                    </div>
+                    <!-- 이모지 선택 모달 -->
+                    <div id="emojiModal" class="modal">
+                        <div class="modal-content">
+                            <span id="closeEmojiModal" class="close">&times;</span>
+                            <div id="emojiPanel" class="emoji-panel">
+                                <span onclick="addEmoji('😀')">😀</span>
+                                <span onclick="addEmoji('😂')">😂</span>
+                                <span onclick="addEmoji('😅')">😅</span>
+                                <span onclick="addEmoji('😊')">😊</span>
+                                <span onclick="addEmoji('😍')">😍</span>
+                                <span onclick="addEmoji('😎')">😎</span>
+                                <span onclick="addEmoji('😉')">😉</span>
+                                <span onclick="addEmoji('😢')">😢</span>
+                                <span onclick="addEmoji('😭')">😭</span>
+                                <span onclick="addEmoji('😡')">😡</span>
+                                <span onclick="addEmoji('👍')">👍</span>
+                                <span onclick="addEmoji('👎')">👎</span>
+                                <span onclick="addEmoji('👏')">👏</span>
+                                <span onclick="addEmoji('🙌')">🙌</span>
+                                <span onclick="addEmoji('🤔')">🤔</span>
+                                <span onclick="addEmoji('🤗')">🤗</span>
+                                <span onclick="addEmoji('🤩')">🤩</span>
+                                <span onclick="addEmoji('🥳')">🥳</span>
+                                <span onclick="addEmoji('😴')">😴</span>
+                                <span onclick="addEmoji('🤤')">🤤</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-list">
+                    <div class="user-list-header">
+                        <h3>현재 사용자 <span id="userCount">(0명)</span></h3>
+                    </div>
+                    <div class="user-list-content" id="userList"></div>
+                    <div class="user-list-footer">
+                        <button class="leave-button" onclick="leaveRoom()">나가기</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="user-list">
-        <div class="user-list-header">
-            <h3>현재 사용자 <span id="userCount">(0명)</span></h3>
-        </div>
-        <div class="user-list-content" id="userList"></div>
-        <div class="user-list-footer">
-            <button class="leave-button" onclick="leaveRoom()">나가기</button>
-        </div>
-    </div>
-</div>
-<script th:src="@{/js/lib/sockjs.min.js}"></script>
-<script th:src="@{/js/lib/stomp.min.js}"></script>
-<script th:src="@{/js/chatRoom.js}"></script>
 </body>
 </html>

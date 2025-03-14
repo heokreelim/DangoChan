@@ -25,26 +25,26 @@ public class ChatController {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatService chatService;
     private final UserService userService;
-    private final AchievementService achievementService; // achievementService 추가
+    private final AchievementService achievementService;  // achievementService 추가
 
     @GetMapping("/chat")
     public ModelAndView chatListPage(@AuthenticationPrincipal LoginUserDetails user) {
         ModelAndView mv = new ModelAndView("chat/chatList");
         if (user != null) {
             mv.addObject("userInfo", userService.findById(user.getUserId()));
+            mv.addObject("userId", user.getUserId());
             // achievement 데이터 추가
             mv.addObject("attendanceStreak", achievementService.getAttendanceStreak(user.getUserId()));
             mv.addObject("todayStudyTimeFormatted", achievementService.getTodayStudyTimeFormatted(user.getUserId()));
             mv.addObject("personalAchievements", achievementService.getPersonalAchievements(user.getUserId()));
             mv.addObject("communityAchievements", achievementService.getCommunityAchievements(user.getUserId()));
-            mv.addObject("userInfo", userService.findById(user.getUserId()));
-            mv.addObject("userId", user.getUserId());
         }
         return mv;
     }
 
     @GetMapping("/chat/room/{roomId}")
-    public ModelAndView chatRoomPage(@PathVariable String roomId) {
+    public ModelAndView chatRoomPage(@PathVariable String roomId,
+                                     @AuthenticationPrincipal LoginUserDetails user) {
         ModelAndView mv = new ModelAndView("chat/chatRoom");
         mv.addObject("roomId", roomId);
         ChatRoom room = chatRoomRepository.findRoomById(roomId);
@@ -52,6 +52,15 @@ public class ChatController {
             mv.addObject("roomType", room.getRoomType());
         } else {
             mv.addObject("roomType", "chat");
+        }
+        if (user != null) {
+            mv.addObject("userInfo", userService.findById(user.getUserId()));
+            mv.addObject("userId", user.getUserId());
+            // achievement 데이터 추가
+            mv.addObject("attendanceStreak", achievementService.getAttendanceStreak(user.getUserId()));
+            mv.addObject("todayStudyTimeFormatted", achievementService.getTodayStudyTimeFormatted(user.getUserId()));
+            mv.addObject("personalAchievements", achievementService.getPersonalAchievements(user.getUserId()));
+            mv.addObject("communityAchievements", achievementService.getCommunityAchievements(user.getUserId()));
         }
         return mv;
     }
