@@ -18,8 +18,7 @@
             <div class="profile-picture">
                 <div id="changePictureBtn" class="changePictureBtn"
                     th:style="|background-image: url('/images/profiles/profile_${user.profileImage}.jpg');|">
-                    <!-- 접근성을 위한 시각적 숨김 텍스트 -->
-                    <span class="sr-only">프로필 변경</span>
+                    <div class="overlay-text">프로필 이미지 변경</div>
                 </div>
             </div> <!-- profile-picture end -->
             <div class="nickname">
@@ -31,10 +30,13 @@
         </div>
         <div class="achievement-wrap">
             <div class="trophy-wrap">
-
-        </div>
-            <div class="achievement-notice">
-                <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
+                <div class="trophy">
+                    <div class="trophy-img"></div>
+                    <div class="trophy-name"></div>
+                </div>
+            </div>
+                <div class="achievement-notice">
+                    <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
                 <ul class="achievement-list">
                     <li th:each="ach : ${personalAchievements}">
                         <p>🏅 [[${ach}]]</p>
