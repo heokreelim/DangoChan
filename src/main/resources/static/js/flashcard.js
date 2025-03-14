@@ -70,9 +70,10 @@ $(document).ready(function () {
     function updateFlashcard(data) {
         $(".word-box span").text(data.kanji).attr("data-card-id", data.cardId);
         setTimeout(() => {
+            $(".word").val(data.word);
             $("#wordText").text(data.kanji);
             $("#wordFurigana").text(data.furigana);
-            $(".ruby").html(data.formattedRuby);
+            $(".furigana").html(data.formattedFurigana);
             $("#pos").text(data.pos);
             $("#meaning").text(data.meaning);
             $("#example_jp").text(data.exampleJp);

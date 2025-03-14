@@ -1,11 +1,6 @@
 package net.scit.DangoChan.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import net.scit.DangoChan.entity.CardEntity;
 
 import java.time.LocalDate;
@@ -21,35 +16,34 @@ import java.util.regex.Pattern;
 @ToString
 @Builder
 public class CardDTO {
-	// variables	
+	// 변수들
 	private Long cardId;
-    private Long deckId;
-    private Long categoryId;
-    private Long userId;
-    private String word;
-    private String pos;
-    private String meaning;
-    private String exampleJp;
-    private String exampleKr;
-    private Integer studyLevel;
+	private Long deckId;
+	private Long categoryId;
+	private Long userId;
+	private String word;
+	private String pos;
+	private String meaning;
+	private String exampleJp;
+	private String exampleKr;
+	private Integer studyLevel;
 
 	private LocalDate studiedAt;
 
 	private String kanji;
 	private String furigana;
-	private String formattedRuby; // ✅ 한자+후리가나 자동 생성 필드
-	
-    // Entity --> DTO
-    public static CardDTO toDTO(CardEntity cardEntity) {
+	private String formattedFurigana; // ✅ `<span>` 기반 후리가나 필드로 변경
+
+	// Entity --> DTO 변환
+	public static CardDTO toDTO(CardEntity cardEntity) {
 		return CardDTO.builder()
 				.cardId(cardEntity.getCardId())
-//				.userId(cardEntity.getDeckEntity().getCategoryEntity().getUserId()) // 02.26 DDL 수정으로 주석 처리
 				.categoryId(cardEntity.getDeckEntity().getCategoryEntity().getCategoryId())
 				.deckId(cardEntity.getDeckEntity().getDeckId())
 				.word(cardEntity.getWord())
 				.kanji(getKanji(cardEntity.getWord()))
-				.furigana(getFurigana(String.valueOf(cardEntity.getWord())))
-				.formattedRuby(generateRubyTag(cardEntity.getWord()))
+				.furigana(getFurigana(cardEntity.getWord()))
+				.formattedFurigana(generateFuriganaHtml(cardEntity.getWord())) // ✅ `<span>` 기반 후리가나 생성
 				.pos(cardEntity.getPos())
 				.meaning(cardEntity.getMeaning())
 				.exampleJp(cardEntity.getExampleJp())
@@ -57,17 +51,17 @@ public class CardDTO {
 				.studyLevel(cardEntity.getStudyLevel())
 				.studiedAt(cardEntity.getStudiedAt())
 				.build();
-    }
+	}
 
-	// 한자 추출 (대괄호 제거)
+	// ✅ 한자 추출 (대괄호 제거)
 	public static String getKanji(String word) {
 		return word.replaceAll("\\[[^\\]]*\\]", ""); // [] 안의 히라가나 제거
 	}
 
-	// 히라가나 추출 ([] 안의 글자만 가져오기)
+	// ✅ 히라가나 추출 ([] 안의 글자만 가져오기)
 	public static String getFurigana(String word) {
 		StringBuilder furigana = new StringBuilder();
-		java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\[(.*?)\\]").matcher(word);
+		Matcher matcher = Pattern.compile("\\[(.*?)\\]").matcher(word);
 		while (matcher.find()) {
 			furigana.append(matcher.group(1)); // [] 안의 히라가나 추출
 		}
@@ -89,56 +83,58 @@ public class CardDTO {
 		return this.furigana;
 	}
 
-	// ✅ <ruby> 태그 자동 생성 메서드 (각 한자에 후리가나 개별 적용)
-	public static String generateRubyTag(String word) {
+	// ✅ <span> 태그 기반 후리가나 생성 메서드
+	public static String generateFuriganaHtml(String word) {
 		if (word == null || word.trim().isEmpty()) {
 			return "";
 		}
 
-		// ✅ 한자 + 후리가나가 있는 경우 (ex: "日本[にほん]")
+		// ✅ 한자 + 후리가나가 있는 경우 (예: "繰[く]り返[かえ]す")
 		if (word.contains("[")) {
 			Matcher matcher = Pattern.compile("([一-龯]+)\\[([^\\]]+)\\]").matcher(word);
-			StringBuilder rubyHtml = new StringBuilder("<ruby>");
+			StringBuilder html = new StringBuilder("<div class=\"furigana\">");
 			int lastIndex = 0;
 
 			while (matcher.find()) {
 				int matchStart = matcher.start();
 
-				// ✅ 한자 앞의 히라가나, 특수문자 유지
+				// ✅ 한자가 나오기 전까지의 히라가나/문자 그대로 추가
 				if (lastIndex < matchStart) {
-					rubyHtml.append("<rb>").append(word, lastIndex, matchStart).append("</rb>");
+					html.append(word, lastIndex, matchStart); // 태그 없이 그대로 추가
 				}
 
 				String kanjiPart = matcher.group(1);
 				String furiganaPart = matcher.group(2);
 				List<String> furiganaList = splitFurigana(kanjiPart, furiganaPart);
 
+				// ✅ 한자 + 후리가나를 <span>으로 감싸기
+				html.append("<span class=\"furigana-item\">");
 				for (int i = 0; i < kanjiPart.length(); i++) {
-					rubyHtml.append("<rb>").append(kanjiPart.charAt(i)).append("</rb>");
-					rubyHtml.append("<rt>").append(furiganaList.get(i)).append("</rt>");
+					html.append("<span class=\"furigana-text\">").append(kanjiPart.charAt(i)).append("</span>");
+					html.append("<span class=\"furigana-kana\">").append(furiganaList.get(i)).append("</span>");
 				}
+				html.append("</span>");
 
 				lastIndex = matcher.end();
 			}
 
-			// ✅ 마지막 남은 부분 처리
+			// ✅ 마지막 남은 히라가나/문자 처리 (태그 없이 추가)
 			if (lastIndex < word.length()) {
-				rubyHtml.append("<rb>").append(word.substring(lastIndex)).append("</rb>");
+				html.append(word.substring(lastIndex));
 			}
 
-			rubyHtml.append("</ruby>");
-			return rubyHtml.toString();
+			html.append("</div>");
+			return html.toString();
 		}
 
-		// ✅ 히라가나 또는 카타카나만 있는 경우 (한자가 없는 단어)
+		// ✅ 히라가나만 있는 경우 (한자가 없음) → 태그 없이 그대로 반환
 		if (word.matches("[ぁ-ゔァ-ヴー々〆〤]+")) {
-			return "<ruby><rb>" + word + "</rb></ruby>";
+			return "<div class=\"furigana\">" + word + "</div>";
 		}
 
 		// ✅ 일본어가 아닌 경우 (그대로 반환)
 		return word;
 	}
-
 
 	// ✅ 한자 개수보다 후리가나 개수가 많을 경우 보정
 	private static List<String> splitFurigana(String kanji, String furigana) {

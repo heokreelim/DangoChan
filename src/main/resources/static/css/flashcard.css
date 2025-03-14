@@ -72,7 +72,7 @@ body {
 
 /* ✅ 플래시카드 영역 */
 .flashcard-wrap {
-    width: 700px;
+    width: 1300px;
     height: 500px;
     position: relative;
     text-align: center;
@@ -99,7 +99,7 @@ body {
 
 /* ✅ 앞면 카드 (한자 + 후리가나) */
 .front {
-    background-color: #e6ecc8;
+    background-color: lemonchiffon;
     z-index: 2;
 }
 
@@ -107,7 +107,7 @@ body {
     font-size: 100px;
     font-weight: bold;
     text-align: center;
-    background-color: #e6ecc8;
+    background-color: lemonchiffon;
     padding: 10px;
     border-radius: 5px;
 }
@@ -123,7 +123,7 @@ input {
 
 /* ✅ 뒷면 카드 */
 .back {
-    background-color: #e6ecc8;
+    background-color: lemonchiffon;
     transform: rotateY(180deg);
     z-index: 1;
     padding: 20px;
@@ -151,24 +151,30 @@ input {
     /* 세로 정렬 */
     align-items: center;
     justify-content: center;
-    background-color: #fdf4f1;
+    background-color: lemonchiffon;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    min-width: 300px;
+    min-width: 500px;
+    position: relative;
+    right: 50px;
+}
+.furigana {
+    font-size: 60px; /* 전체 글자 크기 조정 */
+    line-height: 1.5; /* 줄 간격 조정 */
 }
 
-/* ✅ ruby 태그 정렬 (한자 & 히라가나) */
-ruby {
-    display: inline-block;
-    text-align: center;
-    font-size: 50px;
+.furigana-item {
+    position: relative; /* 상대 위치 설정 */
 }
 
-/* ✅ 히라가나 스타일 */
-rt {
-    font-size: 20px;
-    line-height: 2.4em;
+.furigana-kana {
+    position: absolute; /* 절대 위치 설정 */
+    top: -1.2em; /* 위쪽 위치 조정 */
+    left: 50%; /* 왼쪽 위치 조정 */
+    transform: translateX(-50%); /* 가로 중앙 정렬 */
+    font-size: 25px; /* 후리가나 글자 크기 조정 */
+    white-space: nowrap; /* 줄 바꿈 방지 */
 }
 
 /* ✅ 품사 & 의미를 한자 아래에 가로로 배치 */
@@ -185,7 +191,7 @@ rt {
 /* ✅ 품사 & 의미 스타일 */
 .pos-box,
 .meaning-box {
-    background-color: #fdf4f1;
+    background-color: lemonchiffon;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
@@ -193,7 +199,7 @@ rt {
     font-weight: bold;
     width: auto;
     /* 내용에 맞게 크기 조정 */
-    min-width: 80px;
+    min-width: 100px;
 }
 
 /* ✅ 예문 스타일 */
@@ -207,7 +213,7 @@ rt {
 
 .example-jp-box,
 .example-kr-box {
-    background-color: #fdf4f1;
+    background-color: lemonchiffon;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
@@ -275,14 +281,14 @@ rt {
 /* ✅ "편집" 버튼 */
 .cardBtn {
     background-color: #fdf4f1;
-    padding: 10px 20px;
+    padding: 10px 10px;
     border-radius: 5px;
     font-size: 32px;
     cursor: pointer;
     border: none;
     position: absolute;
     left: 20px;
-    bottom: 20px;
+    bottom: 10px;
 }
 
 /* ✅ ⭕ 버튼 비활성화 스타일 */
@@ -291,6 +297,21 @@ rt {
     background-color: #ccc;
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+/* ✅ 버튼들에서 box-shadow 제거 */
+.answerBtn,
+.circleBtn,
+.triangleBtn,
+.xBtn,
+.cardBtn {
+    background-color: #fdf4f1;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 32px;
+    cursor: pointer;
+    border: none;
+    box-shadow: none; /* 그림자 제거 */
 }
 
 
