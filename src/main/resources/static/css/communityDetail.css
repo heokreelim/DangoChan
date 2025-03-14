@@ -1,235 +1,261 @@
-/* 전체 페이지 레이아웃 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
+/**************************
+* 게시글 목록
+*************************** */
+@charset "UTF-8";
+@import "main.css";
 
-.container {
-    margin: 20px auto;
-    max-width: 100px;
-}
-
-/* 콘텐츠 영역 */
-.content {
-    background: #fff;
-    padding: 20px;
-    margin: 20px auto;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* 게시글 상세보기 테이블 */
-.content table {
-    width: 1000px;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.content table th,
-.content table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    vertical-align: top;
-}
-
-/* 첨부파일 링크 및 삭제 아이콘 */
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-.deleteFile {
-    cursor: pointer;
-    color: #dc3545;
-    margin-left: 10px;
-}
-
-.deleteFile:hover {
-    color: #bd2130;
-}
-
-/* 버튼 스타일 (부트스트랩 기본 버튼과 조화) */
-.btn {
-    font-size: 14px;
-    padding: 6px 12px;
-    border-radius: 4px;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-/* 댓글 작성 영역 */
-.reply_write {
-    margin: 20px 0;
-}
-
-.reply_write input[type="text"] {
-    width: 500px;
-    padding: 8px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.reply_write input[type="button"] {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#replyBtn {
-    background-color: #6c757d;
-    color: #fff;
-}
-
-#replyUpdateProc {
-    background-color: #ffc107;
-    color: #fff;
-}
-
-#replyCancel {
-    background-color: #17a2b8;
-    color: #fff;
-}
-
-/* 댓글 목록 영역 */
-#reply_list {
-    margin-top: 20px;
-}
-
-/* ▼▼▼ div 기반 댓글/대댓글 레이아웃 ▼▼▼ */
-.comment-list {
-    /* 전체 댓글 목록을 감싸는 영역 스타일 */
-    width: 1000px;
-    margin: 0;
-    padding: 0;
-}
-
-.comment-item {
-    border-bottom: 1px solid #ddd;
-    padding: 8px 0;
-}
-
-.comment-header {
-    /* 작성자와 날짜가 한 줄에 오도록 */
-    display: flex;
-    gap: 10px;
-    font-weight: bold;
-}
-
-.comment-writer {
-    /* 글쓴이 */
-    color: #333;
-}
-
-.comment-date {
-    /* 날짜 */
-    color: #999;
-    font-size: 0.9em;
-}
-
-.comment-content {
-    margin: 4px 0 8px 0;
-    line-height: 1.4;
-}
-
-.comment-buttons {
-    /* 버튼 영역 정렬 */
-    display: flex;
-    gap: 6px;
-    margin-top: 4px;
-}
-
-/* 최상위 댓글 */
-.comment-parent {
-    margin-left: 0;
-}
-
-/* 대댓글 - 들여쓰기 및 배경 표시 */
-.comment-child {
-    margin-left: 30px; /* 필요 시 조정 */
-    background-color: #f9f9f9;
-    padding: 8px;
-    border-radius: 4px;
-}
-
-/* ▼▼▼ 기존 테이블 기반 댓글 목록 스타일 (필요 없으면 삭제/주석) ▼▼▼ */
-/*
-#reply_list table {
-    width: 1000px;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-#reply_list table th,
-#reply_list table td {
-    padding: 8px;
-    border: 1px solid #dee2e6;
-}
-*/
-
-/* 대댓글 입력폼 (동적으로 생성됨) */
-.childReplyInputRow td {
-    background-color: #f9f9f9;
-    padding: 10px;
-}
-
-.childReplyInputRow input.childReplyContent {
-    width: 500px;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.childReplyInputRow button {
-    margin-left: 5px;
-    padding: 6px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.childReplyInputRow button.submitChildReply {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.childReplyInputRow button.cancelChildReply {
-    background-color: #6c757d;
-    color: #fff;
-}
-
-/* 좋아요 버튼 (아이콘 포함) */
-#likeButton {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-#likeButton img {
-    vertical-align: middle;
-}
-
-/* 반응형 조정 */
-@media (max-width: 500px) {
-    .content {
-        padding: 15px;
-    }
-    
-    .reply_write input[type="text"] {
-        width: 500px;
-        margin-bottom: 10px;
-    }
-}
+/*******************************************************
+ * 기본 변수 (네오몰피즘 + 파스텔톤)
+ *******************************************************/
+ :root {
+    --bg-color: #f3f8fb;         /* 전체 배경 (파스텔톤) */
+    --box-color: #ffffff;        /* 박스/카드 내부 색상 */
+    --text-color: #333333;       /* 기본 텍스트 색상 */
+    --shadow-light: rgba(255, 255, 255, 0.7); /* 밝은 그림자 */
+    --shadow-dark: rgba(0, 0, 0, 0.08);       /* 어두운 그림자 */
+    --pastel-primary: #c2e7d9;   /* 강조용 파스텔 색상 */
+    --radius: 12px;              /* 공통 모서리 둥글기 */
+    --transition: 0.2s ease-in-out;
+  }
+  
+  /*******************************************************
+   * 전체 페이지 레이아웃
+   * (left-wrap, right-wrap 등은 main.css에서 정의됨)
+   *******************************************************/
+  body {
+      font-family: 'Noto Sans KR', Arial, sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 0;
+  }
+  
+  /* container: 오른쪽 영역 내부에 있는 컨테이너 */
+  .container {
+      margin: 20px auto;
+      max-width: 1200px;
+      padding: 0 20px;
+  }
+  
+  /*******************************************************
+   * 콘텐츠 영역 (게시글 상세보기)
+   *******************************************************/
+  .content {
+      background: var(--box-color);
+      padding: 20px;
+      margin: 20px auto;
+      border: none;
+      border-radius: var(--radius);
+      box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+  }
+  
+  /*******************************************************
+   * 게시글 상세보기 테이블
+   *******************************************************/
+  .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      background: var(--box-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 2px 2px 8px var(--shadow-dark), -2px -2px 8px var(--shadow-light);
+  }
+  
+  .content table th,
+  .content table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--pastel-primary); /* 파스텔 톤의 구분선 */
+      vertical-align: top;
+      font-size: 14px;
+      color: var(--text-color);
+  }
+  
+  /* 테이블 헤더 */
+  .content table th {
+      background-color: var(--pastel-primary);
+      font-weight: bold;
+  }
+  
+  /*******************************************************
+   * 첨부파일 링크 및 삭제 아이콘
+   *******************************************************/
+  a {
+      color: var(--pastel-primary);
+      text-decoration: none;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  
+  .deleteFile {
+      cursor: pointer;
+      color: #dc3545;
+      margin-left: 10px;
+  }
+  .deleteFile:hover {
+      color: #bd2130;
+  }
+  
+  /*******************************************************
+   * 버튼 스타일 (공통 네오몰피즘 효과)
+   *******************************************************/
+  .btn {
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      background: var(--box-color);
+      color: var(--text-color);
+      border: none;
+      box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+      transition: var(--transition);
+  }
+  .btn:hover {
+      opacity: 0.9; /* 혹은 background-color: var(--pastel-primary); 등 추가 가능 */
+  }
+  
+  /* 댓글 입력/수정/취소 버튼의 컬러만 부트스트랩 색상과 유사하게 */
+  #replyBtn {
+      background-color: #6c757d; /* gray */
+      color: #fff;
+  }
+  #replyUpdateProc {
+      background-color: #ffc107; /* warning */
+      color: #fff;
+  }
+  #replyCancel {
+      background-color: #17a2b8; /* info */
+      color: #fff;
+  }
+  
+  /*******************************************************
+   * 댓글 작성 영역
+   *******************************************************/
+  .reply_write {
+      margin: 20px 0;
+  }
+  .reply_write input[type="text"] {
+      width: 100%;
+      max-width: 500px;
+      padding: 8px;
+      margin-right: 5px;
+      border: 1px solid var(--pastel-primary);
+      border-radius: var(--radius);
+      box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+  }
+  .reply_write input[type="button"] {
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      background: var(--box-color);
+      color: var(--text-color);
+      box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+      transition: var(--transition);
+  }
+  
+  /*******************************************************
+   * 댓글 목록 영역 (div 기반 댓글/대댓글)
+   *******************************************************/
+  .comment-list {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+  }
+  
+  /* 댓글 1개 단위 */
+  .comment-item {
+      border-bottom: 1px solid var(--pastel-primary);
+      padding: 8px 0;
+  }
+  
+  /* 댓글 헤더: 작성자, 날짜 등 */
+  .comment-header {
+      display: flex;
+      gap: 10px;
+      font-weight: bold;
+  }
+  .comment-writer {
+      color: var(--text-color);
+  }
+  .comment-date {
+      color: #999;
+      font-size: 0.9em;
+  }
+  
+  /* 댓글 내용 */
+  .comment-content {
+      margin: 4px 0 8px 0;
+      line-height: 1.4;
+      color: var(--text-color);
+  }
+  
+  /* 댓글 버튼(답글, 삭제 등) */
+  .comment-buttons {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+  }
+  
+  /* 최상위 댓글 */
+  .comment-parent {
+      margin-left: 0;
+  }
+  
+  /* 대댓글: 들여쓰기 + 네오몰피즘 배경 */
+  .comment-child {
+      margin-left: 30px;
+      background: var(--bg-color);
+      padding: 8px;
+      border-radius: var(--radius);
+      box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+  }
+  
+  /*******************************************************
+   * 대댓글 입력폼 (동적 생성)
+   *******************************************************/
+  .childReplyInputRow td {
+      background: var(--bg-color);
+      padding: 10px;
+      border-radius: var(--radius);
+      box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+  }
+  .childReplyInputRow input.childReplyContent {
+      width: 100%;
+      max-width: 500px;
+      padding: 6px;
+      border: 1px solid var(--pastel-primary);
+      border-radius: var(--radius);
+      box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+  }
+  .childReplyInputRow button {
+      margin-left: 5px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      background: var(--box-color);
+      color: var(--text-color);
+      box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+      transition: var(--transition);
+  }
+  .childReplyInputRow button.submitChildReply {
+      background-color: var(--pastel-primary);
+      color: #fff;
+  }
+  .childReplyInputRow button.cancelChildReply {
+      background-color: #6c757d;
+      color: #fff;
+  }
+  
+  /*******************************************************
+   * 좋아요 버튼
+   *******************************************************/
+  #likeButton {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+  }
+  #likeButton img {
+      vertical-align: middle;
+  }
+  

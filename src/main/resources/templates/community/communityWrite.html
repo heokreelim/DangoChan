@@ -1,61 +1,73 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://thymeleaf.org">
-<head>
+<head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 덱 공유하기</title>
     <link rel="stylesheet" th:href="@{/css/communityWrite.css}">
+
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script defer th:src="@{/js/calendar.js}"></script>
 </head>
 <body>
-    <!-- fragment 적용 -->
-    <div class="container" th:replace="fragment/header(title='나의 덱 공유하기')"></div>
-    <!-- 게시글 쓰기 화면 -->
-    <div class="content">
-        <form th:action="@{/community/communityWrite}" method="POST" enctype="multipart/form-data">
-            <table>
-                <tr>
-                    <th>덱 제목</th>
-                    <td>
-                        <input type="text" name="title" id="title" placeholder="제목을 입력하세요" required>
-                    </td>
-                </tr>
-                <tr>
-                    <th>작성자</th>
-                    <td>
-                        <!-- 작성자의 이름은 로그인 되면 수정되어야 함~ -->
-                    	<input type="text" name="boardWriter" th:value="${#authentication.principal.userName}" id="boardWriter" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <th>덱 파일 첨부</th> <!-- 첨부 파일 작성 시 완성-->
-                    <td>
-                        <input type="file" name="uploadFile" placeholder="덱 .tsv 파일 업로드">
-                    </td>
-                </tr>
-                <tr>
-                    <th>덱 설명</th>
-                    <td>
-                        <textarea name="boardContent" id="boardContent" placeholder="구성, 대상 학습자, 단어 수준 등 자유롭게 설명"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th>저작권 확인 체크</th>
-                    <td>
-                        <p>
-                            <input type="checkbox" name="copyrightCheck" id="copyrightCheck">
-                            "나는 내가 공유하는 모든 자료가 전부 내가 만든 것이며, 여기에 공유되는 자료에 대한 모든 지적재산권리를 내가 보유하고 있음을 선언합니다"
-                        </p>
+    <div class="page-wrap">
+        <div class="left-wrap">
+            <div th:replace="fragment/nav"></div>
+        </div>
+        <div class="right-wrap">
+            <!-- fragment 적용 -->
+            <div th:replace="fragment/header :: header('게시글 작성하기')"></div> 
+            <div class="container">
+                <!-- 게시글 쓰기 화면 -->
+                <div class="content">
+                    <form th:action="@{/community/communityWrite}" method="POST" enctype="multipart/form-data">
+                        <table>
+                            <tr>
+                                <th>덱 제목</th>
+                                <td>
+                                    <input type="text" name="title" id="title" placeholder="제목을 입력하세요" required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>작성자</th>
+                                <td>
+                                    <!-- 작성자의 이름은 로그인 되면 수정되어야 함~ -->
+                                    <input type="text" name="boardWriter" th:value="${#authentication.principal.userName}" id="boardWriter" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>덱 파일 첨부</th> <!-- 첨부 파일 작성 시 완성-->
+                                <td>
+                                    <input type="file" name="uploadFile" placeholder="덱 .tsv 파일 업로드">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>덱 설명</th>
+                                <td>
+                                    <textarea name="boardContent" id="boardContent" placeholder="구성, 대상 학습자, 단어 수준 등 자유롭게 설명"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>저작권 확인 체크</th>
+                                <td>
+                                    <p>
+                                        <input type="checkbox" name="copyrightCheck" id="copyrightCheck">
+                                        "나는 내가 공유하는 모든 자료가 전부 내가 만든 것이며, 여기에 공유되는 자료에 대한 모든 지적재산권리를 내가 보유하고 있음을 선언합니다"
+                                    </p>
 
-                    </td>
-                </tr>     
-                <tr>
-                    <th colspan="2">
-                        <input type="submit" value="덱 공유하기" class="btn btn-primary">
-                        <input type="reset" value="목록 보기" class="btn btn-danger">
-                    </th>
-                </tr>                    
-            </table>
-        </form>
-    </div>    
+                                </td>
+                            </tr>     
+                            <tr>
+                                <th colspan="2">
+                                    <input type="submit" value="덱 공유하기" class="btn btn-primary">
+                                    <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록으로 돌아가기</a>&nbsp;
+                                </th>
+                            </tr>                    
+                        </table>
+                    </form>
+                </div>
+            </div> <!-- container end -->
+        </div> <!-- right-wrap end -->    
+    </div> <!-- page-wrap end -->   
 </body>
 </html>

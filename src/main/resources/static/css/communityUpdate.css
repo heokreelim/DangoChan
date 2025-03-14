@@ -1,3 +1,9 @@
+/**************************
+* 게시글 목록
+*************************** */
+@charset "UTF-8";
+@import "main.css";
+
 /* 기본 스타일 */
 body {
     font-family: Arial, sans-serif;

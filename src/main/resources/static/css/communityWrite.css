@@ -1,99 +1,156 @@
-/* 기본 스타일 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+/**************************
+* 게시글 목록
+*************************** */
+@charset "UTF-8";
+@import "main.css";
+
+/*******************************************************
+ * 기본 변수 (네오몰피즘 + 파스텔톤)
+ *******************************************************/
+ :root {
+    --bg-color: #f3f8fb;         /* 전체 배경 (파스텔톤) */
+    --box-color: #ffffff;        /* 박스/카드 내부 색상 */
+    --text-color: #333333;       /* 기본 텍스트 색상 */
+    --shadow-light: rgba(255, 255, 255, 0.7); /* 밝은 그림자 */
+    --shadow-dark: rgba(0, 0, 0, 0.08);       /* 어두운 그림자 */
+    --pastel-primary: #c2e7d9;    /* 강조용 파스텔 색상 */
+    --radius: 12px;              /* 공통 모서리 둥글기 */
+    --transition: 0.2s ease-in-out;
+  }
+  
+  /*******************************************************
+   * 전체 페이지 레이아웃
+   * (left-wrap, right-wrap 등은 main.css에서 정의됨)
+   *******************************************************/
+  body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: var(--bg-color);
     margin: 0;
     padding: 0;
-}
-
-/* 컨테이너 영역 */
-.container {
+  }
+  
+  /* container: 오른쪽 영역 내부 컨테이너 */
+  .container {
     margin: 20px auto;
-    max-width: 960px;
-}
-
-/* 콘텐츠 영역 */
-.content {
-    background-color: #fff;
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+  
+  /*******************************************************
+   * 콘텐츠 영역 (게시글 작성 화면)
+   *******************************************************/
+  .content {
+    background: var(--box-color);
     padding: 20px;
     margin: 20px auto;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* form 내 테이블 스타일 */
-.content table {
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+  }
+  
+  /*******************************************************
+   * form 내 테이블 스타일
+   *******************************************************/
+  .content table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-}
-
-/* 테이블 헤더 스타일 */
-.content table th {
-    background-color: #f1f1f1;
-    padding: 10px;
-    text-align: left;
+    background: var(--box-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 2px 2px 8px var(--shadow-dark), -2px -2px 8px var(--shadow-light);
+  }
+  
+  .content table th,
+  .content table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--pastel-primary);
     vertical-align: top;
-    border: 1px solid #ddd;
+    font-size: 14px;
+    color: var(--text-color);
+  }
+  
+  /* 테이블 헤더: 배경을 파스텔톤으로 */
+  .content table th {
+    background-color: var(--pastel-primary);
+    font-weight: bold;
     width: 150px;
-}
-
-/* 테이블 데이터 셀 스타일 */
-.content table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-
-/* 입력 필드 스타일 */
-.content input[type="text"],
-.content input[type="file"],
-.content textarea {
+    text-align: left;
+  }
+  
+  /*******************************************************
+   * 입력 필드 스타일 (텍스트, 파일, textarea)
+   *******************************************************/
+  .content input[type="text"],
+  .content input[type="file"],
+  .content textarea {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--pastel-primary);
+    border-radius: var(--radius);
     font-size: 14px;
-}
-
-/* textarea 스타일: 세로 크기 조정 가능 */
-.content textarea {
+    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+    transition: var(--transition);
+  }
+  
+  .content input[type="text"]:focus,
+  .content textarea:focus {
+    border-color: var(--pastel-primary);
+    outline: none;
+  }
+  
+  /* textarea: resize 가능, 높이 지정 */
+  .content textarea {
     resize: vertical;
-    height: 150px;
-}
-
-/* 체크박스 스타일 */
-.content input[type="checkbox"] {
+    min-height: 150px;
+  }
+  
+  /*******************************************************
+   * 체크박스 스타일
+   *******************************************************/
+  .content input[type="checkbox"] {
     margin-right: 5px;
-}
-
-/* 버튼 스타일 */
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
+  }
+  
+  /*******************************************************
+   * 버튼 스타일 (공통 네오몰피즘 효과)
+   *******************************************************/
+  .btn {
     font-size: 14px;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    background: var(--box-color);
+    color: var(--text-color);
+    border: none;
+    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+    transition: var(--transition);
     cursor: pointer;
-}
-
-.btn-primary {
+  }
+  
+  .btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* 부트스트랩 btn-primary, btn-danger와 유사한 색상 적용 */
+  .btn-primary {
     background-color: #007bff;
     color: #fff;
-}
-
-.btn-danger {
+    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  }
+  
+  .btn-danger {
     background-color: #dc3545;
     color: #fff;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
+    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  }
+  
+  /*******************************************************
+   * 반응형 디자인 (필요 시)
+   *******************************************************/
+  @media (max-width: 768px) {
     .content table th,
     .content table td {
-        font-size: 14px;
+      font-size: 14px;
     }
-}
+  }
+  
