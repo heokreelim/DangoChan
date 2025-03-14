@@ -135,6 +135,8 @@ body {
 /* 기본 레이아웃 */
 .page-wrap {
     width: 100%;
+        /* 필요에 따라 */
+    overflow: hidden;
     display: flex;
     background: #f2f4f8;
 }
@@ -145,7 +147,7 @@ body {
 .left-wrap{
     width: calc(100% / 6);
     background-color: #e0e0e0;
-    box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+    box-shadow: 0px 0px 8px #bebebe, -8px -8px 16px #ffffff;
 }
 .nav {
     padding: 8px;
@@ -157,7 +159,7 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-right: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.3);
+    box-shadow: 0 4px 16px rgba(31, 38, 135, 0.3);
     border-radius: 0 20px 20px 0;
     text-align: center;
     display: flex;
@@ -189,7 +191,7 @@ body {
     overflow: hidden;
     position: relative;
     background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.18);
     display: flex;
     align-items: center;
@@ -389,12 +391,16 @@ body {
 /* nav가 있는 페이지에 header는 .right-wrap */
 .right-wrap {
     flex:1;
+    min-width: 0;
     max-width: calc(100% * 5 / 6);
     height: 100%;
     display: flex;
     flex-direction: column;
     background: #f2f4f8;
+    overflow:auto;
 }
+
+
 
 .right-wrap .logo {
     display: none;
@@ -509,7 +515,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 /* 카테고리 영역 */
@@ -621,8 +627,8 @@ body {
 
 .deckList>li {
     display: block;
-    margin: 12px 0;
-    width: calc(100% * 4 / 5);
+    margin: 15px auto;
+    width: calc(88%);
 }
 
 .deck-wrap {
@@ -776,4 +782,23 @@ body {
 
 .dropdown-menu.show {
     display: block !important;
+}
+
+/* 1200px 이하일 때, 조정하고 싶을 경우 추가 */
+@media screen and (min-width: 375px) and (max-width: 1200px) {
+    .right-wrap {
+        max-width: calc(100% / 2);
+        margin: 0 auto;
+    }
+    .percentage-box {
+        width: 125px;
+        height: 125px;
+    }
+    .percentage-text {
+        font-size: 1.08em;
+    }
+    .percentage-box svg {
+        width: 125px;
+        height: 125px;
+    }
 }
