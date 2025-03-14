@@ -35,14 +35,6 @@
 }
 
 
-.adding_card,
-.editing_card {
-    position: relative;
-    top: 45%;
-    width: 90%;
-    height: 90%;
-}
-
 
 /* 테이블 스타일 */
 .modal-wrap .card_table {
@@ -247,6 +239,7 @@
     width: 100%;
     margin-bottom: 10px;
     /* 입력 필드 간격 추가 */
+    transform: translateX(10%);
 }
 
 /* label 스타일 */
@@ -382,7 +375,7 @@
 .modal-content.editing_card {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    height: auto;
 }
 
 .adding_category .input-group label,
