@@ -1,181 +1,257 @@
-/* 기본 스타일 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
+/**************************
+* 게시글 목록
+*************************** */
+@charset "UTF-8";
+@import "main.css";
 
-.container {
-    margin: 20px auto;
-    max-width: 960px;
-}
-
-/* 콘텐츠 영역 */
-.content {
-    background: #fff;
+/*******************************************************
+ * 1) 전역 변수(파스텔톤 + 네오몰피즘)
+ *    main.css와 겹치지 않는 새로운 선택자/변수만 사용
+ *******************************************************/
+ :root {
+    --bg-color: #f3f8fb;      /* 전체 배경 파스텔톤 */
+    --box-color: #ffffff;     /* 카드/박스 내부 색 */
+    --text-color: #333;       /* 기본 텍스트 색상 */
+    --shadow-light: rgba(255, 255, 255, 0.7); 
+    --shadow-dark: rgba(0, 0, 0, 0.08);
+    --pastel-primary: #c2e7d9; /* 강조 색상(파스텔) */
+    --radius: 12px;            /* 모서리 라운드 */
+    --transition: 0.2s ease-in-out;
+  }
+  
+  /* reset 유사 - 이 CSS가 우선 적용될 수 있도록 */
+  .container01, .container01 * {
+    box-sizing: border-box;
+    color: var(--text-color);
+    text-decoration: none;
+  }
+  
+  /*******************************************************
+   * 2) container01: 메인 컨테이너
+   *    (home.html에서는 사용되지 않는 클래스)
+   *******************************************************/
+  .container01 {
+    /* 네오몰피즘 배경을 줄지 여부는 상황에 맞게 */
+    background: var(--bg-color);
     padding: 20px;
-    margin: 20px auto;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* 상단 영역: 전체 글 개수와 검색 */
-.top {
+    border-radius: var(--radius);
+    min-height: 80vh; /* 내용이 적을 때도 여백 확보 */
+    box-shadow:
+      inset 2px 2px 5px var(--shadow-dark),
+      inset -2px -2px 5px var(--shadow-light);
+  }
+  
+  /*******************************************************
+   * 3) content01: 내부 박스
+   *******************************************************/
+  .content01 {
+    background: var(--box-color);
+    border-radius: var(--radius);
+    box-shadow:
+      4px 4px 10px var(--shadow-dark),
+      -4px -4px 10px var(--shadow-light);
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  /*******************************************************
+   * 4) 상단 영역: .top
+   *    - 게시글 개수(count), 정렬 버튼(sort-buttons), 검색(search)
+   *******************************************************/
+  .top {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     margin-bottom: 20px;
-}
-
-.top .count p {
+    gap: 10px; /* 줄바꿈 시 간격 확보 */
+  }
+  
+  /* 게시글 개수 표시 */
+  .top .count p {
     margin: 0;
     font-size: 16px;
-    color: #333;
-}
-
-.top .search form {
-    display: flex;
-    align-items: center;
-}
-
-.top .search form select,
-.top .search form input[type="text"] {
-    padding: 6px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 5px;
-    font-size: 14px;
-}
-
-.top .search form input[type="submit"] {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-}
-
-.top .search form input[type="submit"]:hover {
-    opacity: 0.9;
-}
-
-/* 정렬 버튼 영역 */
-.sort-buttons {
-    margin-bottom: 20px;
+    color: var(--text-color);
+  }
+  
+  /* 정렬 버튼 영역 */
+  .sort-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-}
-
-.sort-buttons a {
+  }
+  
+  /* 정렬 버튼 공통 */
+  .sort-buttons a {
     display: inline-block;
     padding: 6px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-    text-decoration: none;
+    background-color: var(--box-color);
+    color: var(--text-color);
+    border-radius: var(--radius);
+    box-shadow:
+      4px 4px 8px var(--shadow-dark),
+      -4px -4px 8px var(--shadow-light);
     font-size: 14px;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-.sort-buttons a:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-.sort-buttons a span {
+    transition: var(--transition);
+  }
+  
+  .sort-buttons a:hover {
+    background-color: var(--pastel-primary);
+  }
+  
+  /* 정렬 버튼 내 화살표 */
+  .sort-buttons a span {
     margin-left: 5px;
     font-weight: bold;
-}
-
-/* 게시글 리스트 테이블 */
-.head table {
+  }
+  
+  /* 검색창 */
+  .search form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  /* 검색 select, input, button */
+  .search form select,
+  .search form input[type="text"] {
+    padding: 6px 8px;
+    border: none;
+    border-radius: var(--radius);
+    outline: none;
+    background: var(--box-color);
+    box-shadow:
+      inset 2px 2px 4px var(--shadow-dark),
+      inset -2px -2px 4px var(--shadow-light);
+    font-size: 14px;
+  }
+  
+  .search form input[type="submit"] {
+    padding: 6px 12px;
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--box-color);
+    color: var(--text-color);
+    cursor: pointer;
+    box-shadow:
+      4px 4px 8px var(--shadow-dark),
+      -4px -4px 8px var(--shadow-light);
+    transition: var(--transition);
+  }
+  
+  .search form input[type="submit"]:hover {
+    background-color: var(--pastel-primary);
+  }
+  
+  /*******************************************************
+   * 5) 게시글 리스트(.head) & 테이블
+   *******************************************************/
+  .head {
+    margin-bottom: 20px;
+  }
+  
+  /* 테이블 공통 */
+  .head table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-}
-
-.head table th,
-.head table td {
+    background: var(--box-color);
+    border-radius: var(--radius);
+    overflow: hidden; /* 둥근 모서리 */
+    box-shadow:
+      4px 4px 8px var(--shadow-dark),
+      -4px -4px 8px var(--shadow-light);
+  }
+  
+  .head table th,
+  .head table td {
     padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
     vertical-align: middle;
-}
-
-.head table th {
-    background-color: #f1f1f1;
-}
-
-/* 제목 영역 내 링크 및 아이콘 */
-.head table a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.head table a:hover {
-    text-decoration: underline;
-}
-
-.head table span {
+    font-size: 14px;
+  }
+  
+  /* 헤더(칼럼명) */
+  .head table th {
+    background-color: var(--pastel-primary);
     font-weight: bold;
-    margin-left: 5px;
-}
-
-/* 글쓰기 버튼 */
-.write {
+  }
+  
+  /* 게시글 제목 링크, 아이콘 등 */
+  .head table a {
+    color: #007bff; /* 강조색(링크) */
+    text-decoration: none;
+  }
+  .head table a:hover {
+    text-decoration: underline;
+  }
+  
+  /*******************************************************
+   * 6) 글쓰기 버튼(.write)
+   *******************************************************/
+  .write {
     text-align: right;
     margin-bottom: 20px;
-}
-
-.write a.btn {
+  }
+  
+  .write a.btn {
+    display: inline-block;
     padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 4px;
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--box-color);
+    color: var(--text-color);
+    box-shadow:
+      4px 4px 8px var(--shadow-dark),
+      -4px -4px 8px var(--shadow-light);
+    transition: var(--transition);
     text-decoration: none;
-}
-
-.write a.btn:hover {
-    opacity: 0.9;
-}
-
-/* 페이지 내비게이션 */
-nav.pagination {
+    font-size: 14px;
+  }
+  
+  .write a.btn:hover {
+    background-color: var(--pastel-primary);
+  }
+  
+  /*******************************************************
+   * 7) 페이지 내비게이션(.pagination)
+   *******************************************************/
+  .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 5px;
     margin-top: 20px;
-}
-
-nav.pagination a.page-no,
-nav.pagination span.page-no {
+  }
+  
+  .pagination .page-no {
     display: inline-block;
     padding: 6px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-nav.pagination a.page-no:hover {
-    background-color: #e9ecef;
-}
-
-nav.pagination span.page-no.current {
-    background-color: #007bff;
-    color: #fff;
+    border-radius: var(--radius);
+    background: var(--box-color);
+    color: var(--text-color);
+    box-shadow:
+      4px 4px 8px var(--shadow-dark),
+      -4px -4px 8px var(--shadow-light);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  
+  .pagination .page-no:hover {
+    background-color: var(--pastel-primary);
+  }
+  
+  /* 현재 페이지 */
+  .pagination .page-no.current {
+    background-color: var(--pastel-primary);
     font-weight: bold;
-    border-color: #007bff;
-}
-
-/* 아이콘 버튼 (pagination 내) */
-nav.pagination .page-no i {
+    cursor: default;
+  }
+  
+  /* 아이콘 버튼 */
+  .pagination .page-no i {
     vertical-align: middle;
-}
+    font-size: 1em; /* 필요 시 조정 */
+  }
+  
