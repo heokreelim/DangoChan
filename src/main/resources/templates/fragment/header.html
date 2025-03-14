@@ -8,7 +8,7 @@
     <div th:fragment="header(title)">
         <div class="header-bg">
             <div class="logo">
-                <b>🍡だんごちゃん</b>
+                <a th:href="@{/home}"><b>🍡だんごちゃん</b></a>
             </div>
             <div class="title" th:text="${title}">🍡 だんごちゃん</div>
             <div class="gnb-wrap">
