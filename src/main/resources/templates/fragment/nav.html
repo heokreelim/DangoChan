@@ -8,7 +8,7 @@
     <div th:fragment="nav" class="nav glass-effect">
         <div class="nav-bg">
             <div class="logo">
-                <b>🍡だんごちゃん</b>
+                <a th:href="@{/home}"><b>🍡だんごちゃん</b></a>
             </div>
             <div class="profile-wrap">
                 <input type="hidden" id="userId" name="userId" th:value="${userId}">
