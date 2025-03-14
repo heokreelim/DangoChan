@@ -37,7 +37,8 @@ body {
     */
     justify-content: center;
     align-items: center;
-    background-color: #e0e0e0;
+    background-color: #FFF7CC;
+    object-fit: scale-down;
 }
 
 .title {
