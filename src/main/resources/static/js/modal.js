@@ -630,6 +630,11 @@ $(document).ready(function () {
         });
     });
 
+    // 예문 자동 완성(준비중)
+    $('.btn-create-example').on('click', function () {
+        alert('서비스 준비중입니다.');
+    });
+
 
 });
 

@@ -184,8 +184,11 @@
             <div class="modal-content editing_deck">
                 <form>
                     <input type="hidden" id="editDeckId">
-                    <p>덱이름:</p>
-                    <input type="text" id="editDeckName">
+                    <div class="input-group">
+                        <label>덱이름:</label>
+                        <input type="text" id="editDeckName">
+
+                    </div>
                     <div class="card_table">
                         <table class="edit_card_list">
                             <thead>
@@ -237,7 +240,7 @@
         <!-- 카드 편집 모달 -->
         <div class="modal modal_editing_card">
             <div class="modal-content editing_card">
-                <h2>카드 추가/편집</h2>
+                <h2>카드 편집</h2>
                 <input type="hidden" id="editCardId"> <!-- 기존 카드 ID 저장 -->
                 <label>단어: <input type="text" id="editCardWord"></label><br>
                 <label>품사: <input type="text" id="editCardPos"></label><br>
