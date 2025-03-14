@@ -95,6 +95,8 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    box-shadow: 8px 8px 16px #d1d9e6,
+    -8px -8px 16px #ffffff;
 }
 
 /* ✅ 앞면 카드 (한자 + 후리가나) */
@@ -311,7 +313,6 @@ input {
     font-size: 32px;
     cursor: pointer;
     border: none;
-    box-shadow: none; /* 그림자 제거 */
 }
 
 
