@@ -206,3 +206,48 @@
 .modal-buttons .btn-close-modal:hover {
     background-color: #5a6268;
 }
+/* modal */
+/* 모달 외부 */
+.modal {
+    position: absolute;
+    display: none;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 모달 내부 */
+.modal-content {
+    position: relative;
+    top: 50%;
+    width: 720px;
+    /* 너비 고정 */
+    max-width: 90%;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    transform: translateY(-50%);
+    padding: 20px;
+}
+
+/* 파일 업로드 숨기기 */
+#importFile {
+    display: none;
+}
+
+.table {
+    width: 100%;
+    overflow: auto;
+}
+
+
+.modal-content .card_list,
+.edit_card_list {
+    white-space: nowrap;
+    border-collapse: collapse;
+    border: 1px solid #555;
+}

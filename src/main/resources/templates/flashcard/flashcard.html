@@ -6,16 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>플래시 카드</title>
     <link rel="stylesheet" th:href="@{/css/flashcard.css}">
+    <link rel="stylesheet" th:href="@{/css/modal2.css}">
     <script th:src="@{/js/jQuery-3.7.1.min.js}"></script>
     <script th:src="@{/js/flashcard.js}"></script>
     <script th:src="@{/js/modal.js}"></script>
+    <script src="https://kit.fontawesome.com/def97ee41b.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <input type="hidden" id="deckId" th:value="${deckId}">
     <div class="container">
         <div class="timer" id="mainTimer">00:00</div>
-        <button class="close" type="button" onclick="goHome()">&#10006;</button>
+        <button class="close" type="button" onclick="goHome()"><i class="fa-solid fa-square-xmark"></i></button>
         <div class="flashcard-wrap">
             <input type="hidden" name="word" class="word" th:value="${flashcard.word}">
             <!-- 앞면 (한자) -->
@@ -29,11 +31,7 @@
                 <div class="content">
                     <!-- ✅ 단어 박스 (한자 + 후리가나 + 품사 + 의미) -->
                     <div class="word-container">
-                        <span class="ruby" th:utext="${flashcard.formattedRuby}"></span>
-                        <!--                    <ruby>-->
-                        <!--                        <rt id="wordFurigana" th:text="${flashcard.furigana}"></rt>-->
-                        <!--                        <rb id="wordText" th:text="${flashcard.kanji}"></rb>-->
-                        <!--                    </ruby>-->
+                        <span class="furigana" th:utext="${flashcard.formattedFurigana}"></span>
                         <div class="pos-meaning-container">
                             <div class="pos-box" id="pos" th:text="${flashcard.pos}">명사</div>
                             <div class="meaning-box" id="meaning" th:text="${flashcard.meaning}">학생</div>
@@ -56,9 +54,9 @@
                 <button class="answerBtn center" type="button" onclick="showAnswer()">정답 보기</button>
             </div>
             <div class="backBtn" style="display: none;">
-                <button class="circleBtn" type="button">&#9675;</button>
-                <button class="triangleBtn" type="button">&#9651;</button>
-                <button class="xBtn" type="button">&#10006;</button>
+                <button class="circleBtn" type="button"><i class="fa-regular fa-circle"></i></button>
+                <button class="triangleBtn" type="button"><i class="fa-solid fa-triangle-exclamation"></i></button>
+                <button class="xBtn" type="button"><i class="fa-solid fa-x"></i></button>
             </div>
         </div>
         <div class="study-timer" id="studyTimer">00:00</div>

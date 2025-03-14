@@ -134,16 +134,16 @@ public class DeckStudyTimeService {
         // 8. 출석 인정 조건을 만족하는 날짜들을 저장할 Set 생성 (중복 방지)
         Set<LocalDate> attendanceDates = new HashSet<>();
 
-        // 조건 1: 학습 시간 60분(3600초) 이상인 날짜
+        // 조건 1: 학습 시간 1분(300초) 이상인 날짜
         studyTimeMap.forEach((date, totalTime) -> {
-            if (totalTime >= 3600) {
+            if (totalTime >= 300) {
                 attendanceDates.add(date);
             }
         });
 
-        // 조건 2: 학습 단어 200개 이상인 날짜
+        // 조건 2: 학습 단어 1개 이상인 날짜
         learnedWordMap.forEach((date, wordCount) -> {
-            if (wordCount >= 200) {
+            if (wordCount >= 1) {
                 attendanceDates.add(date);
             }
         });

@@ -1,3 +1,4 @@
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 idCheck = false;
 
 $(function(){
@@ -7,6 +8,12 @@ $(function(){
 
 function confirmId() {
     let email = $('#userId').val();
+
+    if (!emailRegex.test(email))
+    {
+        alert('정확한 Email 형식을 입력하세요.');
+        return;
+    }
 
     $.ajax({
         url: '/user/idCheck'

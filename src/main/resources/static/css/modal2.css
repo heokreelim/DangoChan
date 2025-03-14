@@ -1,0 +1,529 @@
+/* 네오모피즘 스타일 모달 */
+.modal {
+    display: none;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal-content {
+    position: relative;
+    /* 버튼 위치 조정을 위해 relative 설정 */
+    top: 30%;
+    width: 60%;
+    max-width: 90%;
+    height: 70%;
+    margin: auto;
+    background: #f0f0f3;
+    border-radius: 33px;
+    box-shadow:
+        8px 8px 15px rgba(0, 0, 0, 0.1),
+        -8px -8px 15px rgba(255, 255, 255, 0.7);
+    transform: translateY(-50%);
+    padding: 20px;
+    padding-bottom: 60px;
+    /* 버튼과 내용 사이 여백 추가 */
+}
+
+.adding_deck,
+.importing_deck,
+.editing_deck {
+    top: 45%;
+    width: 90%;
+    height: 90%;
+}
+
+
+.adding_card,
+.editing_card {
+    position: relative;
+    top: 45%;
+    width: 90%;
+    height: 90%;
+}
+
+
+/* 테이블 스타일 */
+.modal-wrap .card_table {
+    display: flex;
+    flex-direction: column;
+    /* 테이블과 버튼을 수직 정렬 */
+    align-items: center;
+    /* 중앙 정렬 */
+    position: absolute;
+    width: 90%;
+    border-collapse: collapse;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    height: 60%;
+    margin: auto;
+    margin-left: 3%;
+}
+
+/* 카드 추가 버튼 스타일 */
+.btn-open-adding-card-modal,
+.btn-open-adding-card-to-editing-deck {
+    position: absolute;
+    /* 테이블과 버튼 간격 */
+    padding: 10px 20px;
+    text-align: center;
+    bottom: 0;
+    margin-bottom: 10%;
+}
+
+.modal-wrap th,
+.modal-wrap td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.modal-wrap th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* 파일 업로드 숨김 */
+.modal-wrap #importFile {
+    display: none;
+}
+
+/* 카드 리스트 스타일 */
+.card_list,
+.edit_card_list {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1),
+        -4px -4px 10px rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    min-height: 50px;
+    padding: 10px;
+    width: 100%;
+    /* 테이블 크기를 적절하게 조정 */
+    margin: auto;
+    /* 중앙 정렬 */
+    text-align: center;
+    height: 100%;
+}
+
+/* 모달 제목 및 텍스트 스타일 */
+.modal-content h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.modal-content label,
+.modal-content p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+    text-align: center;
+}
+
+/* 입력 필드 스타일 */
+.modal-content input[type="text"] {
+    width: 80%;
+    padding: 12px 24px;
+    border-radius: 17px;
+    border: none;
+    background: #f0f0f3;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+        -5px -5px 10px rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.modal-content input[type="text"]:focus {
+    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+        inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+}
+
+/* 모달 버튼 그룹 정렬 */
+.modal-buttons {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    width: 90%;
+    height: 10%;
+}
+
+/* 버튼 크기 및 스타일 */
+.modal-buttons button,
+.modal-buttons input[type="submit"],
+.modal-buttons input[type="button"] {
+    padding: 12px 24px;
+    border-radius: 17px;
+    background: #f0f0f3;
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.1),
+        -5px -5px 10px rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+}
+
+.modal-content input[type="button"] {
+    padding: 12px 24px;
+    border-radius: 17px;
+    background: #f0f0f3;
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.1),
+        -5px -5px 10px rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    width: 100%;
+    text-align: center;
+    gap: 20px;
+}
+
+.modal-buttons button:hover,
+.modal-buttons input[type="submit"]:hover,
+.modal-buttons input[type="button"]:hover,
+.modal-content input[type="button"]:hover {
+    box-shadow:
+        inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+    transform: translateY(2px);
+}
+
+/* 닫기 버튼 스타일 */
+.btn-close-modal {
+    background-color: #6c757d;
+    width: 100%;
+    color: #000;
+}
+
+.btn-close-modal:hover {
+    background-color: #5a6268;
+    width: 100%;
+}
+
+/* 작은 버튼 스타일 */
+.modal-small-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+
+
+/* label과 input을 한 줄에 배치 */
+.input-group {
+    display: flex;
+    align-items: center;
+    /* 수직 중앙 정렬 */
+    gap: 10px;
+    /* 간격 조정 */
+    justify-content: center;
+    /* 중앙 정렬 */
+    width: 100%;
+    margin-bottom: 10px;
+    /* 입력 필드 간격 추가 */
+}
+
+/* label 스타일 */
+.modal-content label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+    display: inline-block;
+    white-space: nowrap;
+    /* 줄 바꿈 방지 */
+}
+
+/* input 스타일 */
+.modal-content input[type="text"],
+.modal-content select {
+    display: inline-block;
+    width: auto;
+    min-width: 20px;
+    /* 내용에 따라 자동 조정 */
+    flex-grow: 1;
+    /* 가능한 공간을 차지하여 정렬 */
+    padding: 12px 24px;
+    border-radius: 17px;
+    border: none;
+    background: #f0f0f3;
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.1),
+        -5px -5px 10px rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* input 포커스 효과 */
+.modal-content input[type="text"]:focus,
+.modal-content select:focus {
+    box-shadow:
+        inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+        inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+}
+
+/* select 스타일 */
+.modal-content select {
+    appearance: none;
+    /* 기본 드롭다운 화살표 제거 */
+    border-radius: 17px;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* select 내부 option 스타일 */
+.modal-content select option {
+    font-size: 1rem;
+    padding: 5px;
+    text-align: center;
+}
+
+/* 덱, 카테고리 이름 편집 */
+#deckNameWrapper,
+#categoryNameWrapper {
+    display: flex;
+    align-items: center;
+    /* 수직 정렬 */
+    gap: 10px;
+    /* 요소 간 간격 */
+}
+
+#deckNameContainer,
+#categoryNameContainer {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+#categoryNameDisplay,
+#categoryName_E1 {
+    margin: 0;
+    margin-right: 20%;
+    /* 기본 마진 제거 */
+    display: inline-block;
+    width: 300px;
+    /* 가능한 공간을 차지하여 정렬 */
+    padding: 12px 24px;
+    border-radius: 17px;
+    border: none;
+    background: #f0f0f3;
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.1),
+        -5px -5px 10px rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#deckNameDisplay,
+#editDeckName {
+    margin: 0;
+    margin-right: 20%;
+    /* 기본 마진 제거 */
+    display: inline-block;
+    flex: 1;
+    /* 가능한 공간을 차지하여 정렬 */
+    padding: 12px 24px;
+    border-radius: 17px;
+    border: none;
+    background: #f0f0f3;
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.1),
+        -5px -5px 10px rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#btn-edit-deck-name {
+    width: calc(100% / 3);
+}
+
+.edit_card_list button {
+    border: none;
+    width: 50px;
+    height: 36px;
+}
+
+.edit_card_list .modal-small-btn {
+    font-size: 20px;
+}
+
+.modal-content.adding_card,
+.modal-content.editing_card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-content.adding_card label,
+.modal-content.editing_card label {
+    display: flex;
+    justify-content: space-between;
+    /* label 왼쪽, input 오른쪽 */
+    align-items: center;
+    /* 세로 중앙 정렬 */
+    width: 100%;
+    /* 적당한 너비 설정 */
+    margin-right: 20%;
+}
+
+.modal-content.adding_card input[type="text"],
+.modal-content.editing_card input[type="text"] {
+    width: calc(100% - 100px);
+    /* 전체 너비에서 label의 너비(예상 100px) 제외 */
+    max-width: 80%;
+    min-width: 150px;
+    /* 입력 필드 최소 크기 제한 */
+    margin-left: 10px;
+    text-align: center;
+}
+
+.btn-delete-card {
+    border: none;
+    width: 50px;
+    font-size: x-large;
+}
+
+/* 프로필 사진 변경 모달 추가 */
+/* 모달 기본 스타일 */
+.modal_change_profile_image {
+    position: fixed;
+    /* 화면 전체 덮기 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    /* 기본은 숨김 */
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 어두운 배경 */
+    z-index: 1000;
+    /* 위에 표시 */
+}
+
+/* 모달 컨텐츠 박스 */
+.change_profile_image {
+    background-color: #fff;
+    width: 500px;
+    max-width: 90%;
+
+    padding: 30px;
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* 제목 스타일 */
+.change_profile_image h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* 프로필 이미지 리스트 박스 */
+.profile-image-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* 개별 프로필 이미지 선택 박스 */
+.profile-image-option {
+    width: 80px;
+    height: 80px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    border: 3px solid transparent;
+    /* 기본 테두리 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #f5f5f5;
+}
+
+/* 선택되었을 때 테두리 효과 */
+.profile-image-option.selected {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+}
+
+/* 프로필 이미지 자체 스타일 */
+.profile-image-option img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* 하단 버튼 영역 */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 공통 버튼 스타일 */
+.modal-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+/* 저장 버튼 */
+.modal-buttons .btn-confirm-profile-change {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.modal-buttons .btn-confirm-profile-change:hover {
+    background-color: #0056b3;
+}
+
+/* 닫기 버튼 */
+.modal-buttons .btn-close-modal {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.modal-buttons .btn-close-modal:hover {
+    background-color: #5a6268;
+}

@@ -1,47 +1,52 @@
 /* 기본 레이아웃 */
 .page-wrap {
     flex-direction: column;
+    background: #f2f4f8;
+    width: 100%;
 }
 
-.inner {
-    width: 1280px;
-}
-.inner>div {
-    margin: 20px 0;
-}
-
-/* profile 프로필 */
-/************* 마이페이지 디자인 ********************/
-.inner .profile-wrap {
+/* ========================= container ========================= */
+.container {
+    flex-grow: 1;
+    padding: 15px;
+    background: #f2f4f8;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-    gap: 38px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.inner .profile-wrap>.profile-picture {
-    width: 285px;
-    height: 285px;  
+/************* 마이페이지 디자인 ********************/
+/* profile 프로필 */
+.container .profile-wrap {
+    background: #f0f0f3;
+    border-radius: 15px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.container .profile-wrap .profile-picture {
+    width: 175px;
+    height: 175px;
     border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.1), inset -4px -4px 10px rgba(255, 255, 255, 0.7);
     overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    background-color: #f0f0f0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /*  div.changePictureBtn */
-.inner .profile-picture .changePictureBtn {
+.container .profile-wrap .profile-picture img {
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-
-    text-indent: -9999px;
-    display: block;
-    cursor: pointer;
+    object-fit: cover;
+}
+.profile-wrap .nickname {
+    flex-grow: 1;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #333;
 }
 
 /* 기본 이미지가 JS나 서버에서 내려오지 않을 경우 백업용 */
@@ -50,7 +55,7 @@
 } */
 
 /* hover 시 오버레이 ::after 효과 */
-.inner .profile-picture:hover::after {
+.container .profile-picture:hover::after {
     content: "프로필 이미지 변경";
     position: absolute;
     bottom: 0;
@@ -75,11 +80,11 @@
 }
 
 /* 커서 포인터 추가 (위에 이미 있음, 중복 가능) */
-.inner .profile-picture:hover {
+.container .profile-picture:hover {
     cursor: pointer;
 }
 
-.inner .profile-wrap>.nickname {
+.container .profile-wrap>.nickname {
     width: 285px;
     height: auto;
     display: flex;
@@ -88,28 +93,45 @@
     gap: 25px;
 }
 
-.inner .profile-wrap>.nickname p {
+.container .profile-wrap>.nickname p {
     background-color: #B4D8E4;
     line-height: 1.75;
 }
 
-.inner .profile-wrap>.nickname i {
+.container .profile-wrap>.nickname i {
     font-size: 1.75em;
 }
 
-.inner .profile-wrap>.nickname i:hover {
+.container .profile-wrap>.nickname i:hover {
     color: #FF9EBE;
     transition: 0.5s;
 }
 
-.inner .profile-wrap>.nickname .userName {
+.container .profile-wrap>.nickname .userName {
     font-size: 1.85em;
     font-weight: 700;
 }
 
-/* 업적 디자인 */
-.achievement-notice {
-    text-align: center;
+/* ========================= achievement-wrap ========================= */
+.achievement-wrap {
+    background: #f0f0f3;
+    border-radius: 15px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7);
+    padding: 20px;
+}
+.achievement-wrap ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.achievement-wrap li {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.05), -4px -4px 10px rgba(255, 255, 255, 0.8);
+    color: #5f5f7a;
+    font-weight: 500;
 }
 
 /* calendar 캘린더 */
@@ -130,32 +152,73 @@
     font-size: 1.78em;
 }
 /* 마이페이지 달력 추가 디자인 */
-.calendar-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
+/* ========================= calendar-wrap ========================= */
+.calendar-wrap {
+    background: #f0f0f3;
+    border-radius: 15px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7);
+    padding: 20px;
 }
 
-/* 네오모피즘 스타일 버튼 */
-.calendar-btn {
-    width: 66px;
-    height: 66px;
-    border-radius: 17px;
-    background: #f0f0f3;
-    /* 연한 파스텔 배경 */
-    box-shadow:
-        8px 8px 15px rgba(0, 0, 0, 0.1),
-        -8px -8px 15px rgba(255, 255, 255, 0.7);
-    /* 입체감 강조 */
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
 
+.calendar-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f0f0f3;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-
-    border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.calendar-btn:hover {
+    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+    transform: translateY(2px);
+}
+
+.mypage-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5), inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mypage-calendar th,
+.mypage-calendar td {
+    border: 1px solid #FF9EBE;
+    padding: 8px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.mypage-calendar th {
+    background-color: #FDF4F1;
+}
+
+/* ========================= 기타 버튼 (로그아웃 등) ========================= */
+.logout-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff7e67;
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+    background-color: #ff6347;
 }
 
 /* 호버 시 효과 */
@@ -171,7 +234,6 @@
 .calendar-btn i {
     font-size: 3em;
     color: #6b6b6b;
-    /* 기본은 차분한 그레이톤 */
     transition: color 0.3s ease;
 }
 
@@ -205,4 +267,20 @@
 
 #nextMonth i {
     color: #d6425d;
+}
+
+/* ========================= 기타 버튼 (로그아웃 등) ========================= */
+.logout-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff7e67;
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+    background-color: #ff6347;
 }

@@ -8,10 +8,10 @@
     <div th:fragment="nav" class="nav glass-effect">
         <div class="nav-bg">
             <div class="logo">
-                <b>🍡だんごちゃん</b>
+                <a th:href="@{/home}"><b>🍡だんごちゃん</b></a>
             </div>
             <div class="profile-wrap">
-                <input type="hidden" name="userId" th:value="userId">
+                <input type="hidden" id="userId" name="userId" th:value="${userId}">
                 <div class="profile-picture">
                     <a th:href="@{/user/mypage}">
                     <!-- 프로필 사진 표시 -->

@@ -22,7 +22,7 @@ $(document).ready(function () {
 
     /***************** 공통 모달 관련 함수 *****************/
     // 열려있는 모달들을 저장한 배열
-        modals = [
+    modals = [
         $('.modal_adding_category'),
         $('.modal_editing_category'),
         $('.modal_adding_menu'),
@@ -33,7 +33,7 @@ $(document).ready(function () {
         $('.modal_editing_deck'),
         $('.modal_editing_card'),
         $('.modal_change_profile_image')
-        ];
+    ];
 
 
     /***************** 모달 닫기 이벤트 *****************/
@@ -178,7 +178,7 @@ $(document).ready(function () {
             tr.append($('<td>').attr('id', 'exampleJp-' + index).text(exampleJp));
             tr.append($('<td>').attr('id', 'exampleKr-' + index).text(exampleKr));
 
-            let deleteBtn = $('<button>').text('🗑').on('click', function () {
+            let deleteBtn = $('<button>').attr('class', 'btn-delete-card').text('🗑').on('click', function () {
                 tr.remove();
             });
             tr.append($('<td>').append(deleteBtn));
@@ -254,7 +254,7 @@ $(document).ready(function () {
                         tr.append(td);
                     });
 
-                    var deleteBtn = $('<button>').text('🗑').on('click', function () {
+                    var deleteBtn = $('<button>').attr('class', 'btn-delete-card').text('🗑').on('click', function () {
                         tr.remove();
                     });
                     tr.append($('<td>').append(deleteBtn));
@@ -523,7 +523,8 @@ $(document).ready(function () {
         let meaning = $('.meaning-box').text();
         let exampleJp = $('.example-jp-box').text();
         let exampleKr = $('.example-kr-box').text();
-
+        console.log(word);
+        console.log(meaning);
         $('#editCardId').val(cardId);
         $('#editCardWord').val(word);
         $('#editCardPos').val(pos);
@@ -613,7 +614,7 @@ $(document).ready(function () {
     });
 
     // ****** 프로필 사진 변경 추가 ****** //
-// 프로필 이미지 변경 버튼 클릭 시 모달 열기
+    // 프로필 이미지 변경 버튼 클릭 시 모달 열기
     $('#changePictureBtn').on('click', function () {
         closeOpenModals(); // 열려있는 모달 닫기
         openModal($('.modal_change_profile_image'));
@@ -635,7 +636,7 @@ $(document).ready(function () {
     });
 
 
-    
+
 
     // 저장 버튼 클릭 시 서버에 전송
     $('.btn-confirm-profile-change').on('click', function () {

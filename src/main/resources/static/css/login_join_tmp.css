@@ -10,6 +10,10 @@ body {
     background-color: #f5f5f5;
 }
 
+.inner {
+    padding: auto;
+}
+
 .page-wrap {
     display: flex;
     width: 800px;
@@ -38,12 +42,16 @@ body {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
+    margin-right: 5%;
     margin-bottom: 20px;
+    font-family: 'GoryeongStrawberry';
 }
 
 .form-wrap {
     display: flex;
     flex-direction: column;
+    padding-left: 10px;
+    margin-top: 10%;
 }
 
 label {
@@ -120,13 +128,6 @@ input.check-btn:hover {
     background-color: #d6d6d6;
 }
 
-/* 소셜 로그인 */
-.social-login {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
 button {
     width: 100%;
     padding: 10px;
@@ -137,5 +138,15 @@ button {
     cursor: pointer;
 }
 
-.social-login .line { background-color: #06c755; } /* LINE */
-.social-login .google { background-color: #db4437; } /* Google */
+.input-container {
+    display: flex; /* Flexbox 레이아웃 적용 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+#userId {
+    width: 300%; /* input 사이즈 줄이기 (원하는 크기로 조정) */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px; /* 버튼과의 간격 조정 */
+}
