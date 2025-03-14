@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,26 +14,54 @@
     <link rel="stylesheet" th:href="@{/css/chatList.css}">
     <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 </head>
+
 <body>
     <div class="page-wrap">
         <div class="left-wrap">
             <div th:replace="fragment/nav"></div>
         </div>
         <div class="right-wrap">
-            <div th:replace="fragment/header"></div>
-            <div class="container">
-                <h1>채팅방 리스트</h1>
-                <div class="room-list" id="roomList"></div>
-                <!-- 방 생성 버튼: 모달창 열기 -->
-                <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#createRoomModal">
-                    방 만들기
-                </button>
+            <!-- 헤더 텍스트 -->
+            <div th:replace="fragment/header :: header('채팅방 리스트')"></div>
+            <!-- 상위 컨테이너: relative 포지셔닝 -->
+            <div class="chat-container">
+                <!-- 스크롤되는 채팅방 목록 영역 -->
+                <div class="room-container">
+                    <th:block th:if="${#lists.isEmpty(chatRoomList)}">
+                        <p class="room-empty">
+                            새로운 채팅방을 생성하세요.
+                        </p>
+                    </th:block>
+                    <th:block th:unless="${#lists.isEmpty(chatRoomList)}">
+                        <div th:each="room : ${chatRoomList}">
+                            <div class="room-card">
+                                <div class="room-card-top">
+                                    <div class="room-title">
+                                        <a th:href="@{'/chat/room/' + ${room.roomId}}">
+                                            <span class="room-type">[<span
+                                                    th:text="${room.roomType}">chat</span>]</span>
+                                            <b th:text="${room.name}">채팅방 이름</b>
+                                        </a>
+                                    </div>
+                                    <div class="room-participants"
+                                        th:utext="${@roomProfileHelper.getParticipantImages(room.userSet)}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
             </div>
+            <!-- 플러스 버튼: 상위 컨테이너 내부에 위치 -->
+            <button class="addChatBtn" data-bs-toggle="modal" data-bs-target="#createRoomModal">
+                +
+            </button>
         </div>
     </div>
 
     <!-- 방 생성 모달창 -->
-    <div class="modal fade" id="createRoomModal" tabindex="-1" aria-labelledby="createRoomModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createRoomModal" tabindex="-1" aria-labelledby="createRoomModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content rounded">
                 <div class="modal-header">
@@ -65,4 +93,5 @@
         </div>
     </div>
 </body>
+
 </html>
