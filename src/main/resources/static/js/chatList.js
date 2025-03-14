@@ -1,25 +1,72 @@
+function createParticipantImages(userSet) {
+    if (!userSet || userSet.length === 0) {
+        return '';
+    }
+    const maxDisplay = 3;
+    let html = '';
+    const count = userSet.length;
+
+    // 최대 3명까지만 프로필 이미지 (임시로 모두 profile_0.jpg 사용)
+    const displayed = userSet.slice(0, maxDisplay);
+    displayed.forEach(user => {
+        html += `
+            <img src="/images/profiles/profile_0.jpg" 
+                 alt="프로필" class="participant-img" />
+        `;
+    });
+    // 나머지 인원이 있으면 +N 표시
+    if (count > maxDisplay) {
+        const extra = count - maxDisplay;
+        html += `<span class="participant-extra">+${extra}</span>`;
+    }
+    return html;
+}
+
 function loadRooms() {
     fetch('/chat/rooms')
         .then(response => response.json())
         .then(data => {
-            const roomList = document.getElementById('roomList');
-            roomList.innerHTML = '';
-            data.forEach(room => {
-                const div = document.createElement('div');
-                div.className = 'room-item';
-                const participantCount = room.userSet ? room.userSet.length : 0;
-                let roomTypeText = "";
-                if (room.roomType === "shiritori") {
-                    roomTypeText = " (끝말잇기)";
-                } else {
-                    roomTypeText = " (수다)";
-                }
-                div.textContent = room.name + roomTypeText + " - " + participantCount + "명";
-                div.onclick = () => {
-                    window.location.href = '/chat/room/' + room.roomId;
-                };
-                roomList.appendChild(div);
-            });
+            const container = document.querySelector('.room-container');
+            container.innerHTML = ''; // 초기화
+
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <p class="room-empty">
+                        하단 플러스(+) 버튼을 클릭하여<br>
+                        새로운 채팅방을 생성하세요.
+                    </p>
+                `;
+            } else {
+                data.forEach(room => {
+                    const card = document.createElement('div');
+                    card.className = 'room-card';
+
+                    const participantHTML = createParticipantImages(room.userSet);
+                    const roomType = room.roomType || 'chat';
+
+                    // 상단 영역에 방 유형, 방 제목(왼쪽) + 프로필(오른쪽)
+                    card.innerHTML = `
+                        <div class="room-card-top">
+                            <div class="room-title">
+                                <a href="/chat/room/${room.roomId}">
+                                    <span class="room-type">[${roomType}] </span>
+                                    <b>${room.name}</b>
+                                </a>
+                            </div>
+                            <div class="room-participants">
+                                ${participantHTML}
+                            </div>
+                        </div>
+                    `;
+
+                    // 클릭 시 방으로 이동 (원한다면)
+                    card.addEventListener('click', () => {
+                        window.location.href = '/chat/room/' + room.roomId;
+                    });
+
+                    container.appendChild(card);
+                });
+            }
         })
         .catch(err => console.error(err));
 }
@@ -43,8 +90,8 @@ function createRoomModal() {
     })
         .then(response => response.json())
         .then(room => {
-            var myModalEl = document.getElementById('createRoomModal');
-            var modal = bootstrap.Modal.getInstance(myModalEl);
+            const myModalEl = document.getElementById('createRoomModal');
+            const modal = bootstrap.Modal.getInstance(myModalEl);
             if (modal) {
                 modal.hide();
             }
