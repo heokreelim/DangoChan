@@ -1,60 +1,132 @@
+/* 기본 레이아웃 및 배경 */
 body {
     margin: 0;
     padding: 0;
-    background: #f0f0ff;
+    background: #f2f4f8;
     font-family: sans-serif;
 }
 
-.container {
-    width: 80%;
-    margin: 30px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
+a{
+    text-decoration: none;
+    color: #121511;
 }
-
-h1 {
-    text-align: center;
-}
-
-.room-list {
-    max-height: 300px;
+/* 새 상위 컨테이너: relative 포지셔닝 */
+.chat-container {
+    position: relative;
+    width: calc(100% * 3 / 5);
+    /* 원하는 높이 지정 (예: 70vh) */
+    max-height: 70vh;
+    background-color: #f0f0f3;
+    border-radius: 12px;
+    box-shadow: 0 0 5px #121511;
     overflow-y: auto;
-    border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #fafafa;
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 10px;
 }
 
-.room-item {
-    padding: 10px;
-    margin: 5px 0;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.room-item:hover {
-    background-color: #e8e8ff;
-}
-
-.create-room {
-    margin-top: 20px;
+/* 채팅방이 없을 때 메시지 */
+.room-empty {
+    padding-top: 50px;
+    font-size: 1.7em;
+    font-weight: bold;
     text-align: center;
+    color: #7a7a7a;
 }
 
-.create-room input[type="text"] {
-    width: 200px;
-    padding: 5px;
+/* 플러스 버튼: chat-container 내부 하단에 항상 보이도록 */
+.addChatBtn {
+    /* 절대 위치 관련 속성 제거 */
+    position: static;
+    /* 중앙 정렬 및 상단 여백 추가 */
+    display: block;
+    margin: 20px auto 0;
+    width: calc(100% * 3 / 5);
+    height: 66px;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #5f5f7a;
+    border-radius: 33px;
+    background: #FFFACD;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
+        -8px -8px 16px rgba(255, 255, 255, 0.7);
+    border: none;
+    transition: all 0.2s ease;
+    z-index: auto;
 }
 
-.create-room button {
-    padding: 5px 10px;
+.addChatBtn:hover {
+    transform: scale(1.05) translateY(-2px);
+    background: #FFEEAA;
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.7);
     cursor: pointer;
 }
 
-.gnb-list a {
-    color: #121511 !important;
-    /* 기본 파란색 제거 */
-    text-decoration: none !important;
-    /* 밑줄 제거 */
+
+/* 채팅방 카드 스타일 */
+.room-card {
+    background: linear-gradient(to bottom right, #fff8ec, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #2f2f2f;
+    margin-bottom: 20px;
+    padding: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 상단 영역: 방 제목과 프로필 이미지를 오른쪽에 배치 */
+.room-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 방 제목 및 방 유형 */
+.room-title a {
+    text-decoration: none;
+    color: #333;
+}
+
+.room-type {
+    font-size: 1.3em;
+    color: #555;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.room-title b {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #333;
+}
+
+/* 프로필 이미지 영역 */
+.room-participants {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 프로필 이미지 크기 증가 */
+.participant-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* +N 표시 */
+.participant-extra {
+    font-size: 1em;
+    color: #555;
+    background: #eee;
+    border-radius: 50%;
+    padding: 4px 8px;
 }

@@ -48,13 +48,13 @@ button {
     border-radius: 12px;
     background: #f0f0f3;
     box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1),
-                -8px -8px 15px rgba(255, 255, 255, 0.7);
+        -8px -8px 15px rgba(255, 255, 255, 0.7);
     transition: 0.3s;
 }
 
 button:hover {
     box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1),
-                inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+        inset -6px -6px 12px rgba(255, 255, 255, 0.7);
 }
 
 .btn {
@@ -67,7 +67,7 @@ button:hover {
 
 .btn:hover {
     box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1),
-                inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+        inset -6px -6px 12px rgba(255, 255, 255, 0.7);
 }
 
 /* button color 버튼 컬러 */
@@ -76,9 +76,11 @@ button:hover {
     background-color: #007bff;
     color: #fff;
 }
+
 .btn.positiveBtn:hover {
     background-color: #0056b3;
 }
+
 /* 일반 */
 .btn.commonBtn {
     background-color: #f0f0f3;
@@ -88,11 +90,13 @@ button:hover {
 .btn.commonBtn:hover {
     background-color: #dddfe0;
 }
+
 /* 취소, 삭제, 부정 */
 .btn.negativeBtn {
     background-color: #dc3545;
     color: #fff;
 }
+
 .btn.negativeBtn:hover {
     background-color: #c82333;
 }
@@ -142,11 +146,12 @@ body {
 
 /* fragment */
 /* nav */
-.left-wrap{
+.left-wrap {
     width: calc(100% / 6);
     background-color: #e0e0e0;
     box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
 }
+
 .nav {
     padding: 8px;
 }
@@ -167,7 +172,7 @@ body {
     transition: background 0.3s ease;
 }
 
-.nav .nav-bg > div {
+.nav .nav-bg>div {
     margin: 5px auto;
 }
 
@@ -239,7 +244,7 @@ body {
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
-                inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+        inset -4px -4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav .profile-wrap>.nickname .userName {
@@ -260,10 +265,12 @@ body {
     text-align: left;
     /* overflow: scroll; */
 }
+
 .statistics-wrap ul {
     list-style: none;
     padding: 0;
 }
+
 .statistics-wrap ul li {
     padding: 5px 1px;
     border-bottom: 1px solid #eee;
@@ -282,6 +289,7 @@ body {
 .statistics-wrap p:last-child {
     border-bottom: none;
 }
+
 /* 강조하는 부분에 아이콘과 텍스트 정렬 */
 .statistics-wrap p i {
     margin-right: 8px;
@@ -309,7 +317,7 @@ body {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
-                inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+        inset -4px -4px 10px rgba(0, 0, 0, 0.1);
     padding: 5px;
 }
 
@@ -386,9 +394,10 @@ body {
     align-items: center;
     padding: 0 20px;
 }
+
 /* nav가 있는 페이지에 header는 .right-wrap */
 .right-wrap {
-    flex:1;
+    flex: 1;
     max-width: calc(100% * 5 / 6);
     height: 100%;
     display: flex;
@@ -399,13 +408,15 @@ body {
 .right-wrap .logo {
     display: none;
 }
-.right-wrap .logo > a > b {
+
+.right-wrap .logo>a>b {
     font-family: 'Shippori Mincho B1';
     font-size: 1.5rem;
     font-weight: 600;
     color: #333;
     margin-left: 20px;
 }
+
 .right-wrap .title {
     margin-left: 12px;
 }
@@ -431,13 +442,14 @@ body {
     height: 65px;
     background: #f0f0f3;
     border-radius: 0 0 15px 15px;
-    box-shadow:8px 8px 16px rgba(0, 0, 0, 0.05),
-            -8px -8px 16px rgba(255, 255, 255, 0.9);
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.05),
+        -8px -8px 16px rgba(255, 255, 255, 0.9);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
 }
+
 .right-wrap .title {
     font-family: 'Shippori Mincho B1';
     font-size: 1.5rem;
@@ -445,6 +457,7 @@ body {
     color: #333;
     margin-left: 20px;
 }
+
 .gnb-wrap {
     display: flex;
     align-items: center;
@@ -479,6 +492,7 @@ body {
         inset -4px -4px 10px rgba(255, 255, 255, 0.7);
     transform: translateY(2px);
 }
+
 .gnb-list li a i {
     font-size: 1.5rem;
     color: #6b6b6b;
@@ -533,19 +547,20 @@ body {
     border-radius: 33px;
     background: #FFFACD;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
-               -8px -8px 16px rgba(255, 255, 255, 0.7);
+        -8px -8px 16px rgba(255, 255, 255, 0.7);
     border: none;
     display: block;
-    margin: 30px auto;  
+    margin: 30px auto;
     transition: all 0.2s ease;
 }
 
 .plusBtn:hover,
 .addCategoryBtn:hover {
-    transform: scale(1.05), translateY(-2px);;
-    background: #FFEEAA ;
+    transform: scale(1.05), translateY(-2px);
+    ;
+    background: #FFEEAA;
     box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2),
-                inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+        inset -4px -4px 8px rgba(255, 255, 255, 0.7);
     cursor: pointer;
 }
 
@@ -558,16 +573,18 @@ body {
 /* ===================== category 요소 ==================== */
 .category {
     display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #f5f5fa; /* 파스텔 연보라 느낌 */
-        box-shadow: 4px 4px 8px #d1d9e6,
-                   -4px -4px 8px #ffffff;
-        border-radius: 16px;
-        margin: 12px 0;
-        padding: 16px 24px;
-        transition: transform 0.2s;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f5fa;
+    /* 파스텔 연보라 느낌 */
+    box-shadow: 4px 4px 8px #d1d9e6,
+        -4px -4px 8px #ffffff;
+    border-radius: 16px;
+    margin: 12px 0;
+    padding: 16px 24px;
+    transition: transform 0.2s;
 }
+
 .category:hover {
     transform: translateY(-2px);
 }
@@ -577,11 +594,13 @@ body {
     align-items: center;
     gap: 10px;
 }
+
 /* 카테고리 아이콘 */
 .category>.category-left i {
     font-size: 1.5em;
     color: #a0a0a0;
 }
+
 /* 카테고리명 */
 .category-left span b {
     font-size: 1.3em;
@@ -628,12 +647,13 @@ body {
 .deck-wrap {
     background: #f9f9fb;
     box-shadow: 8px 8px 16px #d1d9e6,
-               -8px -8px 16px #ffffff;
+        -8px -8px 16px #ffffff;
     border-radius: 20px;
     padding: 16px;
     margin: 10px 0;
     transition: all 0.2s ease;
 }
+
 .deck-wrap:hover {
     transform: translateY(-3px);
 }
@@ -666,13 +686,16 @@ body {
     align-items: center;
     margin-top: 16px;
 }
-.deck-wrap>.deck-bottom .deckCount-wrap{
+
+.deck-wrap>.deck-bottom .deckCount-wrap {
     display: flex;
     gap: 12px;
 }
+
 .deck-wrap>.deck-bottom .deckCount-wrap i {
     color: #7a7a7a;
 }
+
 .deck-wrap>.deck-bottom .icon-box {
     display: flex;
     align-items: center;
@@ -741,7 +764,7 @@ body {
     background: #f0f0f3;
     border-radius: 12px;
     box-shadow: 8px 8px 16px #d1d9e6,
-               -8px -8px 16px #ffffff;
+        -8px -8px 16px #ffffff;
     min-width: 150px;
     z-index: 999;
     padding: 10px 0;
@@ -749,7 +772,7 @@ body {
 
 /* 드롭다운 메뉴 항목 */
 .dropdown-menu ul {
-    padding: 0 3px ;
+    padding: 0 3px;
     margin: 0;
 }
 
