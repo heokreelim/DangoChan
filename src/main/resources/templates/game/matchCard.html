@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://thymeleaf.org">
-<head>
+<head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>카드 뒤집기 게임</title>
@@ -15,19 +15,27 @@
 
     <!-- jQuery/JavaScript Import -->
     <script th:src="@{/js/jQuery-3.7.1.min.js}"></script>
+    <script defer th:src="@{/js/calendar.js}"></script>
     <script defer th:src="@{/js/matchCard.js}"></script>
 </head>
 <body>
-    <!-- header area-->
-    <div class="header" th:replace="fragment/header(title='카드 뒤집기 게임')"></div>
-    <br>
-    <!-- 카드 게임 출력 화면-->
-    <h2 style="text-align: center; justify-content: center; font-weight: bold;">카드 뒤집기 게임</h2>
-    <div class="currentDeck"
-        style="text-align: center; justify-content: center; font-weight: bold;">
-        덱 이름</div>
-    <div id="frame">
-
-    </div>
+    <div class="page-wrap">
+        <div class="left-wrap">
+            <div th:replace="fragment/nav"></div>
+        </div>
+        <div class="right-wrap">
+            <div th:replace="fragment/header :: header('카드 뒤집기 게임')"></div>
+            
+            
+                <!-- 카드 게임 출력 화면-->
+                <br>
+                <div class="currentDeck"
+                    style="text-align: center; justify-content: center; font-weight: bold;">
+                    덱 이름</div>
+                <div id="frame">
+                
+                </div>    
+        </div> <!-- right-wrap end-->
+    </div> <!-- page-wrap end-->
 </body>
 </html>

@@ -1,26 +1,28 @@
 // 전역 변수
 const $frame = document.querySelector('#frame');
 let gameActive = false; // 초기에는 비활성 (카운트다운이 끝날 때까지)
+let pairs = [];
 
-// 1) 카드 데이터 (6쌍, 총 12장)
-const pairs = [
-  { id: 1, content: 'apple' },
-  { id: 1, content: '사과' },
-  { id: 2, content: 'banana' },
-  { id: 2, content: '바나나' },
-  { id: 3, content: 'dog' },
-  { id: 3, content: '개' },
-  { id: 4, content: 'cat' },
-  { id: 4, content: '고양이' },
-  { id: 5, content: 'egg' },
-  { id: 5, content: '계란' },
-  { id: 6, content: 'fish' },
-  { id: 6, content: '물고기' },
-  { id: 7, content: 'lion' },
-  { id: 7, content: '사자' },
-  { id: 8, content: 'tiger' },
-  { id: 8, content: '호랑이' },
-];
+$(function () {
+  $.ajax({
+    url: '/game/matchCard/data',
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+      console.log(data);
+      pairs = data;
+      // 여기서 pairs를 섞음
+      pairs = shuffle(pairs);
+      // 실제 게임 실행
+      startGame();
+    },
+    error: function(xhr, status, error) {
+      console.error("AJAX 요청 오류: ", status, error);
+    }
+  });
+});
+
+
 
 // 2) Fisher-Yates로 카드 섞기
 function shuffle(array) {
@@ -30,7 +32,7 @@ function shuffle(array) {
   }
   return array;
 }
-shuffle(pairs);
+// shuffle(pairs);
 
 // 선택 상태 및 매칭된 카드 저장 배열
 let clicked = [];
@@ -154,7 +156,8 @@ function startGame() {
   countdownElem.style.textAlign = 'center';
   countdownElem.style.marginBottom = '20px';
   countdownElem.style.pointerEvents = 'none';
-  document.body.insertBefore(countdownElem, $frame);
+  $frame.parentNode.insertBefore(countdownElem, $frame);
+
   
   // 3초 카운트다운
   let timeLeft = 3;
@@ -233,7 +236,3 @@ function showRestartButton() {
     startGame();
   });
 }
-
-
-// 실제 게임 실행
-startGame();
