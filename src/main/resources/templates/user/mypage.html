@@ -10,9 +10,9 @@
 <body>
 <div class="page-wrap">
     <div  class="header" >
-        <div th:replace="fragment/header"></div>
+        <div th:replace="fragment/header :: header('MY PAGE')"></div>
     </div>
-    <div class="inner">
+    <div class="container">
         <div class="profile-wrap">
             <input type="hidden" name="userId" id="userId" th:value="${userId}">
             <div class="profile-picture">
@@ -32,7 +32,7 @@
         <div class="achievement-wrap">
             <div class="trophy-wrap">
 
-            </div>
+        </div>
             <div class="achievement-notice">
                 <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
                 <ul class="achievement-list">

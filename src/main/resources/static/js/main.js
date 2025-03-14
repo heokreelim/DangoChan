@@ -1,65 +1,85 @@
 $(document).ready(function () {
     // Lucide 아이콘을 생성하는 코드
     lucide.createIcons();
-  /***************** 덱 진행도 업데이트 *****************/
-  $('.percentage-box').each(function () {
-    var $box = $(this);
-    // 예: "50%" 형태의 텍스트에서 숫자만 추출
-    var percentText = $box.find('.percentage-text').text().trim();
-    var percent = parseFloat(percentText.replace('%', ''));
     
-    // 진행률에 따른 색상 결정
-    var newColor;
-    if (percent < 37) {
-      newColor = "#f66"; // 0~33% 빨간색
-    } else if (percent < 75) {
-      newColor = "orange"; // 33~66% 오렌지색
-    } else {
-      newColor = "green"; // 75% 이상 녹색
-    }
-    
-    // 진행도 원의 색상과 stroke-dashoffset 설정
-    $box.find('.progress').css('stroke', newColor);
-    var circumference = 376.8; // 2πr (r=60) 대략
-    var dashoffset = circumference * (1 - (percent / 100));
-    $box.find('.progress').css('stroke-dashoffset', dashoffset);
-  });
+    /***************** 덱 리스트 토글 *****************/
+    $('.category-right a').on('click', function () {
+        const chevron = $(this).find('i');
+        const category = $(this).closest('.category');
+        const folderIcon = category.find('.category-left i.fa-folder-open');
+        const categoryId = category.find('.categoryId').val();
+        const deckList = category.next('.deckList');
 
-  /***************** 덱 리스트 토글 *****************/
-  // 토글 아이콘 클릭 시: chevron 아이콘을 대상으로 함
-  $('.category .category-right a i.fa-chevron-up, .category .category-right a i.fa-chevron-down')
-    .on('click', function(e) {
-      e.preventDefault();
-      var $icon = $(this);
-      var $category = $icon.closest('.category');
-      // 카테고리 ID를 hidden input으로부터 가져옴
-      var categoryId = $category.find('.categoryId').val();
-      var $deckList = $category.next('.deckList');
-      
-      // 토글 실행 후 상태 저장
-      $deckList.slideToggle(300, function() {
-         if ($deckList.is(':visible')) {
-           localStorage.setItem('openCategory-' + categoryId, 'true');
-         } else {
-           localStorage.removeItem('openCategory-' + categoryId);
-         }
-      });
-      
-      // 아이콘 클래스 토글 (chevron-up <-> chevron-down)
-      $icon.toggleClass('fa-chevron-up fa-chevron-down');
+        if (chevron.hasClass('fa-chevron-up')) {
+            chevron.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+
+            category.css({
+                'background-color': '#FFF7CC',
+                'box-shadow': '4px 4px 12px #f2eacb, -4px -4px 12px #ffffff'
+            });
+
+            folderIcon.css({
+                'color': '#FFBB33'
+            });
+
+            localStorage.setItem('openCategory-' + categoryId, 'true');
+        } else {
+            chevron.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+
+            category.css({
+                'background-color': '#f5f5fa',
+                'box-shadow': '4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff'
+            });
+
+            folderIcon.css({
+                'color': '#a0a0a0'
+            });
+
+            localStorage.setItem('openCategory-' + categoryId, 'false');
+        }
+
+        deckList.slideToggle();
     });
-  
-  // 페이지 로드 시, 저장된 토글 상태 복원
-  $('.category').each(function() {
-    var $category = $(this);
-    var categoryId = $category.find('.categoryId').val();
-    if (localStorage.getItem('openCategory-' + categoryId) === 'true') {
-      $category.next('.deckList').show();
-      $category.find('.category-right a i.fa-chevron-up')
-        .removeClass('fa-chevron-up')
-        .addClass('fa-chevron-down');
-    }
-  });
+
+    /***************** 페이지 로드 시 상태 복원 *****************/
+    $('.category').each(function () {
+        const category = $(this);
+        const categoryId = category.find('.categoryId').val();
+        const chevron = category.find('.category-right a i');
+        const folderIcon = category.find('.category-left i.fa-folder-open');
+        const deckList = category.next('.deckList');
+
+        const isOpen = localStorage.getItem('openCategory-' + categoryId) === 'true';
+
+        if (isOpen) {
+            chevron.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+
+            category.css({
+                'background-color': '#FFF7CC',
+                'box-shadow': '4px 4px 12px #f2eacb, -4px -4px 12px #ffffff'
+            });
+
+            folderIcon.css({
+                'color': '#FFBB33'
+            });
+
+            deckList.show();
+        } else {
+            chevron.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+
+            category.css({
+                'background-color': '#f5f5fa',
+                'box-shadow': '4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff'
+            });
+
+            folderIcon.css({
+                'color': '#a0a0a0'
+            });
+
+            deckList.hide();
+        }
+    });
+
   /***************** 드롭다운 메뉴 *****************/
   $(document).on('click', '.menu-icon', function(e) {
     e.stopPropagation(); // 이벤트 버블링 방지

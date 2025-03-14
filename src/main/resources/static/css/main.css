@@ -135,24 +135,29 @@ body {
 /* 기본 레이아웃 */
 .page-wrap {
     width: 100%;
-    height: 100vh;
     display: flex;
+    background: #f2f4f8;
 }
 
 
 /* fragment */
 /* nav */
-.nav {
+.left-wrap{
     width: calc(100% / 6);
+    background-color: #e0e0e0;
+    box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+}
+.nav {
+    padding: 8px;
 }
 
 .nav .nav-bg {
     height: 100%;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.3);
     border-radius: 0 20px 20px 0;
     text-align: center;
     display: flex;
@@ -162,8 +167,8 @@ body {
     transition: background 0.3s ease;
 }
 
-.nav .nav-bg>div {
-    margin: 3px 0;
+.nav .nav-bg > div {
+    margin: 5px auto;
 }
 
 .nav .logo {
@@ -230,7 +235,7 @@ body {
 
 .nav .profile-wrap>.nickname {
     width: 220px;
-    padding: 12px;
+    padding: 5px 12px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
@@ -243,33 +248,6 @@ body {
     color: #333;
 }
 
-
-
-/* nav가 있는 페이지에 header는 .right-wrap */
-.right-wrap {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.right-wrap .logo {
-    display: none;
-}
-
-.right-wrap .title {
-    margin-left: 12px;
-}
-
-.right-wrap .header-bg {
-    width: 100%;
-    position: relative;
-}
-
-.right-wrap .header-bg>.gnb-wrap {
-    position: absolute;
-    right: 0;
-}
 
 /* statistics */
 .statistics-wrap {
@@ -374,65 +352,164 @@ body {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* header */
+/* ===================== header (네오모피즘 + 파스텔) ===================== */
+/* header 공통 스타일 */
+.header-bg {
+    width: 100%;
+    height: 70px;
+    background: #f0f0f3;
+    border-radius: 12px;
+    box-shadow:
+        8px 8px 15px rgba(0, 0, 0, 0.1),
+        -8px -8px 15px rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+
+
+/* nav가 없는 페이지에서의 header */
+.header .header-bg {
+    width: 100%;
+    height: 65px;
+    background: #f0f0f3;
+    border-radius: 0 0 15px 15px;
+    box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.05),
+        -8px -8px 16px rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+/* nav가 있는 페이지에 header는 .right-wrap */
+.right-wrap {
+    flex:1;
+    max-width: calc(100% * 5 / 6);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #f2f4f8;
+}
+
+.right-wrap .logo {
+    display: none;
+}
+.right-wrap .logo > a > b {
+    font-family: 'Shippori Mincho B1';
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-left: 20px;
+}
+.right-wrap .title {
+    margin-left: 12px;
+}
+
+.right-wrap .header-bg {
+    width: 100%;
+    position: relative;
+}
+
+.right-wrap .header-bg>.gnb-wrap {
+    position: absolute;
+    right: 0;
+}
+
 /* nav가 없는 페이지에 header는 .header */
 .header {
     width: 100%;
 }
 
-.header-bg {
+/* nav가 있는 페이지에서의 header */
+.right-wrap .header-bg {
     width: 100%;
-    background-color: #FCFCFC;
-    border-bottom: 1px solid #E0E0E0;
+    height: 65px;
+    background: #f0f0f3;
+    border-radius: 0 0 15px 15px;
+    box-shadow:8px 8px 16px rgba(0, 0, 0, 0.05),
+            -8px -8px 16px rgba(255, 255, 255, 0.9);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 55px;
+    padding: 0 20px;
 }
-
+.right-wrap .title {
+    font-family: 'Shippori Mincho B1';
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-left: 20px;
+}
 .gnb-wrap {
+    display: flex;
     align-items: center;
 }
 
+/*  gnb-list 스타일 */
 .gnb-list {
     display: flex;
-    gap: 12px;
+    gap: 20px;
     align-items: center;
-    margin-right: 18px;
-    margin-top: 18px;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
-.gnb-list>li>a>i {
-    font-size: 1.75em;
-    line-height: 1.75;
+.gnb-list li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #f0f0f3;
+    box-shadow:
+        4px 4px 10px rgba(0, 0, 0, 0.1),
+        -4px -4px 10px rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
 }
 
-.gnb-list>li>a>i:hover {
-    color: #007BFF;
-    transition: 0.5s;
+.gnb-list li a:hover {
+    box-shadow:
+        inset 4px 4px 10px rgba(0, 0, 0, 0.1),
+        inset -4px -4px 10px rgba(255, 255, 255, 0.7);
+    transform: translateY(2px);
+}
+.gnb-list li a i {
+    font-size: 1.5rem;
+    color: #6b6b6b;
+    transition: color 0.3s ease;
+}
+
+.gnb-list li a:hover i {
+    color: #ff7e67;
 }
 
 /* container 영역 */
 .container {
-    flex-grow: 1;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding: 12px;
-    background-color: #F3F3F3;
+    height: 100%;
+    width: 100%;
+    background: #f2f4f8;
+    padding: 15px;
 }
 
 /* 서비스 영역 수정 */
 /* 서비스 영역을 flex 컨테이너 (세로 방향)로 설정 */
 .service-wrap {
-    background-color: #FCFCFC;
+    background-color: #f0f0f3;
     margin: 0 auto;
-    border-radius: 33px;
+    border-radius: 12px;
     box-shadow: 0 0 5px #121511;
     height: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 /* 카테고리 영역 */
@@ -442,30 +519,33 @@ body {
     font-size: 2.57em;
     font-weight: bold;
     text-align: center;
+    color: #7a7a7a;
 }
 
 /* plusBtn addCategoryBtn */
 .plusBtn,
 .addCategoryBtn {
-    font-size: 3em;
-    font-weight: 800;
-    line-height: 55px;
     width: calc(100% * 3 / 5);
-    height: 55px;
+    height: 66px;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #5f5f7a;
     border-radius: 33px;
+    background: #FFFACD;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
+               -8px -8px 16px rgba(255, 255, 255, 0.7);
     border: none;
-    box-shadow: 0 0 3px #121511;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: block;
-    margin: 20px auto;
-    transform: scale(1);
-    margin-top: 30px;
+    margin: 30px auto;  
+    transition: all 0.2s ease;
 }
 
 .plusBtn:hover,
 .addCategoryBtn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 8px #121511;
+    transform: scale(1.05), translateY(-2px);;
+    background: #FFEEAA ;
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.7);
     cursor: pointer;
 }
 
@@ -478,26 +558,40 @@ body {
 /* ===================== category 요소 ==================== */
 .category {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: lemonchiffon;
-    width: 100%;
-    height: 55px;
-    padding: 0 12px;
+        justify-content: space-between;
+        align-items: center;
+        background: #f5f5fa; /* 파스텔 연보라 느낌 */
+        box-shadow: 4px 4px 8px #d1d9e6,
+                   -4px -4px 8px #ffffff;
+        border-radius: 16px;
+        margin: 12px 0;
+        padding: 16px 24px;
+        transition: transform 0.2s;
+}
+.category:hover {
+    transform: translateY(-2px);
 }
 
 .category>.category-left {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 22px;
+    gap: 10px;
+}
+/* 카테고리 아이콘 */
+.category>.category-left i {
+    font-size: 1.5em;
+    color: #a0a0a0;
+}
+/* 카테고리명 */
+.category-left span b {
+    font-size: 1.3em;
+    color: #5f5f7a;
 }
 
 .category>.category-right {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 22px;
+    gap: 10px;
 }
 
 .category .category-right i.fa-chevron-up,
@@ -521,7 +615,8 @@ body {
 
 /*===================== deck 영역 ===================*/
 .deckList {
-    display: none;
+    margin: 12px 0 24px 0;
+    padding-left: 20px;
 }
 
 .deckList>li {
@@ -531,9 +626,16 @@ body {
 }
 
 .deck-wrap {
-    border: 1px solid #121511;
-    border-radius: 33px;
-    padding: 20px;
+    background: #f9f9fb;
+    box-shadow: 8px 8px 16px #d1d9e6,
+               -8px -8px 16px #ffffff;
+    border-radius: 20px;
+    padding: 16px;
+    margin: 10px 0;
+    transition: all 0.2s ease;
+}
+.deck-wrap:hover {
+    transform: translateY(-3px);
 }
 
 .deck-wrap>.deck-top {
@@ -544,6 +646,7 @@ body {
 
 .deck-wrap>.deck-top span b {
     font-size: 1.38em;
+    color: #121511;
     font-weight: 700;
 }
 
@@ -561,19 +664,19 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 16px;
 }
 .deck-wrap>.deck-bottom .deckCount-wrap{
     display: flex;
-    justify-content: left;
-    align-items: center;
-    flex:1;
+    gap: 12px;
 }
-
+.deck-wrap>.deck-bottom .deckCount-wrap i {
+    color: #7a7a7a;
+}
 .deck-wrap>.deck-bottom .icon-box {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 /* ============= 진행도 원 ============= */
@@ -581,6 +684,14 @@ body {
     position: relative;
     width: 150px;
     height: 150px;
+    background: #f0f0f3;
+    border-radius: 50%;
+    box-shadow: inset 8px 8px 16px #d1d9e6,
+        inset -8px -8px 16px #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
 }
 
 .percentage-text {
@@ -588,21 +699,22 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+    font-size: 1.5rem;
+    color: #7a7a7a;
     font-weight: bold;
-    color: #333;
 }
 
 .percentage-box svg {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    height: 100%;
     transform: rotate(-90deg);
 }
 
 .progress {
     fill: none;
-    stroke-width: 10;
-    stroke: #f66;
+    stroke-width: 8;
+    stroke: #ff7e67;
+    stroke-linecap: round;
     stroke-dasharray: 376.8;
     stroke-dashoffset: 376.8;
     transition: stroke-dashoffset 0.5s ease, stroke 0.5s ease;
@@ -615,28 +727,32 @@ body {
 }
 
 .menu-icon {
+    font-size: 1.2em;
+    color: #a0a0a0;
     cursor: pointer;
-    font-size: 20px;
 }
 
+/* 드롭다운 메뉴 */
 .dropdown-menu {
     display: none;
     position: absolute;
     right: 0;
     top: 100%;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    min-width: 100px;
-    min-height: 100px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    background: #f0f0f3;
+    border-radius: 12px;
+    box-shadow: 8px 8px 16px #d1d9e6,
+               -8px -8px 16px #ffffff;
+    min-width: 150px;
     z-index: 999;
+    padding: 10px 0;
 }
 
+/* 드롭다운 메뉴 항목 */
 .dropdown-menu ul {
+    padding: 0 3px ;
     margin: 0;
-    padding: 0;
 }
+
 
 .dropdown-menu li a {
     display: block;
@@ -645,60 +761,19 @@ body {
 }
 
 .dropdown-menu li button {
-    padding: 8px 12px;
-    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    color: #5f5f7a;
 }
 
-.dropdown-menu li a:hover {
-    background-color: #f0f0f0;
+.dropdown-menu li button:hover {
+    background: #e0e0e0;
 }
 
 .dropdown-menu.show {
     display: block !important;
-}
-
-/* modal */
-/* 모달 외부 */
-.modal {
-    position: absolute;
-    display: none;
-    justify-content: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* 모달 내부 */
-.modal-content {
-    position: relative;
-    top: 50%;
-    width: 720px;
-    /* 너비 고정 */
-    max-width: 90%;
-    margin: auto;
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-    transform: translateY(-50%);
-    padding: 20px;
-}
-
-/* 파일 업로드 숨기기 */
-#importFile {
-    display: none;
-}
-
-.table {
-    width: 100%;
-    overflow: auto;
-}
-
-
-.modal-content .card_list,
-.edit_card_list {
-    white-space: nowrap;
-    border-collapse: collapse;
-    border: 1px solid #555;
 }
