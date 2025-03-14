@@ -430,7 +430,21 @@ $(document).ready(function () {
                 contentType: "application/json",
                 data: JSON.stringify(cardDTO),
                 success: function (response) {
+                    $(".word-box span").text(response.kanji);
+                    $(".word").val(response.word);
+                    $("#wordText").text(response.kanji);
+                    $("#wordFurigana").text(response.furigana);
+                    $(".furigana").html(response.formattedFurigana);
+                    $("#pos").text(response.pos);
+                    $("#meaning").text(response.meaning);
+                    $("#example_jp").text(response.exampleJp);
+                    $("#example_kr").text(response.exampleKr);
+
+                    console.log(response.word + ": " + $(".word").val());
+                    console.log(response.formattedFurigana + ": " + $(".furigana").html());
+
                     alert("카드가 성공적으로 수정되었습니다.");
+
                     $('.modal_editing_card').css("display", "none");
                 },
                 error: function (xhr, status, error) {
@@ -565,53 +579,6 @@ $(document).ready(function () {
         });
     });
 
-    // 카테고리 이름 수정
-    $('#btn-edit-category-name').on('click', function () {
-        let categoryNameDisplay = $('#categoryNameDisplay'); // p 태그
-        let categoryNameInput = $('#categoryName_E1'); // input 태그
-        let isEditing = categoryNameInput.css('display') === 'none'; // 현재 상태 확인
-
-        if (isEditing) {
-            // p -> input 변환
-            categoryNameInput.val(categoryNameDisplay.text()); // p 태그 값을 input으로 복사
-            categoryNameDisplay.hide(); // p 태그 숨김
-            categoryNameInput.show().focus(); // input 보이기 및 포커스
-            $(this).text('수정 완료'); // 버튼 텍스트 변경
-        } else {
-            // input -> p 변환
-            let newCategoryName = categoryNameInput.val().trim();
-            if (newCategoryName !== '') {
-                categoryNameDisplay.text(newCategoryName); // 변경된 카테고리 이름 적용
-            }
-            categoryNameInput.hide(); // input 숨김
-            categoryNameDisplay.show(); // p 태그 보이기
-            $(this).text('이름 편집'); // 버튼 텍스트 복원
-        }
-    });
-
-    // 덱 이름 수정 
-    $('#btn-edit-deck-name').on('click', function () {
-        let deckNameDisplay = $('#deckNameDisplay'); // p 태그
-        let deckNameInput = $('#editDeckName'); // input 태그
-        let isEditing = deckNameInput.css('display') === 'none'; // 현재 상태 확인
-
-        if (isEditing) {
-            // 편집 모드: p -> input 변환
-            deckNameInput.val(deckNameDisplay.text()); // 기존 덱 이름을 input으로 복사
-            deckNameDisplay.hide(); // p 태그 숨김
-            deckNameInput.show().focus(); // input 태그 보이기 및 포커스
-            $(this).text('수정 완료'); // 버튼 텍스트 변경
-        } else {
-            // 완료 모드: input -> p 변환
-            let newDeckName = deckNameInput.val().trim();
-            if (newDeckName !== '') {
-                deckNameDisplay.text(newDeckName); // 변경된 덱 이름 적용
-            }
-            deckNameInput.hide(); // input 태그 숨김
-            deckNameDisplay.show(); // p 태그 보이기
-            $(this).text('이름 편집'); // 버튼 텍스트 복원
-        }
-    });
 
     // ****** 프로필 사진 변경 추가 ****** //
     // 프로필 이미지 변경 버튼 클릭 시 모달 열기

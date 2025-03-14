@@ -47,29 +47,30 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 public class FlashCardController {
 
-	//private final Service variable start
+	// private final Service variable start
 	private final FlashCardService flashCardService;
 	private final DeckStudyTimeService deckStudyTimeService;
-	//private final Service variable end
+	// private final Service variable end
 
-	//category start
+	// category start
 
-	//AYH start
+	// AYH start
 
 	@GetMapping("/modal")
-	public String modal()
-	{
+	public String modal() {
 		return "modal";
 	}
+
 	/**
-	 *	카테고리 등록 요청
+	 * 카테고리 등록 요청
+	 * 
 	 * @param categoryDTO
 	 * @return
 	 */
 	@PostMapping("/insertCategory")
 	public String insertCategory(@ModelAttribute CategoryDTO categoryDTO) {
 
-//		DB 등록
+		// DB 등록
 		System.out.println(categoryDTO.toString());
 		flashCardService.insertCategory(categoryDTO);
 
@@ -78,7 +79,8 @@ public class FlashCardController {
 	}
 
 	/**
-	 *	카테고리 수정 요청
+	 * 카테고리 수정 요청
+	 * 
 	 * @param categoryDTO
 	 * @return
 	 */
@@ -89,30 +91,28 @@ public class FlashCardController {
 		return "redirect:/home";
 	}
 
+	// AYH end
 
-
-	//AYH end
-
-	//PJB start
+	// PJB start
 	// 카테고리 삭제 요청
 	@GetMapping("/deleteCategory")
-	public String deleteCategory (
-			@RequestParam(name = "categoryId") Long categoryId
-	) {
+	public String deleteCategory(
+			@RequestParam(name = "categoryId") Long categoryId) {
 		flashCardService.deleteCategory(categoryId);
 
 		return "redirect:/home";
 	}
 
-	//PJB end
+	// PJB end
 
-	//category end
+	// category end
 
-	//deck start
+	// deck start
 
-	//AYH start
+	// AYH start
 	/**
 	 * 덱을 저장하면서 함께 입력한 카드도 함께 저장되는 코드
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -134,17 +134,18 @@ public class FlashCardController {
 		return "Deck and Cards saved successfully!";
 	}
 
-
 	// 덱 내보내기 요청
 	/**
 	 * 덱 내보내기 요청
 	 * 요청받은 카드 DB를 xlsx파일로 변환하여 저장
+	 * 
 	 * @param deckId
 	 * @param response
 	 * @throws IOException
 	 */
 	@GetMapping("/exportDeck")
-	public void exportDeckToExcel(@RequestParam(name = "deckId") Long deckId, HttpServletResponse response) throws IOException {
+	public void exportDeckToExcel(@RequestParam(name = "deckId") Long deckId, HttpServletResponse response)
+			throws IOException {
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-Disposition", "attachment; filename=deck_" + deckId + ".xlsx");
 
@@ -154,7 +155,7 @@ public class FlashCardController {
 
 		// 헤더 작성
 		Row headerRow = sheet.createRow(0);
-		String[] columns = {"단어", "품사", "뜻", "예문 (일본어)", "예문 (한국어)"};
+		String[] columns = { "단어", "품사", "뜻", "예문 (일본어)", "예문 (한국어)" };
 
 		for (int i = 0; i < columns.length; i++) {
 			Cell cell = headerRow.createCell(i);
@@ -190,7 +191,7 @@ public class FlashCardController {
 	// 덱 편집 요청
 	@ResponseBody
 	@GetMapping("/getDeck")
-	public DeckResponseDTO getDeck(@RequestParam(name="deckId") Long deckId) {
+	public DeckResponseDTO getDeck(@RequestParam(name = "deckId") Long deckId) {
 		DeckDTO deck = flashCardService.getDeckByDeckId(deckId);
 		List<ExportCardDTO> cardList = flashCardService.getCardsByDeckId(deckId);
 		return new DeckResponseDTO(deck, cardList);
@@ -229,49 +230,47 @@ public class FlashCardController {
 
 	}
 
-	//AYH end
+	// AYH end
 
-	//PJB start
+	// PJB start
 
 	// 덱 삭제 요청
 	@GetMapping("/deleteDeck")
-	public String deleteDeck (
-			@RequestParam(name = "deckId") Long deckId
-	) {
+	public String deleteDeck(
+			@RequestParam(name = "deckId") Long deckId) {
 		flashCardService.deleteDeck(deckId);
 
 		return "redirect:/home";
 	}
-	//PJB end
+	// PJB end
 
-	//deck end
+	// deck end
 
-	//card start
+	// card start
 
-	//AYH start
+	// AYH start
 
 	@ResponseBody
 	@PostMapping("/updateFlashcard")
-	public ResponseEntity<String> updateFlashcard(@RequestBody CardDTO cardDTO) {
-		boolean isUpdated = flashCardService.updateCard(cardDTO);
+	public ResponseEntity<CardDTO> updateFlashcard(@RequestBody CardDTO cardDTO) {
+		CardDTO updatedDTO = flashCardService.updateCard(cardDTO);
 
-		if (isUpdated) {
-			return ResponseEntity.ok("카드가 성공적으로 수정되었습니다.");
+		if (updatedDTO != null) {
+			log.info("======================{}", updatedDTO);
+			return ResponseEntity.ok(updatedDTO);
 		} else {
-			return ResponseEntity.badRequest().body("카드 수정 중 오류가 발생했습니다.");
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 
+	// AYH end
 
-
-	//AYH end
-
-	//SYH start
+	// SYH start
 	// ✅ 플래시카드 페이지
 	@GetMapping("/flashcard")
 	public String flashcard(@RequestParam(name = "deckId") Long deckId, Model model) {
 
-		Optional<CardDTO> card = flashCardService.getRandomNewCard(deckId);	//랜덤 카드 가져오기
+		Optional<CardDTO> card = flashCardService.getRandomNewCard(deckId); // 랜덤 카드 가져오기
 
 		System.out.println("📌 [DEBUG] 가져온 카드: " + card); // ✅ 카드가 null인지 확인
 
@@ -295,13 +294,14 @@ public class FlashCardController {
 		// ✅ 디버깅 로그 추가 (JSON 응답 확인)
 		System.out.println("🔥 [DEBUG] 응답 JSON: " + card);
 
-		return ResponseEntity.ok(card.orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "No flashcard found")));
+		return ResponseEntity
+				.ok(card.orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "No flashcard found")));
 
 	}
 
 	@PostMapping("/resetStudyData")
 	public ResponseEntity<String> resetStudyData(@RequestParam(name = "deckId") Long deckId,
-												 @RequestParam (name = "studyTime") Integer studyTime) {
+			@RequestParam(name = "studyTime") Integer studyTime) {
 		boolean allStudied = flashCardService.isAllCardsStudied(deckId);
 
 		if (allStudied) {
@@ -315,7 +315,8 @@ public class FlashCardController {
 
 	// ✅ study_level 업데이트 API (AJAX 요청 처리)
 	@PostMapping("/updateStudyLevel")
-	public ResponseEntity<String> updateStudyLevel(@RequestParam(name = "cardId") Long cardId, @RequestParam(name = "studyLevel") Integer studyLevel) {
+	public ResponseEntity<String> updateStudyLevel(@RequestParam(name = "cardId") Long cardId,
+			@RequestParam(name = "studyLevel") Integer studyLevel) {
 
 		flashCardService.updateStudyLevel(cardId, studyLevel);
 		return ResponseEntity.ok("✅ study_level 업데이트 성공");
@@ -323,7 +324,7 @@ public class FlashCardController {
 
 	@PostMapping("/saveStudyTime")
 	public ResponseEntity<String> saveStudyTime(@RequestParam(name = "deckId") Long deckId,
-												@RequestParam(name = "studyTime") Integer studyTime) {
+			@RequestParam(name = "studyTime") Integer studyTime) {
 		if (deckId == null || studyTime == null) {
 			return ResponseEntity.badRequest().body("❌ deckId 또는 studyTime이 누락됨");
 		}
@@ -333,7 +334,7 @@ public class FlashCardController {
 
 	@GetMapping("/check") // ✅ 요청 방식 변경
 	@ResponseBody
-	public boolean checkNoLevelZero(@RequestParam (name = "deckId") Long deckId) {
+	public boolean checkNoLevelZero(@RequestParam(name = "deckId") Long deckId) {
 		return flashCardService.isNoStudyLevelZeroCards(deckId);
 	}
 
@@ -343,8 +344,8 @@ public class FlashCardController {
 		boolean allCompleted = flashCardService.isAllCardsStudied(deckId);
 		return ResponseEntity.ok(allCompleted);
 	}
-	//SYH end
+	// SYH end
 
-	//card end
+	// card end
 
 }
