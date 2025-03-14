@@ -48,28 +48,33 @@
 .modal-wrap .card_table {
     display: flex;
     flex-direction: column;
-    /* 테이블과 버튼을 수직 정렬 */
-    align-items: center;
     /* 중앙 정렬 */
-    position: absolute;
     width: 90%;
     border-collapse: collapse;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    height: 60%;
+    height: calc(100% - 100px);
+    /* 부모 요소(.adding_deck)의 높이를 따라감 */
     margin: auto;
-    margin-left: 3%;
+    max-height: 70%;
+    overflow: auto;
 }
 
 /* 카드 추가 버튼 스타일 */
-.btn-open-adding-card-modal,
-.btn-open-adding-card-to-editing-deck {
-    position: absolute;
+.modal-content .buttons-adding-card .btn-open-adding-card-modal,
+.modal-content .buttons-adding-card .btn-open-adding-card-to-editing-deck {
     /* 테이블과 버튼 간격 */
-    padding: 10px 20px;
-    text-align: center;
     bottom: 0;
     margin-bottom: 10%;
+    display: block;
+    /* 블록 요소로 변경 */
+    margin-top: 20px;
+    /* 위쪽 여백 추가 */
+    padding: 10px 20px;
+    text-align: center;
+    width: 92%;
+    /* 버튼 크기를 내용에 맞게 조절 */
+    margin-left: 5%;
+    margin-right: auto;
+    /* 가운데 정렬 */
 }
 
 .modal-wrap th,
@@ -99,14 +104,22 @@
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1),
         -4px -4px 10px rgba(255, 255, 255, 0.7);
     white-space: nowrap;
-    min-height: 50px;
+    min-height: 100px;
     padding: 10px;
     width: 100%;
-    /* 테이블 크기를 적절하게 조정 */
-    margin: auto;
-    /* 중앙 정렬 */
     text-align: center;
-    height: 100%;
+
+    /* 최대 높이를 기준으로 스크롤 생성 */
+    height: auto;
+    /* 내용에 따라 높이 조정 */
+    max-height: 400px;
+    /* 최대 크기 설정 */
+    overflow-y: auto;
+    /* 최대 높이를 넘어서면 스크롤 */
+
+    /* 가로 스크롤 */
+    overflow-x: auto;
+    margin-top: 10pt;
 }
 
 /* 모달 제목 및 텍스트 스타일 */
@@ -147,7 +160,7 @@
 }
 
 /* 모달 버튼 그룹 정렬 */
-.modal-buttons {
+.modal-content .modal-buttons {
     position: absolute;
     bottom: 20px;
     left: 50%;
@@ -156,6 +169,25 @@
     gap: 15px;
     width: 90%;
     height: 10%;
+}
+
+.modal-content input[type="button"] {
+    padding: 12px 24px;
+    border-radius: 17px;
+    background: #f0f0f3;
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.1),
+        -5px -5px 10px rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    width: 95%;
+    text-align: center;
+    gap: 20px;
+    margin-bottom: 10pt;
+    margin-left: 10pt;
+    margin-right: auto;
 }
 
 /* 버튼 크기 및 스타일 */
@@ -176,23 +208,10 @@
     text-align: center;
     position: relative;
     bottom: 0;
+    margin-bottom: 0;
 }
 
-.modal-content input[type="button"] {
-    padding: 12px 24px;
-    border-radius: 17px;
-    background: #f0f0f3;
-    box-shadow:
-        5px 5px 10px rgba(0, 0, 0, 0.1),
-        -5px -5px 10px rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    border: none;
-    width: 100%;
-    text-align: center;
-    gap: 20px;
-}
+
 
 .modal-buttons button:hover,
 .modal-buttons input[type="submit"]:hover,
@@ -204,17 +223,6 @@
     transform: translateY(2px);
 }
 
-/* 닫기 버튼 스타일 */
-.btn-close-modal {
-    background-color: #6c757d;
-    width: 100%;
-    color: #000;
-}
-
-.btn-close-modal:hover {
-    background-color: #5a6268;
-    width: 100%;
-}
 
 /* 작은 버튼 스타일 */
 .modal-small-btn {
@@ -377,6 +385,7 @@
     gap: 10px;
 }
 
+.adding_category .input-group label,
 .modal-content.adding_card label,
 .modal-content.editing_card label {
     display: flex;
@@ -389,6 +398,7 @@
     margin-right: 20%;
 }
 
+.adding_category .input-group input[type="text"],
 .modal-content.adding_card input[type="text"],
 .modal-content.editing_card input[type="text"] {
     width: calc(100% - 100px);
@@ -520,10 +530,31 @@
 
 /* 닫기 버튼 */
 .modal-buttons .btn-close-modal {
+    background: #6c757d;
     background-color: #6c757d;
     color: #fff;
 }
 
 .modal-buttons .btn-close-modal:hover {
     background-color: #5a6268;
+}
+
+.modal .modal-content .modal-buttons {
+    max-height: 50px;
+
+}
+
+.modal .modal-content .modal-buttons .btn-close-modal {
+    background: #6c757d;
+    color: #fff;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.modal .modal-content .modal-buttons .btn-close-modal:hover {
+    background-color: #5a6268;
+}
+
+.modal-content form {
+    height: 100%;
 }
