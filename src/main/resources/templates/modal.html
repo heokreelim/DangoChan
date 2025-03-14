@@ -6,31 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script th:scr="@{/js/xlsx.full.min.js}"></script>
     <style>
-        #deckNameWrapper {
-            display: flex;
-            align-items: center;
-            /* 수직 정렬 */
-            gap: 10px;
-            /* 덱 이름과 버튼 사이 간격 */
-        }
 
-        #deckNameContainer {
-            flex-grow: 1;
-            /* 가능한 공간을 차지하여 버튼과 정렬 */
-        }
-
-        #categoryNameWrapper {
-            display: flex;
-            align-items: center;
-            /* 수직 정렬 */
-            gap: 10px;
-            /* 간격 조정 */
-        }
-
-        #categoryNameContainer {
-            flex-grow: 1;
-            /* 가변 크기 */
-        }
     </style>
 </head>
 
@@ -40,10 +16,8 @@
         <div class="modal modal_adding_menu">
             <div class="modal-content adding_menu">
                 <div><!-- 카테고리 생성 버튼 -->
-                    <label>카테고리
-                        <br>
-                        <input type="button" class="btn-open-adding-category-modal" value="카테고리 생성">
-                    </label>
+                    <p>카테고리</p>
+                    <input type="button" class="btn-open-adding-category-modal" value="카테고리 생성">
                 </div>
                 <br>
                 <div> <!-- 덱 생성 버튼 -->
@@ -53,7 +27,7 @@
                     <input id="importFile" type="file">
                 </div>
                 <div class="modal-buttons">
-                    <button type="button" class="btn-close-modal">닫기</button>
+                    <input type="button" class="btn-close-modal" value="닫기">
                 </div>
             </div>
         </div>
@@ -61,13 +35,14 @@
         <!-- 카테고리 추가 모달 -->
         <div class="modal modal_adding_category ">
             <div class="modal-content adding_category">
-                <!-- 수정부분 -->
                 <form th:action="@{/flashcard/insertCategory}" method="POST">
                     <input type="hidden" name="userId" id="userId" th:value="${userId}">
                     <h2>카테고리 추가</h2>
-                    <label>카테고리 :
-                        <input type="text" name="categoryName" id="categoryName" placeholder="카테고리 이름을 입력해주세요">
-                    </label><br>
+                    <div class="input-group">
+                        <label>카테고리 :
+                            <input type="text" name="categoryName" id="categoryName" placeholder="카테고리 이름을 입력해주세요">
+                        </label>
+                    </div>
                     <div class="modal-buttons">
                         <input type="submit" value="추가">
                         <input type="button" class="btn-close-modal" value="닫기">
@@ -81,20 +56,21 @@
             <div class="modal-content editing_category">
                 <form th:action="@{/flashcard/updateCategory}" method="GET">
                     <h2>카테고리 편집</h2>
-                    <!-- html을 처음 불러오면서 모델로 categoryId를 불러와야 함 type="hidden" -->
                     <input type="hidden" name="categoryId" id="categoryId_E1">
-                    <label>카테고리 :
+                    <div class="input-group">
+                        <label>카테고리 :</label>
                         <div id="categoryNameWrapper">
                             <div id="categoryNameContainer">
                                 <p id="categoryNameDisplay"></p> <!-- 기본적으로 표시될 카테고리 이름 -->
                                 <input type="text" name="categoryName" id="categoryName_E1" style="display: none;">
                                 <!-- 기본적으로 숨김 -->
                             </div>
-                            <button type="button" id="btn-edit-category-name">이름 편집</button>
+                            <input type="button" class="modal-small-btn" id="btn-edit-category-name" value="이름 편집">
                         </div>
-                    </label><br>
+                    </div>
+                    <br>
                     <div class="modal-buttons">
-                        <button type="submit">수정</button>
+                        <input type="submit" value="수정">
                         <input type="button" class="btn-close-modal" value="닫기">
                     </div>
                 </form>
@@ -105,19 +81,20 @@
         <div class="modal modal_adding_deck">
             <div class="modal-content adding_deck">
                 <form>
-                    <label>덱이름 :
-                        <input type="text" name="deckName" id="deckName_A2" placeholder="덱 이름을 입력해주세요">
-                    </label>
-                    <!-- 수정부분 -->
-                    <label>카테고리 :
-                        <select name="categoryId" id="categoryId_A2">
-                            <option th:each="category : ${categoryList}" th:value="${category.categoryId}"
-                                th:text="${category.categoryName}">
-                                카테고리 명
-                            </option>
-                        </select>
-                    </label>
-                    <div>
+                    <div class="input-group">
+                        <label>덱이름 :
+                            <input type="text" name="deckName" id="deckName_A2" placeholder="덱 이름을 입력해주세요">
+                        </label>
+                        <label>카테고리 :
+                            <select name="categoryId" id="categoryId_A2">
+                                <option th:each="category : ${categoryList}" th:value="${category.categoryId}"
+                                    th:text="${category.categoryName}">
+                                    카테고리 명
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="card_table">
                         <table class="card_list">
                             <thead>
                                 <tr>
@@ -136,13 +113,13 @@
                                     <td>뜻</td>
                                     <td>예문예문예문예문예문예문예문예문예문예문예문</td>
                                     <td>예문예문예문예문예문예문예문예문예문예문예문</td>
-                                    <td><button>🗑</button></td>
+                                    <td><button class="modal-small-btn" value="🗑"></button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div>
-                        <input type="button" class="btn-open-adding-card-modal" value="카드 추가">
+                        <input type="button" class="modal-small-btn btn-open-adding-card-modal" value="카드 추가">
                     </div>
                     <br>
                     <div class="modal-buttons">
@@ -160,19 +137,20 @@
         <div class="modal modal_importing_deck">
             <div class="modal-content importing_deck">
                 <form>
-                    <label>덱이름 :
-                        <input type="text" name="deckName" id="deckName_I2" placeholder="덱 이름을 입력해주세요">
-                    </label>
-                    <!-- 수정부분 -->
-                    <label>카테고리 :
-                        <select name="categoryId" id="categoryId_I2">
-                            <option th:each="category : ${categoryList}" th:value="${category.categoryId}"
-                                th:text="${category.categoryName}">
-                                카테고리 명
-                            </option>
-                        </select>
-                    </label>
-                    <div class="table">
+                    <div class="input-group">
+                        <label>덱이름 :
+                            <input type="text" name="deckName" id="deckName_I2" placeholder="덱 이름을 입력해주세요">
+                        </label>
+                        <label>카테고리 :
+                            <select name="categoryId" id="categoryId_I2">
+                                <option th:each="category : ${categoryList}" th:value="${category.categoryId}"
+                                    th:text="${category.categoryName}">
+                                    카테고리 명
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="card_table">
                         <table class="card_list">
                             <thead>
                                 <tr>
@@ -191,13 +169,13 @@
                                     <td>뜻</td>
                                     <td>예문예문예문예문예문예문예문</td>
                                     <td>예문뜻뜻예문예문예문예문예문</td>
-                                    <td><button>🗑</button></td>
+                                    <td><button class="modal-small-btn" value="🗑"></button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div>
-                        <input type="button" class="btn-open-adding-card-modal" value="카드 추가">
+                        <input type="button" class="modal-small-btn btn-open-adding-card-modal" value="카드 추가">
                     </div>
                     <br>
                     <div class="modal-buttons">
@@ -214,15 +192,15 @@
                 <form>
                     <input type="hidden" id="editDeckId">
                     <div id="deckNameWrapper">
-                        <label>덱이름:</label>
+                        <p>덱이름:</p>
                         <div id="deckNameContainer">
                             <p id="deckNameDisplay"></p> <!-- 기본적으로 표시될 덱 이름 -->
                             <input type="text" id="editDeckName" style="display: none;"> <!-- 기본적으로 숨김 -->
                         </div>
-                        <button type="button" id="btn-edit-deck-name">이름 편집</button>
+                        <input type="button" class="modal-small-btn" id="btn-edit-deck-name" value="이름 편집">
                     </div>
 
-                    <div class="table">
+                    <div class="card_table">
                         <table class="edit_card_list">
                             <thead>
                                 <tr>
@@ -242,7 +220,7 @@
                         </table>
                     </div>
                     <div>
-                        <input type="button" class="btn-open-adding-card-to-editing-deck" value="카드 추가">
+                        <input type="button" class="modal-small-btn btn-open-adding-card-to-editing-deck" value="카드 추가">
                     </div>
                     <br>
                     <div class="modal-buttons">
@@ -262,7 +240,7 @@
                 <label>뜻: <input type="text" id="cardMeaning"></label><br>
                 <label>예문 (일본어): <input type="text" id="cardExampleJp"></label><br>
                 <label>예문 (한국어): <input type="text" id="cardExampleKr"></label><br>
-                <input type="button" class="btn-create-example" value="예문 자동 완성"><br>
+                <input type="button" class="modal-small-btn btn-create-example" value="예문 자동 완성"><br>
                 <div class="modal-buttons">
                     <input type="button" class="btn-add-card-adding" value="추가">
                     <input type="button" class="btn-close-modal" value="닫기">
@@ -280,7 +258,7 @@
                 <label>뜻: <input type="text" id="editCardMeaning"></label><br>
                 <label>예문 (일본어): <input type="text" id="editCardExampleJp"></label><br>
                 <label>예문 (한국어): <input type="text" id="editCardExampleKr"></label><br>
-                <input type="button" class="btn-create-example" value="예문 자동 완성"><br>
+                <input type="button" class="modal-small-btn btn-create-example" value="예문 자동 완성"><br>
                 <div class="modal-buttons">
                     <input type="button" class="btn-save-card" value="저장">
                     <input type="button" class="btn-close-modal" value="닫기">
@@ -292,13 +270,13 @@
         <div class="modal modal_change_profile_image">
             <div class="modal-content change_profile_image">
                 <h2>프로필 이미지 선택</h2>
-        
+
                 <div class="profile-image-list">
                     <div class="profile-image-option" th:each="num : ${#numbers.sequence(0, 4)}" th:data-img="${num}">
                         <img th:src="@{'/images/profiles/profile_' + ${num} + '.jpg'}" th:alt="'프로필 ' + ${num} + ' 번'">
                     </div>
                 </div>
-        
+
                 <div class="modal-buttons">
                     <button type="button" class="btn-confirm-profile-change">저장</button>
                     <button type="button" class="btn-close-modal">닫기</button>
