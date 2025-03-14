@@ -59,14 +59,7 @@
                     <input type="hidden" name="categoryId" id="categoryId_E1">
                     <div class="input-group">
                         <label>카테고리 :</label>
-                        <div id="categoryNameWrapper">
-                            <div id="categoryNameContainer">
-                                <p id="categoryNameDisplay"></p> <!-- 기본적으로 표시될 카테고리 이름 -->
-                                <input type="text" name="categoryName" id="categoryName_E1" style="display: none;">
-                                <!-- 기본적으로 숨김 -->
-                            </div>
-                            <input type="button" class="modal-small-btn" id="btn-edit-category-name" value="이름 편집">
-                        </div>
+                        <input type="text" name="categoryName" id="categoryName_E1">
                     </div>
                     <br>
                     <div class="modal-buttons">
@@ -191,15 +184,8 @@
             <div class="modal-content editing_deck">
                 <form>
                     <input type="hidden" id="editDeckId">
-                    <div id="deckNameWrapper">
-                        <p>덱이름:</p>
-                        <div id="deckNameContainer">
-                            <p id="deckNameDisplay"></p> <!-- 기본적으로 표시될 덱 이름 -->
-                            <input type="text" id="editDeckName" style="display: none;"> <!-- 기본적으로 숨김 -->
-                        </div>
-                        <input type="button" class="modal-small-btn" id="btn-edit-deck-name" value="이름 편집">
-                    </div>
-
+                    <p>덱이름:</p>
+                    <input type="text" id="editDeckName">
                     <div class="card_table">
                         <table class="edit_card_list">
                             <thead>
