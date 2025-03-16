@@ -1,6 +1,12 @@
+document.addEventListener("DOMContentLoaded", function () {
+    if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+    } else {
+        console.error("❌ Lucide가 로드되지 않았습니다. 로드 순서를 확인하세요.");
+    }
+});
+
 $(document).ready(function () {
-    // Lucide 아이콘을 생성하는 코드
-    lucide.createIcons();
     
     /***************** 덱 리스트 토글 *****************/
     $('.category-right a').on('click', function () {
@@ -199,6 +205,14 @@ $('.flashcard-link').on('click', function(e) {
         }
     });
 });
+  // 현재 페이지가 home.html일 경우
+  if (window.location.pathname === '/home') {
+    // nav 안에 있는 logo 링크 클릭 이벤트 차단
+    $('.nav-bg a').on('click', function(event) {
+      event.preventDefault(); // 링크 이동 방지
+    });
+  }
+
 
 });
 

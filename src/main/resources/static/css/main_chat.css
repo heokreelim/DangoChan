@@ -149,7 +149,7 @@ body {
 .left-wrap {
     width: calc(100% / 6);
     background-color: #e0e0e0;
-    box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+    box-shadow: 0px 0px 8px #bebebe, -8px -8px 16px #ffffff;
 }
 
 .nav {
@@ -398,7 +398,7 @@ body {
 /* nav가 있는 페이지에 header는 .right-wrap */
 .right-wrap {
     flex: 1;
-    max-width: calc(100% * 5 / 6);
+    max-width: 83.34%;
     height: 100%;
     display: flex;
     flex-direction: column;
