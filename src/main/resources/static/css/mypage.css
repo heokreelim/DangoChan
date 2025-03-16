@@ -170,7 +170,7 @@ body{
 }
 /* ================== Trophy 아이템 영역 ================== */
 .trophy-wrap {
-    display: grid;
+    display: none; /* 트로피 기능 업데이트 후 none -> grid 로 변경 예정 */
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 20px;
     justify-items: center;
@@ -266,6 +266,11 @@ body{
     text-align: center;
     color: #5f5f7a;
     margin-bottom: 20px;
+}
+.gradient-text {
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* ◀️▶️ 좌우 버튼 */

@@ -10,6 +10,10 @@ a{
     text-decoration: none;
     color: #121511;
 }
+.nav .logo img {
+    width: 55px;
+    height: 55px;
+}
 /* 새 상위 컨테이너: relative 포지셔닝 */
 .chat-container {
     position: relative;

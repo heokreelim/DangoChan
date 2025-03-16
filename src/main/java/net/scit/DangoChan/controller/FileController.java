@@ -24,7 +24,7 @@ public class FileController {
     private static final String UPLOAD_DIR = "uploads/";
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
+    public String uploadFile(@RequestParam(name = "file") MultipartFile file, Model model) {
         if (file.isEmpty()) {
             model.addAttribute("message", "파일을 선택하세요.");
             return "redirect:/chat/list";
@@ -52,7 +52,7 @@ public class FileController {
     }
 
     @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
+    public ResponseEntity<Resource> downloadFile(@PathVariable(name = "fileName") String fileName) {
         try {
             Path filePath = Paths.get(UPLOAD_DIR + fileName);
             Resource resource = new UrlResource(filePath.toUri());
