@@ -28,9 +28,9 @@
                 </div> <!-- profile-picture end -->
                 <div class="nickname">
                     <p class="userName" id="userName">
-                        [[${#authentication.principal.userName}]]
+                        [[${#authorization.expression('isAuthenticated()') ? #authentication.principal.userName : '로그인하세요'}]]
                     </p>
-                </div> <!-- nickname end -->
+                    </div> <!-- nickname end -->
             </div> <!-- profile-wrap end -->
             <div class="statistics-wrap">
                 <ul class="statistics-list">
