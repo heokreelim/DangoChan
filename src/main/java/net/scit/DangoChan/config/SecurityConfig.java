@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
 import net.scit.DangoChan.handler.LoginFailureHandler;
@@ -36,7 +37,28 @@ public class SecurityConfig {
 					(auth) -> auth
 								// WebSocket 및 채팅 관련, 정적 리소스 허용
 								// .requestMatchers("/ws-stomp/**", "/chat/**", "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**").permitAll()
-								.requestMatchers("/**").permitAll()
+								.requestMatchers(
+										// 홈
+										"/", "/home"
+										// 로그인
+										, "/user/join", "/user/joinProc", "/user/idCheck"
+										, "/user/login", "/user/loginProc", "/user/logout"
+										, "/user/guestlogin"
+										, "/oauth2/authorization/**", "/login/oauth2/code/**"
+										// static resources
+										, "/images/**", "/js/**", "/css/**"
+										// community board
+										, "/community/communityBoardList"
+										// Chat 관련
+										, "/ws-stomp/**", "/webjars/**", "/uploads/**"
+									).permitAll()
+								
+								// admin role
+								.requestMatchers("/admin").hasRole("ADMIN")
+							  
+								// admin, user role
+								.requestMatchers("/user/mypage").hasAnyRole("ADMIN", "USER")
+								
 								// 그 외 모든 요청은 인증 필요 (원하는 대로 설정)
 								.anyRequest().authenticated()
 			);		
@@ -76,10 +98,14 @@ public class SecurityConfig {
 		    .sessionManagement(session -> session
 		        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // ✅ 세션 유지 설정
 		    )
+		    
 		    .securityContext(security -> security
-		            .requireExplicitSave(false)); // ✅ SecurityContext 자동 저장 활성화
-		
-		http
+		            .requireExplicitSave(false)) // ✅ SecurityContext 자동 저장 활성화
+		    
+		    .exceptionHandling(exception -> exception
+		        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/user/login")) // 로그인 페이지 변경
+		    )
+		    
 			.csrf((auth) -> auth.disable());
 		
 		return http.build();
