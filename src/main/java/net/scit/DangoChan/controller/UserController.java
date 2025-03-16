@@ -87,7 +87,7 @@ public class UserController {
 
         model.addAttribute("currentProfile", currentProfile);
 
-        // 기본 제공 프로필 목록 넘기기 (예: 0 ~ 7번)
+        // 기본 제공 프로필 목록 넘기기 (예: 0 ~ 9번)
         model.addAttribute("profileImages", getProfileImageList());
 
         return "user/changeProfileImage";
@@ -122,12 +122,12 @@ public class UserController {
 
     //  기본 프로필 이미지 번호 목록 반환
     private Integer[] getProfileImageList() {
-        return new Integer[]{0, 1, 2, 3, 4, 5, 6, 7}; // 샘플: 프로필 이미지 번호 0~5
+        return new Integer[]{0, 1, 2, 3, 4, 5, 6, 7,8,9}; // 샘플: 프로필 이미지 번호 0~9
     }
 
     // 프로필 이미지 유효성 검사
     private boolean isValidProfileImage(Integer profileImage) {
-        return profileImage != null && profileImage >= 0 && profileImage <= 5;
+        return profileImage != null && profileImage >= 0 && profileImage <= 9;
     }
     
 	// PJB end

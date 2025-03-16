@@ -35,41 +35,47 @@ public class HomeController {
 		if (user != null) { 
             Long userId = user.getUserId();
             model.addAttribute("userId", userId);
+            try {
+            	// 사용자 정보를 가져와 DTO로 변환
+                UserDTO userDTO = userService.findUserById(userId);
+                model.addAttribute("userInfo", userDTO);
+                
+                // 서비스에서 해당 유저의 전체 카테고리 목록을 가져온다고 가정
+        	    List<CategoryDTO> categoryList = flashCardService.getCategoryListByUser(userId);
+        	    model.addAttribute("categoryList", categoryList);
+        	    log.info("categoryList ==={}", categoryList.size());
+        	    
+           	 //  업적 및 출석 데이터 추가
+                List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+                List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+                int attendanceStreak = achievementService.getAttendanceStreak(userId);
+                String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+                model.addAttribute("personalAchievements", personalAchievements);
+                model.addAttribute("communityAchievements", communityAchievements);
+                model.addAttribute("attendanceStreak", attendanceStreak);
+                model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+			} catch (Exception e) {
+	            log.error("HomeController 에러 발생: ", e);
+	        }
             
-         // 사용자 정보를 가져와 DTO로 변환
-            UserDTO userDTO = userService.findUserById(userId);
-            model.addAttribute("userInfo", userDTO);
-            
-            // 서비스에서 해당 유저의 전체 카테고리 목록을 가져온다고 가정
-    	    List<CategoryDTO> categoryList = flashCardService.getCategoryListByUser(userId);
-    	    model.addAttribute("categoryList", categoryList);
-    	    
-    	    log.info("categoryList ==={}", categoryList.size());
+         
     	    
     	    // 데이터 확인
-    	    for (CategoryDTO categoryDTO : categoryList) {
-    	    	// 카테고리 명 
-    	    	log.info("category name ====== {}", categoryDTO.getCategoryName());
-    	    	
-    	    	// 해당 카테고리에 속한 덱 정보
-				for (DeckInfoDTO deckInfoDTO : categoryDTO.getDeckInfoList()) {
-					log.info("deckName			=== {}", deckInfoDTO.getDeckName());
-					log.info("deckCardCount		=== {}", deckInfoDTO.getDeckCardCount());
-					log.info("studiedCardCount	=== ○ : {}, △ : {}, ×  : {}, ？ : {}  ", 
-								deckInfoDTO.getStudiedCardCountOk(), deckInfoDTO.getStudiedCardCountYet(), deckInfoDTO.getStudiedCardCountNo(), deckInfoDTO.getNewCard());
-					log.info("cardStudyRate		=== {}", deckInfoDTO.getCardStudyRate());
-				}
-			}
-    	 //  업적 및 출석 데이터 추가
-            List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
-            List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
-            int attendanceStreak = achievementService.getAttendanceStreak(userId);
-            String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+//    	    for (CategoryDTO categoryDTO : categoryList) {
+//    	    	// 카테고리 명 
+//    	    	log.info("category name ====== {}", categoryDTO.getCategoryName());
+//    	    	
+//    	    	// 해당 카테고리에 속한 덱 정보
+//				for (DeckInfoDTO deckInfoDTO : categoryDTO.getDeckInfoList()) {
+//					log.info("deckName			=== {}", deckInfoDTO.getDeckName());
+//					log.info("deckCardCount		=== {}", deckInfoDTO.getDeckCardCount());
+//					log.info("studiedCardCount	=== ○ : {}, △ : {}, ×  : {}, ？ : {}  ", 
+//								deckInfoDTO.getStudiedCardCountOk(), deckInfoDTO.getStudiedCardCountYet(), deckInfoDTO.getStudiedCardCountNo(), deckInfoDTO.getNewCard());
+//					log.info("cardStudyRate		=== {}", deckInfoDTO.getCardStudyRate());
+//				}
+//			}
 
-            model.addAttribute("personalAchievements", personalAchievements);
-            model.addAttribute("communityAchievements", communityAchievements);
-            model.addAttribute("attendanceStreak", attendanceStreak);
-            model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
         }	    
 		return "home"; 
 	}

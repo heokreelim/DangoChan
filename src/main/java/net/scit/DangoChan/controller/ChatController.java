@@ -43,7 +43,7 @@ public class ChatController {
     }
 
     @GetMapping("/chat/room/{roomId}")
-    public ModelAndView chatRoomPage(@PathVariable String roomId,
+    public ModelAndView chatRoomPage(@PathVariable(name = "roomId") String roomId,
                                      @AuthenticationPrincipal LoginUserDetails user) {
         ModelAndView mv = new ModelAndView("chat/chatRoom");
         mv.addObject("roomId", roomId);
@@ -72,15 +72,15 @@ public class ChatController {
 
     // 방 생성: name, roomType, maxParticipants 전달
     @PostMapping("/chat/room")
-    public ChatRoom createRoom(@RequestParam String name,
-                               @RequestParam String roomType,
-                               @RequestParam int maxParticipants) {
+    public ChatRoom createRoom(@RequestParam(name = "name") String name,
+                               @RequestParam(name = "roomType") String roomType,
+                               @RequestParam (name = "maxParticipants")int maxParticipants) {
         return chatRoomRepository.createChatRoom(name, roomType, maxParticipants);
     }
 
     // 게임 시작 (끝말잇기 모드 전용)
     @PostMapping("/chat/room/{roomId}/startGame")
-    public void startGame(@PathVariable String roomId) {
+    public void startGame(@PathVariable(name = "roomId") String roomId) {
         chatService.startGame(roomId);
     }
 
@@ -94,17 +94,17 @@ public class ChatController {
     }
 
     @PostMapping("/chat/room/{roomId}/enter")
-    public void enterRoom(@PathVariable String roomId, @RequestParam String sessionId) {
+    public void enterRoom(@PathVariable(name = "roomId") String roomId, @RequestParam(name = "sessionId") String sessionId) {
         chatService.enterUser(sessionId, roomId);
     }
 
     @PostMapping("/chat/room/{roomId}/leave")
-    public void leaveRoom(@PathVariable String roomId, @RequestParam String sessionId) {
+    public void leaveRoom(@PathVariable(name = "roomId") String roomId, @RequestParam(name = "sessionId") String sessionId) {
         chatService.leaveUser(sessionId, roomId);
     }
 
     @PostMapping("/chat/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public String uploadFile(@RequestParam(name = "file") MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
             String uploadPath = System.getProperty("user.dir") + "/uploads";
             File dir = new File(uploadPath);

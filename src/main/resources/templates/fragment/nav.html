@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <div th:fragment="nav" class="nav glass-effect">
+ <div th:fragment="nav" class="nav glass-effect">
         <div class="nav-bg">
             <div class="logo">
-                <a th:href="@{/home}"><b>🍡だんごちゃん</b></a>
+                <a th:href="@{/home}">
+                    <img th:src="@{/images/logo_transparent.png}" alt="당고짱 로고">
+                    <b>だんごちゃん</b>
+                </a>
             </div>
             <div class="profile-wrap">
                 <input type="hidden" id="userId" name="userId" th:value="${userId}">
@@ -81,5 +77,3 @@
             </div><!-- authentication end -->
         </div><!-- nav-bg end -->
     </div>
-</body>
-</html>

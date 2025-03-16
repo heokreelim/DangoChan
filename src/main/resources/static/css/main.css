@@ -149,8 +149,9 @@ body {
 /* fragment */
 /* nav */
 .left-wrap {
-    width: calc(100% / 6);
-    background-color: #e0e0e0;
+    flex: 0 0 16.66%; /* 100% / 6 */  
+    max-width: 16.66%;
+    background-color: #f0f0f3;
     box-shadow: 0px 0px 8px #bebebe, -8px -8px 16px #ffffff;
 }
 
@@ -178,8 +179,9 @@ body {
     margin: 5px auto;
 }
 
-.nav .logo {
-    margin: 20px 0;
+.nav .nav-bg .logo img {
+    width: 55px;
+    height: 55px;
 }
 
 .nav .profile-wrap {
@@ -383,6 +385,10 @@ body {
 
 
 /* nav가 없는 페이지에서의 header */
+.header .logo img{
+    width: 55px;
+    height: 55px;
+}
 .header .header-bg {
     width: 100%;
     height: 65px;
@@ -400,13 +406,11 @@ body {
 /* nav가 있는 페이지에 header는 .right-wrap */
 .right-wrap {
     flex:1;
-    min-width: 0;
-    max-width: calc(100% * 5 / 6);
+    max-width: 83.34%;
     height: 100%;
     display: flex;
     flex-direction: column;
     background: #f2f4f8;
-    overflow:auto;
 }
 
 
@@ -805,23 +809,4 @@ body {
 
 .dropdown-menu.show {
     display: block !important;
-}
-
-/* 1200px 이하일 때, 조정하고 싶을 경우 추가 */
-@media screen and (min-width: 375px) and (max-width: 1200px) {
-    .right-wrap {
-        max-width: calc(100% / 2);
-        margin: 0 auto;
-    }
-    .percentage-box {
-        width: 125px;
-        height: 125px;
-    }
-    .percentage-text {
-        font-size: 1.08em;
-    }
-    .percentage-box svg {
-        width: 125px;
-        height: 125px;
-    }
 }
