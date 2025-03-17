@@ -251,11 +251,13 @@
    * 좋아요 버튼
    *******************************************************/
   #likeButton {
-      background: transparent;
+      background: #fff;
       border: none;
       cursor: pointer;
   }
   #likeButton img {
       vertical-align: middle;
   }
+
+  /*  */
   

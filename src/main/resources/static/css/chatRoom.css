@@ -68,6 +68,7 @@ body {
     background: #fff;
     display: flex;
     align-items: center;
+    align-content: center;
     border-radius: 20px;
 }
 .chat-input input[type="text"] {
@@ -82,7 +83,7 @@ body {
     border: none;
     background-color: #2196f3;
     color: #fff;
-    border-radius: 20px;
+    border-radius: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -171,4 +172,54 @@ body {
     font-size: 28px;
     margin: 5px;
     cursor: pointer;
+}
+/* 0315 추가 */
+.nav .logo img {
+    width: 55px;
+    height: 55px;
+}
+.chat-input button {
+    box-shadow: none;
+    margin-right: 3px;
+}
+/* ============ 커스텀 파일 업로드 ============== */
+/* 감싸는 래퍼 스타일 */
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 3px;
+}
+
+/* 커스텀 파일 업로드 버튼 */
+.file-upload-wrapper .custom-file-upload {
+    background-color: #2196f3;
+    /* 기본 파란색 */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    display: inline-block;
+    margin-right: 3px;
+}
+.file-upload-wrapper .custom-file-upload i{
+    font-size: 1.38em;
+}
+/* 호버 효과 */
+.file-upload-wrapper .custom-file-upload:hover {
+    background-color: #1976d2;
+}
+
+/* 파일명 표시 부분 */
+.file-upload-wrapper #fileName {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* 기본 file input 숨기기 */
+#fileInput {
+    display: none;
 }

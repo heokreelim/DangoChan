@@ -37,7 +37,28 @@ body {
     */
     justify-content: center;
     align-items: center;
-    background-color: #FFF7CC;
+    background-color: #fdfaf6;
+    background-image:
+        repeating-linear-gradient(0deg,
+            #a9a98c 0px,
+            #a9a98c 1px,
+            transparent 1px,
+            transparent 30px),
+        repeating-linear-gradient(90deg,
+            #a9a98c 0px,
+            #a9a98c 1px,
+            transparent 1px,
+            transparent 30px),
+        repeating-linear-gradient(0deg,
+            #a9a98c 0px,
+            #a9a98c 2px,
+            transparent 2px,
+            transparent 150px),
+        repeating-linear-gradient(90deg,
+            #a9a98c 0px,
+            #a9a98c 2px,
+            transparent 2px,
+            transparent 150px);
     object-fit: scale-down;
 }
 

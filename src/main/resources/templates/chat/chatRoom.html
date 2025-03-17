@@ -11,6 +11,7 @@
     <script defer th:src="@{/js/lib/stomp.min.js}"></script>
     <script defer th:src="@{/js/chatRoom.js}"></script>
     <script defer th:src="@{/js/calendar.js}"></script>
+    <script defer th:src="@{/js/custom_chat.js}"></script>
 </head>
 <body th:attr="data-roomid=${roomId}, data-roomtype=${roomType}, data-userid=${#authentication.name}">
     <div class="page-wrap">
@@ -28,7 +29,15 @@
                     </div>
                     <div class="chat-messages" id="chatMessages"></div>
                     <div class="chat-input">
-                        <input type="file" id="fileInput" style="margin-right:5px;" onchange="sendFile()">
+                        <!-- input:file 대신 div 로 커스텀 버튼 제작 -->
+                        <input type="file" id="fileInput" onchange="sendFile()" style="display: none;">
+                        <div class="file-upload-wrapper">
+                            <label for="fileInput" class="custom-file-upload">
+                                <i class="fa-solid fa-upload"></i>
+                            </label>
+                            <span id="fileName">선택된 파일 없음</span>
+                        </div>
+
                         <input type="text" id="chatInput" placeholder="메시지 입력">
                         <button onclick="sendMessage()">전송</button>
                         <button id="emojiToggle">😊</button>
