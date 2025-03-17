@@ -7,7 +7,7 @@ body {
 .container {
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    height: 90vh;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -16,7 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     border-right: 1px solid #ddd;
-    padding: 15px;
+    padding: 0 15px;
 }
 .game-info {
     display: flex;
@@ -44,7 +44,7 @@ body {
     border-radius: 20px;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     margin-bottom: 15px;
-    max-height: 200px;
+    max-height: 100%;
 }
 .message {
     margin: 8px 0;
@@ -81,14 +81,14 @@ body {
 .chat-input button {
     padding: 12px 20px;
     border: none;
-    background-color: #2196f3;
+    background-color: #007bff;
     color: #fff;
     border-radius: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 .chat-input button:hover {
-    background-color: #1976d2;
+    background-color: #0056b3;
 }
 .user-list {
     width: 250px;
@@ -120,7 +120,7 @@ body {
 }
 .leave-button {
     padding: 10px 16px;
-    background-color: #ff5252;
+    background-color: #dc3545;
     color: #fff;
     border: none;
     border-radius: 20px;
@@ -128,13 +128,14 @@ body {
     transition: background-color 0.3s ease;
 }
 .leave-button:hover {
-    background-color: #ff1744;
+    background-color: #c82333;
 }
 .message.system-message {
     text-align: center;
     color: #888;
     font-style: italic;
     margin: 12px 0;
+    max-width: 100%;
 }
 /* 이모지 모달 스타일 */
 .modal {
@@ -193,7 +194,7 @@ body {
 
 /* 커스텀 파일 업로드 버튼 */
 .file-upload-wrapper .custom-file-upload {
-    background-color: #2196f3;
+    background-color: #007bff;
     /* 기본 파란색 */
     color: white;
     padding: 10px 20px;
@@ -210,7 +211,7 @@ body {
 }
 /* 호버 효과 */
 .file-upload-wrapper .custom-file-upload:hover {
-    background-color: #1976d2;
+    background-color: #0056b3;
 }
 
 /* 파일명 표시 부분 */
