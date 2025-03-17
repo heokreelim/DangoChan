@@ -26,8 +26,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CommunityDTO;
 import net.scit.DangoChan.dto.LoginUserDetails;
+import net.scit.DangoChan.dto.UserDTO;
 import net.scit.DangoChan.service.BoardLikesService;
 import net.scit.DangoChan.service.CommunityService;
+import net.scit.DangoChan.service.UserService;
 import net.scit.DangoChan.util.PageNavigator;
 
 @Slf4j
@@ -38,6 +40,7 @@ public class CommunityController {
 	
 	private final CommunityService communityService;
 	private final BoardLikesService boardLikesService;
+	private final UserService userService;
 	
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadPath;
@@ -62,6 +65,13 @@ public class CommunityController {
 	        @RequestParam(name = "secondarySortOrder", defaultValue = "") String secondarySortOrder,
 			Model model
 			) {
+		// PJB edit start
+		Long userId = loginUser.getUserId();
+		model.addAttribute("userId",userId);
+		
+		UserDTO userDTO = userService.findUserById(userId);
+        model.addAttribute("userInfo", userDTO);
+		//PJB edit end 
 		
 		// 2) 페이징 기능 + 검색 기능
 		Page<CommunityDTO> list = communityService.selectAll(

@@ -183,7 +183,12 @@ body {
     width: 55px;
     height: 55px;
 }
-
+.nav .nav-bg .logo .logoName {
+    font-family: "GoryeongStrawberry";
+    font-size: 1.375em;
+    text-align: center;
+    align-items: center;
+}
 .nav .profile-wrap {
     display: flex;
     flex-direction: column;
@@ -809,4 +814,104 @@ body {
 
 .dropdown-menu.show {
     display: block !important;
+}
+
+@media (max-width: 1278px) {
+
+    body {
+        font-size: 14px;
+    }
+
+    /* === 페이지 전체 구조 변경 === */
+    .page-wrap {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* === 첫 번째 헤더 역할을 하는 nav === */
+    .left-wrap {
+        width: 100%;
+        height: auto;
+        flex: none;
+        max-width: 100%;
+        box-shadow: none;
+    }
+
+    .left-wrap .nav-bg {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 10px 24px;
+        height: auto;
+        border-radius: 0;
+    }
+
+    .left-wrap .profile-wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        width: auto;
+    }
+
+    .left-wrap .profile-picture {
+        width: 80px;
+        height: 80px;
+    }
+
+    .left-wrap .nickname {
+        width: auto;
+        font-size: 1.2rem;
+        padding: 4px 8px;
+    }
+
+    .statistics-wrap,
+    .calendar-wrap {
+        display: none !important;
+    }
+
+    /* === 두 번째 헤더 역할을 하는 header === */
+    .right-wrap {
+        width: 100%;
+        margin: 0;
+        max-width: 100%;
+        flex: none;
+    }
+
+    .right-wrap .header-bg {
+        width: 100%;
+        padding: 10px 24px;
+        border-radius: 0;
+    }
+
+    .right-wrap .logo,
+    .right-wrap .title {
+        display: none !important;
+    }
+
+    .gnb-wrap {
+        justify-content: flex-end;
+    }
+
+    /* === 메인 컨텐츠 === */
+    .container {
+        width: 100%;
+        padding: 0;
+    }
+
+    .service-wrap {
+        width: 90%;
+        max-width: 1200px;
+        margin: 16px auto;
+        padding: 20px;
+    }
+
+    /* 플로팅 버튼 포지션 유지 */
+    /* .addChatBtn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+    } */
 }

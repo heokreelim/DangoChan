@@ -1,9 +1,9 @@
- <div th:fragment="nav" class="nav glass-effect">
+ <div th:fragment="nav" class="nav glass-effect" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
         <div class="nav-bg">
             <div class="logo">
                 <a th:href="@{/home}">
                     <img th:src="@{/images/logo_transparent.png}" alt="당고짱 로고">
-                    <b>だんごちゃん</b>
+                    <b class="logoName">だんごちゃん</b>
                 </a>
             </div>
             <div class="profile-wrap">

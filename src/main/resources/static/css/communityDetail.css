@@ -80,11 +80,8 @@
    * 첨부파일 링크 및 삭제 아이콘
    *******************************************************/
   a {
-      color: var(--pastel-primary);
+      color: #121511;
       text-decoration: none;
-  }
-  a:hover {
-      text-decoration: underline;
   }
   
   .deleteFile {
@@ -251,7 +248,7 @@
    * 좋아요 버튼
    *******************************************************/
   #likeButton {
-      background: #fff;
+      background: var(--box-color);
       border: none;
       cursor: pointer;
   }
@@ -259,5 +256,13 @@
       vertical-align: middle;
   }
 
-  /*  */
+  /* 0317 디자인 추가 */
+  .btn.btn-success {
+    background: var(--box-color);
+  }
+  .btn.btn-success:hover {
+      background: var(--pastel-color);
+      color: #121511;
+      opacity: 1;
+  }
   
