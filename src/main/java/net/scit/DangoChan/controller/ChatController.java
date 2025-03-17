@@ -25,7 +25,7 @@ public class ChatController {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatService chatService;
     private final UserService userService;
-    private final AchievementService achievementService;  // achievementService 추가
+    private final AchievementService achievementService;
 
     @GetMapping("/chat")
     public ModelAndView chatListPage(@AuthenticationPrincipal LoginUserDetails user) {
@@ -33,7 +33,6 @@ public class ChatController {
         if (user != null) {
             mv.addObject("userInfo", userService.findById(user.getUserId()));
             mv.addObject("userId", user.getUserId());
-            // achievement 데이터 추가
             mv.addObject("attendanceStreak", achievementService.getAttendanceStreak(user.getUserId()));
             mv.addObject("todayStudyTimeFormatted", achievementService.getTodayStudyTimeFormatted(user.getUserId()));
             mv.addObject("personalAchievements", achievementService.getPersonalAchievements(user.getUserId()));
@@ -56,7 +55,6 @@ public class ChatController {
         if (user != null) {
             mv.addObject("userInfo", userService.findById(user.getUserId()));
             mv.addObject("userId", user.getUserId());
-            // achievement 데이터 추가
             mv.addObject("attendanceStreak", achievementService.getAttendanceStreak(user.getUserId()));
             mv.addObject("todayStudyTimeFormatted", achievementService.getTodayStudyTimeFormatted(user.getUserId()));
             mv.addObject("personalAchievements", achievementService.getPersonalAchievements(user.getUserId()));
@@ -70,22 +68,19 @@ public class ChatController {
         return chatRoomRepository.findAllRooms();
     }
 
-    // 방 생성: name, roomType, maxParticipants 전달
     @PostMapping("/chat/room")
     public ChatRoom createRoom(@RequestParam(name = "name") String name,
                                @RequestParam(name = "roomType") String roomType,
-                               @RequestParam (name = "maxParticipants")int maxParticipants) {
+                               @RequestParam(name = "maxParticipants") int maxParticipants) {
         return chatRoomRepository.createChatRoom(name, roomType, maxParticipants);
     }
 
-    // 게임 시작 (끝말잇기 모드 전용)
-    @PostMapping("/chat/room/{roomId}/startGame")
-    public void startGame(@PathVariable(name = "roomId") String roomId) {
-        chatService.startGame(roomId);
-    }
-
+    // 메시지 전송 시, 현재 사용자의 userName을 sender로 설정
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message) {
+    public void message(@AuthenticationPrincipal LoginUserDetails user, ChatMessage message) {
+        if (user != null) {
+            message.setSender(user.getUserName());
+        }
         if (message.getType() == ChatMessage.MessageType.FILE) {
             chatService.sendFileMessage(message);
         } else {
@@ -93,14 +88,22 @@ public class ChatController {
         }
     }
 
+    // 입장 시: 로그인 사용자의 userName 사용
     @PostMapping("/chat/room/{roomId}/enter")
-    public void enterRoom(@PathVariable(name = "roomId") String roomId, @RequestParam(name = "sessionId") String sessionId) {
-        chatService.enterUser(sessionId, roomId);
+    public void enterRoom(@PathVariable(name = "roomId") String roomId,
+                          @RequestParam(name = "sessionId", required = false) String sessionId,
+                          @AuthenticationPrincipal LoginUserDetails user) {
+        String displayName = (user != null) ? user.getUserName() : sessionId;
+        chatService.enterUser(displayName, roomId);
     }
 
+    // 퇴장 시: 로그인 사용자의 userName 사용
     @PostMapping("/chat/room/{roomId}/leave")
-    public void leaveRoom(@PathVariable(name = "roomId") String roomId, @RequestParam(name = "sessionId") String sessionId) {
-        chatService.leaveUser(sessionId, roomId);
+    public void leaveRoom(@PathVariable(name = "roomId") String roomId,
+                          @RequestParam(name = "sessionId", required = false) String sessionId,
+                          @AuthenticationPrincipal LoginUserDetails user) {
+        String displayName = (user != null) ? user.getUserName() : sessionId;
+        chatService.leaveUser(displayName, roomId);
     }
 
     @PostMapping("/chat/uploadFile")
