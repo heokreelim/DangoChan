@@ -10,6 +10,10 @@ a{
     text-decoration: none;
     color: #121511;
 }
+.nav {
+    padding: 8px;
+}
+
 .nav .logo img {
     width: 55px;
     height: 55px;
@@ -67,6 +71,23 @@ a{
     cursor: pointer;
 }
 
+.btn.createBtn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn.createBtn:hover {
+    background-color: #0056b3;
+}
+
+.btn.cancelBtn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn.cancelBtn:hover {
+    background-color: #c82333;
+}
 
 /* 채팅방 카드 스타일 */
 .room-card {

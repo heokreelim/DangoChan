@@ -52,10 +52,10 @@ button {
     transition: 0.3s;
 }
 
-button:hover {
+/* button:hover {
     box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1),
         inset -6px -6px 12px rgba(255, 255, 255, 0.7);
-}
+} */
 
 .btn {
     border-radius: 12px;
@@ -65,10 +65,10 @@ button:hover {
     transition: 0.3s;
 }
 
-.btn:hover {
+/* .btn:hover {
     box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1),
         inset -6px -6px 12px rgba(255, 255, 255, 0.7);
-}
+} */
 
 /* button color 버튼 컬러 */
 /* 저장, 긍정 */
@@ -403,6 +403,7 @@ body {
     display: flex;
     flex-direction: column;
     background: #f2f4f8;
+    margin-left: 5px;
 }
 
 .right-wrap .logo {
