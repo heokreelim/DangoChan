@@ -388,7 +388,7 @@ public class FlashCardService {
 		List<CardEntity> cards = cardRepository.findNewCardsByDeckId(deckId, threeDaysLater);
 
 		// studyLevel이 0인 카드가 하나도 없는지 확인
-		return cards.stream().noneMatch(card -> card.getStudyLevel() == 0);
+		return (cards.size() <= 0);
 	}
 
 	// ✅ 모든 카드의 studyLevel과 studiedAt 초기화

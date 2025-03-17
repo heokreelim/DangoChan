@@ -113,8 +113,8 @@ $(document).ready(function () {
                                     console.log("📌 모든 단어를 학습했습니다. 초기화 진행!");
                                     resetStudyData(deckId);
                                 } else {
-                                    console.log("오늘 학습 진행 완료!");
-                                    alert("오늘 학습 완료!! 홈으로 돌아갑니다");
+                                    console.log("공부할 새로운 카드 없음");
+                                    alert("공부할 새 카드가 없습니다 홈으로 돌아갑니다~");
                                     goHome();
                                 }
                             });

@@ -20,7 +20,7 @@ public interface CardRepository extends JpaRepository<CardEntity, Long> {
     @Query("SELECT c FROM CardEntity c " +
             "WHERE (c.studyLevel = 0 AND c.deckEntity.deckId = :deckId) " +
             "OR (c.studyLevel = 2 AND c.deckEntity.deckId = :deckId AND c.studiedAt = :threeDaysLater) " +
-            "OR (c.studyLevel = 1 AND c.deckEntity.deckId = :deckId AND c.studiedAt = CURRENT_DATE)")
+            "OR (c.studyLevel = 1 AND c.deckEntity.deckId = :deckId)")
     List<CardEntity> findNewCardsByDeckId(@Param("deckId") Long deckId,
                                           @Param("threeDaysLater") LocalDate threeDaysLater);
 
