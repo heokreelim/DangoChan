@@ -12,6 +12,7 @@
         <script defer th:src="@{/js/paging.js}"></script>
         <script defer th:src="@{/js/calendar.js}"></script>
         <script defer th:src="@{/js/communitySort.js}"></script>
+        <script defer th:src="@{/js/communitySearch.js}"></script>
 </head>
 <body>
     <div class="page-wrap">
@@ -95,7 +96,7 @@
                     <table>
                         <tr>
                             <th class="no">번호</th>
-                            <th class="title">제목</th>
+                            <th id="board-title" class="title">제목</th>
                             <th class="writer">작성자</th>
                             <th class="views">조회수</th>
                             <th class="likeCount">좋아요 수</th>
