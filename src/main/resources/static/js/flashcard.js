@@ -119,11 +119,13 @@ $(document).ready(function () {
                                 }
                             });
                         }
-
-                        $(".word-box span").text(data.kanji);
-                        setTimeout(() => {
-                            updateFlashcard(data);
-                        }, 500);
+                        else
+                        {
+                            $(".word-box span").text(data.kanji);
+                            setTimeout(() => {
+                                updateFlashcard(data);
+                            }, 500);
+                        }
                     })
             },
             error: function (error) {
