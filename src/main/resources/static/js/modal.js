@@ -77,13 +77,13 @@ $(document).ready(function () {
     // 덱 추가/불러오기 버튼
     $('.btn-adding-deck').on('click', function () {
         let mode = $(".modal_adding_deck").css("display") === "flex" ? "add" : "import";
-
+        console.log(mode)
         let deckName, categoryId;
         if (mode === "add") {
             deckName = $('#deckName_A2').val().trim();
             categoryId = $('#categoryId_A2').val();
             targetTable = $('.modal_adding_deck .card_list tbody'); // 💡 특정 모달의 카드 리스트만 가져오도록 변경
-        } else {
+        } else if (mode === "import") {
             deckName = $('#deckName_I2').val().trim();
             categoryId = $('#categoryId_I2').val();
             targetTable = $('.modal_importing_deck .card_list tbody'); // 💡 특정 모달의 카드 리스트만 가져오도록 변경
@@ -125,16 +125,15 @@ $(document).ready(function () {
             success: function (response) {
                 alert("덱이 성공적으로 저장되었습니다!");
                 console.log(response);
-                window.location.href = "/home";
+                // 덱 이름 초기화
+                $('#deckName_A2, #deckName_I2').val('');
             },
             error: function (xhr, status, error) {
                 console.error("오류 발생:", error);
             }
+        }).done(function () {
+            window.location.href = "/home";
         });
-        // 덱 이름 초기화
-        $('#deckName_A2, #deckName_I2').val('');
-        location.reload(true);
-
     });
 
 
