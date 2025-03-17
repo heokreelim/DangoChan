@@ -14,7 +14,9 @@ body {
     width: 100vw;
     height: 100vh;
     position: relative;
-    background-color: #f8f8f8;
+    background-color: #fcfcfc;
+    background-image: url('https://www.transparenttextures.com/patterns/grid-me.png');
+    background-size: auto;
 }
 
 /* ✅ 컨테이너 */
@@ -30,7 +32,7 @@ body {
 
 /* ✅ 타이머 */
 .timer {
-    background-color: #fdf4f1;
+    /*background-color: #a5bcde;*/
     padding: 5px 15px;
     border-radius: 5px;
     font-size: 48px;
@@ -42,7 +44,7 @@ body {
 
 /* ✅ 공부 타이머 */
 .study-timer {
-    background-color: #fdf4f1;
+    /*background-color: #a5bcde;*/
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 32px;
@@ -72,7 +74,7 @@ body {
 
 /* ✅ 플래시카드 영역 */
 .flashcard-wrap {
-    width: 1300px;
+    width: 1350px;
     height: 500px;
     position: relative;
     text-align: center;
@@ -101,7 +103,7 @@ body {
 
 /* ✅ 앞면 카드 (한자 + 후리가나) */
 .front {
-    background-color: lemonchiffon;
+    background-color: #E3F2FD;
     z-index: 2;
 }
 
@@ -109,7 +111,7 @@ body {
     font-size: 100px;
     font-weight: bold;
     text-align: center;
-    background-color: lemonchiffon;
+    background-color: #E3F2FD;
     padding: 10px;
     border-radius: 5px;
 }
@@ -125,10 +127,10 @@ input {
 
 /* ✅ 뒷면 카드 */
 .back {
-    background-color: lemonchiffon;
+    background-color: #E3F2FD;
     transform: rotateY(180deg);
     z-index: 1;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -153,16 +155,16 @@ input {
     /* 세로 정렬 */
     align-items: center;
     justify-content: center;
-    background-color: lemonchiffon;
-    padding: 20px;
+    background-color: #E3F2FD;
+    padding: 10px;
     border-radius: 10px;
     text-align: center;
     min-width: 500px;
     position: relative;
-    right: 50px;
+    right: 30px;
 }
 .furigana {
-    font-size: 60px; /* 전체 글자 크기 조정 */
+    font-size: 70px; /* 전체 글자 크기 조정 */
     line-height: 1.5; /* 줄 간격 조정 */
 }
 
@@ -175,7 +177,7 @@ input {
     top: -1.2em; /* 위쪽 위치 조정 */
     left: 50%; /* 왼쪽 위치 조정 */
     transform: translateX(-50%); /* 가로 중앙 정렬 */
-    font-size: 25px; /* 후리가나 글자 크기 조정 */
+    font-size: 30px; /* 후리가나 글자 크기 조정 */
     white-space: nowrap; /* 줄 바꿈 방지 */
 }
 
@@ -193,7 +195,7 @@ input {
 /* ✅ 품사 & 의미 스타일 */
 .pos-box,
 .meaning-box {
-    background-color: lemonchiffon;
+    background-color: #E3F2FD;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
@@ -215,14 +217,14 @@ input {
 
 .example-jp-box,
 .example-kr-box {
-    background-color: lemonchiffon;
+    background-color: #E3F2FD;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
-    font-size: 24px;
-    font-weight: normal;
+    font-size: 30px;
+    font-weight: bold;
     width: auto;
-    min-width: 200px;
+    min-width: 100px;
 }
 
 /* ✅ 애니메이션 효과 */
@@ -246,7 +248,7 @@ input {
 
 /* ✅ 정답 보기 버튼 */
 .answerBtn {
-    background-color: #fdf4f1;
+    background-color: #a5bcde;
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 32px;
@@ -272,7 +274,7 @@ input {
 .circleBtn,
 .triangleBtn,
 .xBtn {
-    background-color: #fdf4f1;
+    background-color: #a5bcde;
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 32px;
@@ -282,7 +284,7 @@ input {
 
 /* ✅ "편집" 버튼 */
 .cardBtn {
-    background-color: #fdf4f1;
+    /*background-color: #a5bcde;*/
     padding: 10px 10px;
     border-radius: 5px;
     font-size: 32px;
@@ -307,7 +309,6 @@ input {
 .triangleBtn,
 .xBtn,
 .cardBtn {
-    background-color: #fdf4f1;
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 32px;

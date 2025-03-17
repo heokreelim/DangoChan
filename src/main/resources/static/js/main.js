@@ -178,10 +178,10 @@ $(document).ready(function () {
         console.log('새로운 카드 개수:', newCardCount);
 
         // 덱에 카드가 없는 경우 (카드 갯수가 0일 때)
-        if (newCardCount === 0) {
-            alert("이 덱에 학습 가능한 새로운 카드가 없습니다. 먼저 카드를 추가하거나, 내일 다시 시도해 주세요.");
-            return; // 이동하지 않음
-        }
+        // if (newCardCount === 0) {
+        //     alert("이 덱에 학습 가능한 새로운 카드가 없습니다. 먼저 카드를 추가하거나, 내일 다시 시도해 주세요.");
+        //     return; // 이동하지 않음
+        // }
 
         // 서버에서 studyLevel=0 카드 존재 여부를 확인
         $.ajax({
