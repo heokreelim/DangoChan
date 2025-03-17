@@ -169,23 +169,32 @@
     border-bottom: 1px solid #ddd;
     text-align: center;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 1em;
   }
   
   /* 헤더(칼럼명) */
   .head table th {
     background-color: var(--pastel-primary);
     font-weight: bold;
+    font-size: 1.25em;
   }
   
   /* 게시글 제목 링크, 아이콘 등 */
   .head table a {
-    color: #007bff; /* 강조색(링크) */
+    color: #232323; /* 강조색(링크) */
     text-decoration: none;
   }
   .head table a:hover {
     text-decoration: underline;
   }
+
+/* 기존: th#title { ... } -> 실제로는 적용되지 않음 */
+/* 변경: #board-title에 대해 스타일 재정의 */
+.head table th#board-title {
+  font-size: 1.25em;
+  font-family: 'Noto Sans KR', 'Shippori Mincho B1', sans-serif; /* 필요 시 */
+}
+
   
   /*******************************************************
    * 6) 글쓰기 버튼(.write)
