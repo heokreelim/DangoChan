@@ -20,8 +20,10 @@ public class ChatService {
         ChatRoom room = chatRoomRepository.findRoomById(chatMessage.getRoomId());
         if (room == null) return;
 
+        // 끝말잇기 모드 및 게임이 시작된 경우
         if ("shiritori".equals(room.getRoomType()) && shiritoriGameManager.isGameStarted(room.getRoomId())) {
             String currentPlayer = shiritoriGameManager.getCurrentPlayer(room.getRoomId());
+            // 현재 턴 플레이어가 아닌 경우 – 입력자에게만 프라이빗 메시지 전송
             if (!chatMessage.getSender().equals(currentPlayer)) {
                 ChatMessage systemMsg = ChatMessage.builder()
                         .type(ChatMessage.MessageType.SYSTEM)
@@ -34,6 +36,7 @@ public class ChatService {
             }
             String newWord = chatMessage.getMessage().trim();
             if (newWord.isEmpty()) return;
+            // 히라가나만 허용 검증
             if (!JishoValidator.validateHiragana(newWord)) {
                 ChatMessage systemMsg = ChatMessage.builder()
                         .type(ChatMessage.MessageType.SYSTEM)
@@ -44,6 +47,7 @@ public class ChatService {
                 messagingTemplate.convertAndSendToUser(chatMessage.getSender(), "/queue/private", systemMsg);
                 return;
             }
+            // 'ん'으로 끝나면 즉시 패배 처리
             if (newWord.charAt(newWord.length() - 1) == 'ん') {
                 ChatMessage systemMsg = ChatMessage.builder()
                         .type(ChatMessage.MessageType.SYSTEM)
@@ -55,6 +59,7 @@ public class ChatService {
                 shiritoriGameManager.eliminatePlayer(room.getRoomId());
                 return;
             }
+            // 실제 존재하는 명사 단어인지 검증 (JishoValidator 사용)
             if (!JishoValidator.isValidJapaneseNoun(newWord)) {
                 ChatMessage systemMsg = ChatMessage.builder()
                         .type(ChatMessage.MessageType.SYSTEM)
@@ -65,6 +70,7 @@ public class ChatService {
                 messagingTemplate.convertAndSendToUser(chatMessage.getSender(), "/queue/private", systemMsg);
                 return;
             }
+            // 추가 기능: 이미 사용한 단어인지 검사
             if (shiritoriGameManager.isWordAlreadyUsed(room.getRoomId(), newWord)) {
                 ChatMessage systemMsg = ChatMessage.builder()
                         .type(ChatMessage.MessageType.SYSTEM)
@@ -75,6 +81,7 @@ public class ChatService {
                 messagingTemplate.convertAndSendToUser(chatMessage.getSender(), "/queue/private", systemMsg);
                 return;
             }
+            // 끝말잇기 규칙 검증
             boolean valid = shiritoriGameManager.isValidWord(room.getRoomId(), newWord);
             if (!valid) {
                 ChatMessage systemMsg = ChatMessage.builder()
@@ -86,10 +93,14 @@ public class ChatService {
                 messagingTemplate.convertAndSendToUser(chatMessage.getSender(), "/queue/private", systemMsg);
                 return;
             }
+            // 단어 변환: 히라가나 단어를 조회하여 canonical 정보에 따라 표시 형식을 변환
             String displayWord = JishoValidator.getDisplayForm(newWord);
             chatMessage.setMessage(displayWord);
+
+            // 올바른 단어 입력 시 전체 채팅방에 메시지 방송
             messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
 
+            // 턴 전환: 약간의 지연 후 "XX님 차례입니다." 메시지 전송
             shiritoriGameManager.advanceTurn(room.getRoomId());
             String nextPlayer = shiritoriGameManager.getCurrentPlayer(room.getRoomId());
             if (nextPlayer != null && !nextPlayer.equals(chatMessage.getSender())) {
@@ -110,6 +121,7 @@ public class ChatService {
             }
             return;
         }
+        // 일반 채팅 모드
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
@@ -119,8 +131,7 @@ public class ChatService {
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
     }
 
-    // 수정: displayName(사용자 이름) 사용
-    public void enterUser(String displayName, String roomId) {
+    public void enterUser(String sessionId, String roomId) {
         ChatRoom room = chatRoomRepository.findRoomById(roomId);
         if (room != null) {
             if ("shiritori".equals(room.getRoomType()) && shiritoriGameManager.isGameStarted(roomId)) {
@@ -143,23 +154,22 @@ public class ChatService {
                                 .build());
                 return;
             }
-            room.getUserSet().add(displayName);
+            room.getUserSet().add(sessionId);
             chatRoomRepository.updateChatRoom(room);
             messagingTemplate.convertAndSend("/sub/chat/room/" + roomId,
                     ChatMessage.builder()
                             .type(ChatMessage.MessageType.SYSTEM)
                             .roomId(roomId)
                             .sender("system")
-                            .message(displayName + "님이 들어왔습니다.")
+                            .message(sessionId + "님이 들어왔습니다.")
                             .build());
         }
     }
 
-    // 수정: displayName(사용자 이름) 사용
-    public void leaveUser(String displayName, String roomId) {
+    public void leaveUser(String sessionId, String roomId) {
         ChatRoom room = chatRoomRepository.findRoomById(roomId);
         if (room != null) {
-            room.getUserSet().remove(displayName);
+            room.getUserSet().remove(sessionId);
             if (room.getUserSet().isEmpty()) {
                 chatRoomRepository.deleteChatRoom(roomId);
                 shiritoriGameManager.resetGame(roomId);
@@ -171,7 +181,7 @@ public class ChatService {
                             .type(ChatMessage.MessageType.SYSTEM)
                             .roomId(roomId)
                             .sender("system")
-                            .message(displayName + "님이 나갔습니다.")
+                            .message(sessionId + "님이 나갔습니다.")
                             .build());
         }
     }

@@ -13,7 +13,7 @@
     <script defer th:src="@{/js/calendar.js}"></script>
     <script defer th:src="@{/js/custom_chat.js}"></script>
 </head>
-<body th:attr="data-roomid=${roomId}, data-roomtype=${roomType}, data-userid=${#authentication.name}">
+<body th:attr="data-roomid=${roomId}, data-roomtype=${roomType}, data-userid=${#authentication.principal.userName}">
     <div class="page-wrap">
         <div class="left-wrap">
             <div th:replace="fragment/nav"></div>
