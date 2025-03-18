@@ -62,13 +62,6 @@
                                 <span th:if="${community.originalFileName} != null">
                                     <a th:href="@{/community/download(boardId=${community.boardId})}" th:text="${community.originalFileName}"></a>
                                 </span>
-                                <!-- 쓰레기통: 1. 파일이 있으면서 2. 게시글을 쓴 사람만 보여야한다.-->
-                                <th:block th:if="${community.originalFileName != null}">
-                                    <span class="deleteFile" th:data-seq="${community.boardId}" th:data-searchItem="${searchItem}"
-                                        th:data-searchWord="${searchWord}">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </span>
-                                </th:block>
                                 <th:block th:unless="${community.originalFileName != null}">
                                     첨부파일이 없습니다.
                                 </th:block>
