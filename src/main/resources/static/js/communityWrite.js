@@ -21,7 +21,7 @@ function communityWrite() {
     // 글 내용 검증
     let content = $('#boardContent').val();
     if (content.trim().length < 1) {
-        alert("글 내용을 입력해주세요.");
+        alert("덱 설명을 입력해주세요.");
         return false;
     }
 

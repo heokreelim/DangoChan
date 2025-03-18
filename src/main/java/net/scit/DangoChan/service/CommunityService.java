@@ -214,59 +214,39 @@ public class CommunityService {
 	 */
 	@Transactional
 	public void updateBoard(CommunityDTO communityDTO) {
-		/*
-	 	- 파일이 있는 경우
-			- 글만 수정, 첨부파일은 그대로!
-			- 글도 수정, 파일 추가 - 기존파일은?? 물리적으로 삭제, 글 수정, 파일명도 수정
-		- 파일이 없는 경우
-			- 글만 수정(이전 작업)
-			- 글도 수정, 파일 추가 - 글 수정, 파일명도 추가
-	 */
-		
-		MultipartFile file = communityDTO.getUploadFile();
-		
-		// 1) 첨부파일이 있나요? 확인하기
-		String newFile = 
-				!file.isEmpty() ? file.getOriginalFilename() : null;
-		
-		// 1. 수정하려는 데이터가 있는지 확인 
-		Optional<CommunityEntity> temp = communityRepository.findById(communityDTO.getBoardId());
-		
-		// 2. 없으면 return
-		if(!temp.isPresent()) return;
-		
-		// 3. 있으면 dto -> entity로 변환
-		CommunityEntity entity = temp.get();
-		
-		// 기존파일이 DB에 저장되어있는지 확인하기.
-		String oldFile = entity.getSavedFileName();
-		
-		// (1) 기존 파일이 있고 업로드한 파일도 있다면,
-		//	-- 하드 디스크에서는 기존 파일 삭제, 업로드한 파일을 저장 (물리적)
-		//	-- DB에는 업로드한 파일로 두 개의 칼럼을 업데이트	
-		// (2) 기존 파일이 없고 업로드한 파일은 있다면,
-		//	-- 하드 디스크에서 삭제할 건 없지? 업로드한 파일을 저장 (물리적)
-		//	-- DB에는 업로드한 파일로 두 개의 칼럼을 업데이트
-		
-		// 업로드한 파일이 있다면
-		if(newFile != null) {
-			String savedFileName = null;
-			savedFileName = FileService.saveFile(file, uploadPath);
-			// 파일 이름은 newFile에서 가져올 수 있지?
-			entity.setSavedFileName(savedFileName);
-			entity.setOriginalFileName(newFile);
-			
-			// 새 파일은 없고... 예전 파일이 있는 상태라면?~
-			if(oldFile != null) {
-				String fullPath = uploadPath + "/" + oldFile;
-				FileService.deleteFile(fullPath);
-			}
-			
-		}
-		// 4. 저장(update)
-		entity.setTitle(communityDTO.getTitle());
-		entity.setBoardContent(communityDTO.getBoardContent());
+	    MultipartFile file = communityDTO.getUploadFile();
+	    String newFile = !file.isEmpty() ? file.getOriginalFilename() : null;
+
+	    Optional<CommunityEntity> temp = communityRepository.findById(communityDTO.getBoardId());
+	    if (!temp.isPresent()) {
+	        throw new RuntimeException("수정할 게시글이 존재하지 않습니다.");
+	    }
+	    CommunityEntity entity = temp.get();
+	    
+	    // 첨부파일 검증: 기존 파일이 없고 새 파일도 없는 경우 에러 발생
+	    if (newFile == null && entity.getSavedFileName() == null) {
+	        throw new RuntimeException("게시글은 반드시 첨부파일을 포함해야 합니다.");
+	    }
+	    
+	    // 새 파일이 업로드되면 파일 저장 및 기존 파일 삭제 처리
+	    if (newFile != null) {
+	        // 기존 첨부파일 정보 저장 (물리 파일 삭제를 위해)
+	        String oldFile = entity.getSavedFileName();
+	        String savedFileName = FileService.saveFile(file, uploadPath);
+	        entity.setSavedFileName(savedFileName);
+	        entity.setOriginalFileName(newFile);
+	        
+	        if (oldFile != null) {
+	            String fullPath = uploadPath + "/" + oldFile;
+	            FileService.deleteFile(fullPath);
+	        }
+	    }
+	    
+	    // 제목과 내용 업데이트
+	    entity.setTitle(communityDTO.getTitle());
+	    entity.setBoardContent(communityDTO.getBoardContent());
 	}
+
 	
 	/**
 	 * file 관련 두 개의 컬럼 값을 null로 변경

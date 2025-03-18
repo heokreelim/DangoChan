@@ -16,6 +16,7 @@
 
     <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <script defer th:src="@{/js/calendar.js}"></script>
+    <script defer th:src="@{/js/communityUpdate.js}"></script>
 
 </head>
 <body>
@@ -33,7 +34,11 @@
                         <input type="hidden" name="boardId" th:value="${community.boardId}">
                         <!-- <input type="hidden" name="boardWriter" th:value="${community.boardWriter}"> -->
                         <input type="hidden" name="searchItem" th:value="${searchItem}">
-                        <input type="hidden" name="searchWord" th:value="${searchWord}">            
+                        <input type="hidden" name="searchWord" th:value="${searchWord}">
+                        
+                        <!-- 기존 첨부파일 정보가 존재할 경우, 서버에서 전달된 값을 채워줍니다. -->
+                        <input type="hidden" id="originalFile" name="originalFile" th:value="${community.originalFileName}"/>
+
                         <table>
                             <tr>
                                 <th>덱 제목</th>
@@ -78,7 +83,7 @@
                             </tr>     
                             <tr>
                                 <th colspan="2">
-                                    <input type="submit" value="덱 수정하기" class="btn btn-primary">
+                                    <input type="submit" id="submitBtn" value="덱 수정하기" class="btn btn-primary">
                                     <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록으로 돌아가기</a>&nbsp;
                                 </th>
                             </tr>                    
