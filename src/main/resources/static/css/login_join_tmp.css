@@ -62,13 +62,16 @@ body {
     object-fit: scale-down;
 }
 
-.title {
-    font-size: 24px;
-    font-weight: bold;
+.left-wrap .logo img {
+    width: 75px;
+    height: 75px;
+}
+
+.left-wrap .logo .logoName {
+    font-family: "GoryeongStrawberry";
+    font-size: 1.25em;
     text-align: center;
-    margin-right: 5%;
-    margin-bottom: 20px;
-    font-family: 'GoryeongStrawberry';
+    align-items: center;
 }
 
 .form-wrap {

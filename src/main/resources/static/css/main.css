@@ -139,8 +139,7 @@ body {
 /* 기본 레이아웃 */
 .page-wrap {
     width: 100%;
-        /* 필요에 따라 */
-    overflow: hidden;
+    overflow: auto;
     display: flex;
     background: #f2f4f8;
 }
@@ -153,10 +152,11 @@ body {
     max-width: 16.66%;
     background-color: #f0f0f3;
     box-shadow: 0px 0px 8px #bebebe, -8px -8px 16px #ffffff;
+    height: 90vh;
 }
 
 .nav {
-    padding: 8px;
+    padding: 3px;
 }
 
 .nav .nav-bg {
@@ -175,8 +175,8 @@ body {
     transition: background 0.3s ease;
 }
 
-.nav .nav-bg>div {
-    margin: 5px auto;
+.nav .nav-bg > div {
+    margin: 0 auto;
 }
 
 .nav .nav-bg .logo img {
@@ -192,18 +192,18 @@ body {
 .nav .profile-wrap {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 8px;
     align-items: center;
 }
 
 .nav .profile-wrap>.profile-picture {
-    width: 175px;
-    height: 175px;
+    width: 133px;
+    height: 133px;
     border-radius: 50%;
     overflow: hidden;
     position: relative;
     background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.18);
     display: flex;
     align-items: center;
@@ -220,7 +220,7 @@ body {
 .nav .profile-wrap>.profile-picture a::before {
     content: "마이페이지로 이동";
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 0.85em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -249,24 +249,25 @@ body {
 
 .nav .profile-wrap>.nickname {
     width: 220px;
-    padding: 5px 12px;
+    padding: 3px 8px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
         inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+    margin: 3px 0;
 }
 
 .nav .profile-wrap>.nickname .userName {
-    font-size: 1.4em;
-    font-weight: 600;
-    color: #333;
+    font-size: 1.35em;
+    font-weight: 700;
+    color: #232323;
 }
 
 
 /* statistics */
 .statistics-wrap {
     width: 100%;
-    margin-top: 12px;
+    margin: 5px 0;
     background-color: #f5f5f5;
     border-radius: 8px;
     padding: 3px 8px;
@@ -281,7 +282,6 @@ body {
 }
 
 .statistics-wrap ul li {
-    padding: 5px 1px;
     border-bottom: 1px solid #eee;
 }
 
@@ -293,8 +293,15 @@ body {
     border-bottom: 1px solid #eee;
     line-height: 1.2;
     text-indent: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
+.statistics-wrap .attendanceStreak-text,
+.statistics-wrap .todayStudyTimeFormatted-text{
+    text-align: center;
+    text-indent: 0;
+}
 .statistics-wrap p:last-child {
     border-bottom: none;
 }
@@ -316,24 +323,24 @@ body {
     font-size: 1.08em;
     text-align: center;
     align-items: center;
-    margin: 7px 0;
+    margin: 5px 0;
 }
 
 .nav-calendar,
 .mypage-calendar {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 5px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
         inset -4px -4px 10px rgba(0, 0, 0, 0.1);
-    padding: 5px;
+    padding: 2px;
 }
 
 .nav-calendar th,
 .nav-calendar td {
     border: 1px solid #FF9EBE;
-    padding: 5px;
+    padding: 3px;
 }
 
 .nav-calendar th,
@@ -348,7 +355,7 @@ body {
 
 /* authentication 로그인, 로그아웃 */
 .authentication-wrap {
-    margin-top: auto;
+    margin-top: 12px;
     padding: 12px;
 }
 
@@ -376,9 +383,9 @@ body {
     height: 70px;
     background: #f0f0f3;
     border-radius: 12px;
-    box-shadow:
-        8px 8px 15px rgba(0, 0, 0, 0.1),
-        -8px -8px 15px rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 0px 8px #bebebe, -8px -8px 16px #ffffff;
+    border-radius: 20px 0 0 20px ;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -520,10 +527,10 @@ body {
 
 /* container 영역 */
 .container {
-    height: 100%;
     width: 100%;
     background: #f2f4f8;
     padding: 15px;
+    height: 90vh;
 }
 
 /* 서비스 영역 수정 */
@@ -591,17 +598,16 @@ body {
     justify-content: space-between;
     align-items: center;
     background: #f5f5fa;
-    /* 파스텔 연보라 느낌 */
     box-shadow: 4px 4px 8px #d1d9e6,
         -4px -4px 8px #ffffff;
     border-radius: 16px;
     margin: 12px 0;
     padding: 16px 24px;
-    transition: transform 0.2s;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .category:hover {
-    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .category>.category-left {
@@ -619,7 +625,7 @@ body {
 /* 카테고리명 */
 .category-left span b {
     font-size: 1.3em;
-    color: #5f5f7a;
+    color: #232323;
 }
 
 .category>.category-right {
@@ -766,7 +772,6 @@ body {
 
 .menu-icon {
     font-size: 1.2em;
-    color: #a0a0a0;
     cursor: pointer;
 }
 
@@ -835,6 +840,7 @@ body {
         flex: none;
         max-width: 100%;
         box-shadow: none;
+        margin-right: 3px;
     }
 
     .left-wrap .nav-bg {

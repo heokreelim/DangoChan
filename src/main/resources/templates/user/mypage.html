@@ -29,14 +29,8 @@
             </div> <!-- nickname end -->
         </div>
         <div class="achievement-wrap">
-            <div class="trophy-wrap">
-                <div class="trophy">
-                    <div class="trophy-img"></div>
-                    <div class="trophy-name"></div>
-                </div>
-            </div>
-                <div class="achievement-notice">
-                    <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
+            <div class="achievement-notice">
+                <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
                 <ul class="achievement-list">
                     <li th:each="ach : ${personalAchievements}">
                         <p>🏅 [[${ach}]]</p>
@@ -67,6 +61,12 @@
                 </thead>
                 <tbody id="calendarBody"></tbody>
             </table>
+        </div>
+        <div class="trophy-wrap">
+            <div class="trophy">
+                <div class="trophy-img"></div>
+                <div class="trophy-name"></div>
+            </div>
         </div>
     </div>
 </div>

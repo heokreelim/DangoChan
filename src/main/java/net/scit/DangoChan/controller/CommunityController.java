@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.scit.DangoChan.dto.CommunityDTO;
 import net.scit.DangoChan.dto.LoginUserDetails;
 import net.scit.DangoChan.dto.UserDTO;
+import net.scit.DangoChan.service.AchievementService;
 import net.scit.DangoChan.service.BoardLikesService;
 import net.scit.DangoChan.service.CommunityService;
 import net.scit.DangoChan.service.UserService;
@@ -41,6 +43,7 @@ public class CommunityController {
 	private final CommunityService communityService;
 	private final BoardLikesService boardLikesService;
 	private final UserService userService;
+	private final AchievementService achievementService;
 	
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadPath;
@@ -71,6 +74,18 @@ public class CommunityController {
 		
 		UserDTO userDTO = userService.findUserById(userId);
         model.addAttribute("userInfo", userDTO);
+        
+      	 //  업적 및 출석 데이터 추가
+        List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+        List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+        int attendanceStreak = achievementService.getAttendanceStreak(userId);
+        String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+        model.addAttribute("personalAchievements", personalAchievements);
+        model.addAttribute("communityAchievements", communityAchievements);
+        model.addAttribute("attendanceStreak", attendanceStreak);
+        model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+        
 		//PJB edit end 
 		
 		// 2) 페이징 기능 + 검색 기능

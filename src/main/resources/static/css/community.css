@@ -14,7 +14,7 @@
     --text-color: #333;       /* 기본 텍스트 색상 */
     --shadow-light: rgba(255, 255, 255, 0.7); 
     --shadow-dark: rgba(0, 0, 0, 0.08);
-    --pastel-primary: #c2e7d9; /* 강조 색상(파스텔) */
+    --pastel-primary:#DBF9F3;  /* 강조 색상(파스텔) */
     --radius: 12px;            /* 모서리 라운드 */
     --transition: 0.2s ease-in-out;
   }
@@ -166,7 +166,7 @@
   .head table th,
   .head table td {
     padding: 12px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #B2F0DF;
     text-align: center;
     vertical-align: middle;
     font-size: 1em;

@@ -143,6 +143,12 @@
     color: #fff;
     box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
   }
+  .btn-success {
+    background-color: #dc3545;
+    color: #fff;
+    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  
+  }
   
   /*******************************************************
    * 반응형 디자인 (필요 시)

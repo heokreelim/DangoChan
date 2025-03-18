@@ -2,7 +2,7 @@
         <div class="nav-bg">
             <div class="logo">
                 <a th:href="@{/home}">
-                    <img th:src="@{/images/logo_transparent.png}" alt="당고짱 로고">
+                    <img th:src="@{/images/logo_white_fit.png}" alt="당고짱 로고">
                     <b class="logoName">だんごちゃん</b>
                 </a>
             </div>
@@ -32,11 +32,11 @@
                 <ul class="statistics-list">
                     <!-- 연속 출석일 -->
                     <li th:if="${attendanceStreak != null}">
-                        <p>[[${attendanceStreak}]]일 연속으로 출석중입니다.</p>
+                        <p class="attendanceStreak-text">~ [[${attendanceStreak}]]일 연속으로 출석중 ~</p>
                     </li>
                     <!-- 오늘 학습시간 -->
                     <li th:if="${todayStudyTimeFormatted != null}">
-                        <p>오늘 학습량 : [[${todayStudyTimeFormatted}]]</p>
+                        <p class="todayStudyTimeFormatted-text">오늘 학습량 : [[${todayStudyTimeFormatted}]]</p>
                     </li>
                     <!-- 두 리스트가 모두 비어있을 경우 -->
                     <li th:if="${#lists.isEmpty(personalAchievements)} and ${#lists.isEmpty(communityAchievements)}">
