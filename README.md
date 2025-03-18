@@ -18,6 +18,7 @@
 - Google 로그인: OAuth 2.0을 활용한 인증
 - Line 로그인: OAuth 2.0을 활용한 인증
 
+
 # 실시간 채팅
 ### Spring Security 환경에서 Redis + WebSocket(STOMP) 기반 채팅을 구현해두었습니다.
 
