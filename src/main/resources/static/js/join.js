@@ -35,21 +35,20 @@ function confirmId() {
 }
 
 function join() {
-    let email = $('#userId').val();
-    let userPwd = $('#password').val();
-
     // ID 중복체크 확인
     if (!idCheck)
     {   
         alert('Email 중복체크를 완료해주세요');
         return false;
     }
+        
+    let userPwd = $('#password').val();
 
     // 비밀번호 길이 체크
-    if (userPwd.trim().length < 3 || userPwd.trim().length > 5)
+    if (userPwd.trim().length < 3 || userPwd.trim().length > 12)
     {
         //$('#confirmPwd').css('color', 'red');
-        alert('비밀번호는 4~12자 이내');
+        alert('비밀번호는 4~12자 이내로 입력하세요');
         return false;
     }
     
