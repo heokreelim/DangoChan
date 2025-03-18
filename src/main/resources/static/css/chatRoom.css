@@ -46,6 +46,7 @@ body {
     margin-bottom: 15px;
     max-height: 100%;
 }
+
 .message {
     margin: 8px 0;
     max-width: 70%;
@@ -53,15 +54,49 @@ body {
     border-radius: 20px;
     word-wrap: break-word;
 }
+
+.message > a {
+    text-decoration: underline;
+}
+
+/* 채팅 메시지 컨테이너: 세로 스택 */
+#chatMessages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px;
+}
+
+/* 내 메시지 (카카오톡의 내 채팅은 보통 따뜻한 노란색 계열) */
 .my-message {
     align-self: flex-end;
-    background-color: #d4f0ff;
+    background-color: #FFFAE5;  /* 연한 노란색 */
+    border: 1px solid #FDE100;  /* 약간의 노란 경계선 */
+    border-radius: 16px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    max-width: 50%;             /* 최대 너비 제한 */
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+
+/* 상대방 메시지 (카카오톡의 상대 메시지는 흰색 버블) */
 .other-message {
     align-self: flex-start;
-    background-color: #fff;
+    background-color: #FFFFFF;
     border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    max-width: 50%;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+
 .chat-input {
     border-top: 1px solid #ddd;
     padding: 15px;
