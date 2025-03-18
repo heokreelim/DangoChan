@@ -129,7 +129,28 @@ public class CommunityController {
 	 * @return
 	 * */
 	@GetMapping("/communityWrite")
-	public String communityWrite() {
+	public String communityWrite(@AuthenticationPrincipal LoginUserDetails loginUser, 
+			Model model) {
+		// PJB edit start
+				Long userId = loginUser.getUserId();
+				model.addAttribute("userId",userId);
+				
+				UserDTO userDTO = userService.findUserById(userId);
+		        model.addAttribute("userInfo", userDTO);
+		        
+		      	 //  업적 및 출석 데이터 추가
+		        List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+		        List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+		        int attendanceStreak = achievementService.getAttendanceStreak(userId);
+		        String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+		        model.addAttribute("personalAchievements", personalAchievements);
+		        model.addAttribute("communityAchievements", communityAchievements);
+		        model.addAttribute("attendanceStreak", attendanceStreak);
+		        model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+		        
+				//PJB edit end 
+		
 		return "community/communityWrite";
 	}
 	
@@ -141,7 +162,29 @@ public class CommunityController {
 	 * 
 	 * */
 	@PostMapping("/communityWrite")
-	public String communityWrite(@ModelAttribute CommunityDTO communityDTO) {
+	public String communityWrite(
+			@ModelAttribute CommunityDTO communityDTO,
+			@AuthenticationPrincipal LoginUserDetails loginUser, 
+			Model model) {
+		// PJB edit start
+		Long userId = loginUser.getUserId();
+		model.addAttribute("userId",userId);
+		
+		UserDTO userDTO = userService.findUserById(userId);
+        model.addAttribute("userInfo", userDTO);
+        
+      	 //  업적 및 출석 데이터 추가
+        List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+        List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+        int attendanceStreak = achievementService.getAttendanceStreak(userId);
+        String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+        model.addAttribute("personalAchievements", personalAchievements);
+        model.addAttribute("communityAchievements", communityAchievements);
+        model.addAttribute("attendanceStreak", attendanceStreak);
+        model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+        
+		//PJB edit end 
 		
 //		//유저정보 임시처리
 //		communityDTO.setUserId(1l);
@@ -166,6 +209,26 @@ public class CommunityController {
 			@RequestParam(name="searchWord", defaultValue = "") String searchWord,
 			@RequestParam(name="boardId") Integer boardId,
 			Model model) {
+		// PJB edit start
+		Long userId = loginUser.getUserId();
+		model.addAttribute("userId",userId);
+		
+		UserDTO userDTO = userService.findUserById(userId);
+        model.addAttribute("userInfo", userDTO);
+        
+      	 //  업적 및 출석 데이터 추가
+        List<String> personalAchievements = achievementService.getPersonalAchievements(userId);
+        List<String> communityAchievements = achievementService.getCommunityAchievements(userId);
+        int attendanceStreak = achievementService.getAttendanceStreak(userId);
+        String todayStudyTimeFormatted = achievementService.getTodayStudyTimeFormatted(userId);
+
+        model.addAttribute("personalAchievements", personalAchievements);
+        model.addAttribute("communityAchievements", communityAchievements);
+        model.addAttribute("attendanceStreak", attendanceStreak);
+        model.addAttribute("todayStudyTimeFormatted", todayStudyTimeFormatted);
+        
+		//PJB edit end 
+		
 		//DB에 boardId에 해당하는 하나의 게시글을 조회
 		CommunityDTO communityDTO = communityService.selectOne(boardId);
 		communityService.incrementViews(boardId);
