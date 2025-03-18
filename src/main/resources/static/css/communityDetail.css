@@ -10,7 +10,7 @@
  :root {
     --bg-color: #f3f8fb;         /* 전체 배경 (파스텔톤) */
     --box-color: #ffffff;        /* 박스/카드 내부 색상 */
-    --text-color: #333333;       /* 기본 텍스트 색상 */
+    --text-color: #232323;       /* 기본 텍스트 색상 */
     --shadow-light: rgba(255, 255, 255, 0.7); /* 밝은 그림자 */
     --shadow-dark: rgba(0, 0, 0, 0.08);       /* 어두운 그림자 */
     --pastel-primary: #DBF9F3;   /* 강조용 파스텔 색상 */

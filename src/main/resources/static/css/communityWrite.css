@@ -10,10 +10,10 @@
  :root {
     --bg-color: #f3f8fb;         /* 전체 배경 (파스텔톤) */
     --box-color: #ffffff;        /* 박스/카드 내부 색상 */
-    --text-color: #333333;       /* 기본 텍스트 색상 */
+    --text-color: #232323;       /* 기본 텍스트 색상 */
     --shadow-light: rgba(255, 255, 255, 0.7); /* 밝은 그림자 */
     --shadow-dark: rgba(0, 0, 0, 0.08);       /* 어두운 그림자 */
-    --pastel-primary: #c2e7d9;    /* 강조용 파스텔 색상 */
+    --pastel-primary: #DBF9F3;
     --radius: 12px;              /* 공통 모서리 둥글기 */
     --transition: 0.2s ease-in-out;
   }
@@ -65,14 +65,16 @@
   .content table td {
     padding: 12px;
     border-bottom: 1px solid var(--pastel-primary);
+    border: 1px solid #B2F0DF;
     vertical-align: top;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text-color);
   }
   
   /* 테이블 헤더: 배경을 파스텔톤으로 */
   .content table th {
     background-color: var(--pastel-primary);
+    text-align: center;
     font-weight: bold;
     width: 150px;
     text-align: left;
@@ -82,7 +84,6 @@
    * 입력 필드 스타일 (텍스트, 파일, textarea)
    *******************************************************/
   .content input[type="text"],
-  .content input[type="file"],
   .content textarea {
     width: 100%;
     padding: 8px;
@@ -104,6 +105,19 @@
     resize: vertical;
     min-height: 150px;
   }
+  /* 파일 업로드 아이콘 */
+  .custom-file-upload {
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: var(--pastel-primary);
+    border-radius: var(--radius);
+    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  }
+
+  .custom-file-upload i {
+    font-size: 1.2rem;
+  }
   
   /*******************************************************
    * 체크박스 스타일
@@ -115,40 +129,35 @@
   /*******************************************************
    * 버튼 스타일 (공통 네오몰피즘 효과)
    *******************************************************/
-  .btn {
-    font-size: 14px;
-    padding: 10px 20px;
-    border-radius: var(--radius);
-    background: var(--box-color);
-    color: var(--text-color);
-    border: none;
-    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-    transition: var(--transition);
-    cursor: pointer;
-  }
-  
-  .btn:hover {
-    opacity: 0.9;
-  }
-  
-  /* 부트스트랩 btn-primary, btn-danger와 유사한 색상 적용 */
-  .btn-primary {
-    background-color: #007bff;
-    color: #fff;
-    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    color: #fff;
-    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-  }
-  .btn-success {
-    background-color: #dc3545;
-    color: #fff;
-    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-  
-  }
+
+.btn {
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  background: var(--box-color);
+  color: var(--text-color);
+  box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn:hover {
+  box-shadow: inset 0 0 4px var(--shadow-dark), inset 0 0 4px var(--shadow-light);
+  transform: translateY(2px);
+  opacity: 1;
+}
+/* 버튼이 들어있는 th를 가운데 정렬 */
+th[colspan="2"] {
+  text-align: center;
+}
   
   /*******************************************************
    * 반응형 디자인 (필요 시)
