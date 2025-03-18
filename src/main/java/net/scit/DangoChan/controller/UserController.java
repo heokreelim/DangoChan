@@ -197,12 +197,20 @@ public class UserController {
 	@PostMapping("/nickNameChange")
 	@ResponseBody
 	public boolean nickNameChange(
-				//@AuthenticationPrincipal LoginUserDetails userDetails, 
-				@RequestParam(name="nickName") String nickName
+				@AuthenticationPrincipal LoginUserDetails userDetails, 
+				@RequestParam(name="nickName") String newNickName
 			)
 	{
-		//return userService.editNickname(userDetails.getUserId(), nickName);
-		return userService.editNickname(1L, nickName);
+		boolean isChangeSucceeded = userService.editNickname(userDetails.getUserId(), newNickName);
+		
+		if (isChangeSucceeded)
+		{
+			userDetails.setUserName(newNickName);
+			Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); // Authentication 객체 생성
+			SecurityContextHolder.getContext().setAuthentication(authentication);			
+		}
+		
+		return isChangeSucceeded;
 	}
 	// LHR end
 }

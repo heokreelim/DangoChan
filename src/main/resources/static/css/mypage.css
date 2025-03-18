@@ -449,3 +449,12 @@ body{
     box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.7);
     background-color: #ff6347;
 }
+
+/* ========================= 닉네임 변경 input ========================= */
+#nickNameInput {
+    width: 60%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
