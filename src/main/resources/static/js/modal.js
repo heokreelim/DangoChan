@@ -10,6 +10,7 @@ function openModal(modal) {
 
 // 모든 열려있는 모달 닫기 함수
 function closeOpenModals() {
+
     modals.forEach(modal => {
         if (modal.css("display") === "flex") {
             modal.css("display", "none");
@@ -171,15 +172,18 @@ $(document).ready(function () {
         let tr = $('<tr>');
 
         if (mode === "new") {
+
+            var deleteBtn = $('<button>').attr('class', 'btn-delete-card').text('🗑').on('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                $(this).closest('tr').remove();
+            });
+
             tr.append($('<td>').attr('id', 'word-' + index).text(word));
             tr.append($('<td>').attr('id', 'pos-' + index).text(pos));
             tr.append($('<td>').attr('id', 'meaning-' + index).text(meaning));
             tr.append($('<td>').attr('id', 'exampleJp-' + index).text(exampleJp));
             tr.append($('<td>').attr('id', 'exampleKr-' + index).text(exampleKr));
-
-            let deleteBtn = $('<button>').attr('class', 'btn-delete-card').text('🗑').on('click', function () {
-                tr.remove();
-            });
             tr.append($('<td>').append(deleteBtn));
         } else {
             // 편집 버튼을 앞쪽으로 배치
@@ -633,7 +637,6 @@ $(document).ready(function () {
     $('.btn-create-example').on('click', function () {
         alert('서비스 준비중입니다.');
     });
-
 
 });
 
