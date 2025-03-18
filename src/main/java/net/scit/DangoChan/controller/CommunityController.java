@@ -301,7 +301,15 @@ public class CommunityController {
 		
 		log.info("==== 수정데이터: {}", communityDTO.toString());
 		
-		communityService.updateBoard(communityDTO);
+	    try {
+	        communityService.updateBoard(communityDTO);
+	    } catch (RuntimeException e) {
+	        reat.addFlashAttribute("errorMessage", e.getMessage());
+	        return "redirect:/community/communityUpdate?boardId=" + communityDTO.getBoardId()
+	               + "&searchItem=" + searchItem + "&searchWord=" + searchWord;
+	    }
+//		
+//		communityService.updateBoard(communityDTO);
 		
 		reat.addAttribute("searchItem", searchItem);
 		reat.addAttribute("searchWord", searchWord);
