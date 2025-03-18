@@ -6,6 +6,7 @@
     <!-- 페이지별 CSS, JS 적용 -->
     <link rel="stylesheet" th:href="@{/css/mypage.css}">
     <script defer th:src="@{/js/calendar.js}"></script>
+    <script defer th:src="@{/js/nicknameChange.js}"></script>
 </head>
 <body>
 <div class="page-wrap">
@@ -25,7 +26,10 @@
                 <p class="userName" id="userName" >
                     [[${#authentication.principal.userName}]]
                 </p>
-                <i class="fa-regular fa-pen-to-square"></i>
+                <input type="text" name="nickName" id="nickNameInput" th:value="${#authentication.principal.userName}" style="display: none;">
+                <a href="javascript:void(0);" id="editNickname">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </a>
             </div> <!-- nickname end -->
         </div>
         <div class="achievement-wrap">
