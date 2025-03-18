@@ -1,22 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://thymeleaf.org">
-<head th:fragment="head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나의 덱 공유하기 수정</title>
-
-    <!-- 부트스트랩 가져오기-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!--fontawesome 아이콘 가져오기-->
-    <script src="https://kit.fontawesome.com/def97ee41b.js" crossorigin="anonymous"></script>
-
-    <!-- 우리 디자인 -->
+<head>
+    <head th:replace="fragment/head"></head>
+    <title>게시글 수정</title>
+     <!-- 우리 디자인 -->
     <link rel="stylesheet" href="../../static/css/communityUpdate.css" th:href="@{/css/communityUpdate.css}">
-
-    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <script defer th:src="@{/js/calendar.js}"></script>
-
+    <script defer th:src="@{/js/communityUpdate.js}"></script>
 </head>
 <body>
     <div class="page-wrap">
@@ -34,7 +24,7 @@
                         <!-- <input type="hidden" name="boardWriter" th:value="${community.boardWriter}"> -->
                         <input type="hidden" name="searchItem" th:value="${searchItem}">
                         <input type="hidden" name="searchWord" th:value="${searchWord}">            
-                        <table>
+                        <table class="board-table">
                             <tr>
                                 <th>덱 제목</th>
                                 <td>
@@ -55,9 +45,15 @@
                                         <span th:text="${community.originalFileName}" style="color: #2000c2"></span><br>
                                     </th:block>
                                     <th:block th:unless="${community.originalFileName != null}">
-                                        <span style="color: #2000c2">첨부파일이 없습니다.</span><br>
+                                        <span>현재 첨부파일이 없습니다.</span><br>
                                     </th:block>
-                                    <input type="file" name="uploadFile"/>
+                                    <div class="file-upload-wrapper">
+                                        <label for="fileInput" class="custom-file-upload">
+                                            <i class="fa-solid fa-upload"></i>
+                                        </label>
+                                        <input type="file" id="fileInput" name="uploadFile" style="display:none;">
+                                        <span id="fileName">선택된 파일 없음</span>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
