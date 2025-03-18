@@ -205,6 +205,7 @@ $(document).ready(function () {
             }
         });
     });
+
     // 현재 페이지가 home.html일 경우
     if (window.location.pathname === '/home') {
         // nav 안에 있는 logo 링크 클릭 이벤트 차단

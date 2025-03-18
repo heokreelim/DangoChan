@@ -1,12 +1,22 @@
 /* 기본 레이아웃 */
+html,
+body {
+    height: 100%;
+}
 body{
     background: #f2f4f8;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .page-wrap {
     flex: 1;
+    display: flex;
     flex-direction: column;
+    min-height: 100vh;
     background: #f2f4f8;
-
 }
 
 /* ========================= container ========================= */
@@ -16,6 +26,7 @@ body{
     background: #f2f4f8;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -29,6 +40,7 @@ body{
     display: flex;
     align-items: center;
     gap: 20px;
+    width: calc(100% / 2 - 10px);
 }
 
 .container .profile-wrap .profile-picture {
@@ -140,7 +152,7 @@ body{
 }
 
 .container .profile-wrap>.nickname p {
-    background-color: #B4D8E4;
+    /* background-color: #B4D8E4; */
     line-height: 1.75;
 }
 
@@ -167,6 +179,7 @@ body{
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: calc(100% / 2 - 10px);
 }
 /* ================== Trophy 아이템 영역 ================== */
 .trophy-wrap {
@@ -243,9 +256,9 @@ body{
 .mypage-calendar th,
 .mypage-calendar td {
     border: 2px solid #FF9EBE;
-    width: 75px;
-    height: 75px;
-    padding: 12px;
+    width: 50px;
+    height: 50px;
+    padding: 8px;
     font-size: 1.78em;
 }
 /* 🌸 캘린더 전체 감싸는 박스 */
@@ -255,7 +268,7 @@ body{
     box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.05),
         -8px -8px 15px rgba(255, 255, 255, 0.7);
     padding: 30px;
-    max-width: 800px;
+    max-width: calc(100% / 2);
     margin: 0 auto;
 }
 

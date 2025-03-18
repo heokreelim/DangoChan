@@ -13,7 +13,7 @@
     --text-color: #333333;       /* 기본 텍스트 색상 */
     --shadow-light: rgba(255, 255, 255, 0.7); /* 밝은 그림자 */
     --shadow-dark: rgba(0, 0, 0, 0.08);       /* 어두운 그림자 */
-    --pastel-primary: #c2e7d9;   /* 강조용 파스텔 색상 */
+    --pastel-primary: #DBF9F3;   /* 강조용 파스텔 색상 */
     --radius: 12px;              /* 공통 모서리 둥글기 */
     --transition: 0.2s ease-in-out;
   }
@@ -51,40 +51,41 @@
   /*******************************************************
    * 게시글 상세보기 테이블
    *******************************************************/
-  .content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-      background: var(--box-color);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 2px 2px 8px var(--shadow-dark), -2px -2px 8px var(--shadow-light);
+  .content .board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: var(--box-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 2px 2px 8px var(--shadow-dark), -2px -2px 8px var(--shadow-light);
   }
   
-  .content table th,
-  .content table td {
-      padding: 12px;
-      border-bottom: 1px solid var(--pastel-primary); /* 파스텔 톤의 구분선 */
-      vertical-align: top;
-      font-size: 16px;
-      color: var(--text-color);
+  .content .board-table th,
+  .content .board-table td {
+    padding: 12px;
+    /* border-bottom: 1px solid var(--pastel-primary); 파스텔 톤의 구분선 */
+    border: 1px solid #B2F0DF;
+    vertical-align: top;
+    font-size: 16px;
+    color: var(--text-color);
   }
   
   /* 테이블 헤더 */
-  .content table th {
-      background-color: var(--pastel-primary);
-      font-weight: bold;
+  .content .board-table th {
+    background-color: var(--pastel-primary);
+    font-weight: bold;
   }
-  
+  /* 게시글 본문 */
+    .content .board-table pre {
+        min-height: 150px;
+    }
   /*******************************************************
    * 첨부파일 링크 및 삭제 아이콘
    *******************************************************/
   a {
-      color: var(--pastel-primary);
+      color: #121511;
       text-decoration: none;
-  }
-  a:hover {
-      text-decoration: underline;
   }
   
   .deleteFile {
@@ -106,7 +107,7 @@
       background: var(--box-color);
       color: var(--text-color);
       border: none;
-      box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+      box-shadow: 0px 0px 4px var(--shadow-dark), -0px -0px 4px var(--shadow-light);
       transition: var(--transition);
   }
   .btn:hover {
@@ -131,11 +132,14 @@
    * 댓글 작성 영역
    *******************************************************/
   .reply_write {
-      margin: 20px 0;
+      margin: 15px 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
   }
   .reply_write input[type="text"] {
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
       padding: 8px;
       margin-right: 5px;
       border: 1px solid var(--pastel-primary);
@@ -193,7 +197,7 @@
   .comment-buttons {
       display: flex;
       gap: 6px;
-      margin-top: 4px;
+      margin: 4px 0;
   }
   
   /* 최상위 댓글 */
@@ -251,7 +255,7 @@
    * 좋아요 버튼
    *******************************************************/
   #likeButton {
-      background: #fff;
+      background: var(--box-color);
       border: none;
       cursor: pointer;
   }
@@ -259,5 +263,13 @@
       vertical-align: middle;
   }
 
-  /*  */
+  /* 0317 디자인 추가 */
+  .btn.btn-success {
+    background: var(--box-color);
+  }
+  .btn.btn-success:hover {
+      background: #B2F0DF;
+      color: #121511;
+      opacity: 1;
+  }
   

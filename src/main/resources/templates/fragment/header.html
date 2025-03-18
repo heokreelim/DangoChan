@@ -9,8 +9,8 @@
         <div class="header-bg">
             <div class="logo">
                 <a th:href="@{/home}">
-                    <img th:src="@{/images/logo_transparent.png}" alt="당고짱 로고">
-                    <b>だんごちゃん</b>
+                    <img th:src="@{/images/logo_white_fit.png}" alt="당고짱 로고">
+                    <b class="logoName">だんごちゃん</b>
                 </a>
             </div>
             <div class="title" th:text="${title}">🍡 だんごちゃん</div>
@@ -21,16 +21,14 @@
                         <li><a th:href="@{/home}"><i class="fa-solid fa-pencil"></i></a></li>
                         <li><a th:href="@{/community/communityBoardList}"><i class="fa-solid fa-people-group"></i></a></li>
                         <li><a th:href="@{/chat}"><i class="fa-regular fa-comments"></i></a></li>
-                        <li><a href="#void"><i class="fa-solid fa-puzzle-piece"></i></a></li>
-                        <li><a href="#void"><i class="fa-solid fa-bell"></i></a></li>
+                        <li><a th:href="@{/game/matchCard}"><i class="fa-solid fa-puzzle-piece"></i></a></li>
                 </th:block>
                 <!-- 인증한한 사용자 -->
                 <th:block sec:authorize="isAuthenticated()">
                         <li><a th:href="@{/home}"><i class="fa-solid fa-pencil"></i></a></li>
                         <li><a th:href="@{/community/communityBoardList}"><i class="fa-solid fa-people-group"></i></a></li>
                         <li><a th:href="@{/chat}"><i class="fa-regular fa-comments"></i></a></li>
-                        <li><a href="#void"><i class="fa-solid fa-puzzle-piece"></i></a></li>
-                        <li><a href="#void"><i class="fa-solid fa-bell"></i></a></li>
+                        <li><a th:href="@{/game/matchCard}"><i class="fa-solid fa-puzzle-piece"></i></a></li>
                 </th:block>
                 </ul>
             </div>

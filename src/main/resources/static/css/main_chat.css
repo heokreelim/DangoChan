@@ -148,12 +148,13 @@ body {
 /* nav */
 .left-wrap {
     width: calc(100% / 6);
-    background-color: #e0e0e0;
+    background-color: #f0f0f3;
     box-shadow: 0px 0px 8px #bebebe, -8px -8px 16px #ffffff;
+    /* height: 90vh; */
 }
 
 .nav {
-    padding: 8px;
+    padding: 3px;
 }
 
 .nav .nav-bg {
@@ -172,24 +173,31 @@ body {
     transition: background 0.3s ease;
 }
 
-.nav .nav-bg>div {
-    margin: 5px auto;
+.nav .nav-bg > div {
+    margin: 0px auto;
+}
+.nav .nav-bg .logo img {
+    width: 55px;
+    height: 55px;
 }
 
-.nav .logo {
-    margin: 20px 0;
+.nav .nav-bg .logo .logoName {
+    font-family: "GoryeongStrawberry";
+    font-size: 1.375em;
+    text-align: center;
+    align-items: center;
 }
 
 .nav .profile-wrap {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 8px;
     align-items: center;
 }
 
 .nav .profile-wrap>.profile-picture {
-    width: 175px;
-    height: 175px;
+    width: 133px;
+    height: 133px;
     border-radius: 50%;
     overflow: hidden;
     position: relative;
@@ -211,7 +219,7 @@ body {
 .nav .profile-wrap>.profile-picture a::before {
     content: "마이페이지로 이동";
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 0.85em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -240,24 +248,25 @@ body {
 
 .nav .profile-wrap>.nickname {
     width: 220px;
-    padding: 5px 12px;
+    padding: 3px 8px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: inset 4px 4px 10px rgba(255, 255, 255, 0.5),
         inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+    margin: 3px 0;
 }
 
 .nav .profile-wrap>.nickname .userName {
-    font-size: 1.4em;
-    font-weight: 600;
-    color: #333;
+    font-size: 1.35em;
+    font-weight: 700;
+    color: #232323;
 }
 
 
 /* statistics */
 .statistics-wrap {
     width: 100%;
-    margin-top: 12px;
+    margin: 5px 0;
     background-color: #f5f5f5;
     border-radius: 8px;
     padding: 3px 8px;
@@ -272,7 +281,6 @@ body {
 }
 
 .statistics-wrap ul li {
-    padding: 5px 1px;
     border-bottom: 1px solid #eee;
 }
 
@@ -284,16 +292,19 @@ body {
     border-bottom: 1px solid #eee;
     line-height: 1.2;
     text-indent: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.statistics-wrap .attendanceStreak-text,
+.statistics-wrap .todayStudyTimeFormatted-text {
+    text-align: center;
+    text-indent: 0;
 }
 
 .statistics-wrap p:last-child {
     border-bottom: none;
-}
-
-/* 강조하는 부분에 아이콘과 텍스트 정렬 */
-.statistics-wrap p i {
-    margin-right: 8px;
-    vertical-align: middle;
 }
 
 /* 캘린더 디자인 */

@@ -39,7 +39,7 @@
             <div th:replace="fragment/nav"></div>
         </div>
         <div class="right-wrap">
-            <div th:replace="fragment/header :: header('게시글 상세 보기')"></div>
+            <div th:replace="fragment/header :: header('Community')"></div>
             <!-- 게시글 자세히 보기 화면-->
             <div class="container">
                 <div class="content">
@@ -47,79 +47,75 @@
                     <input type="hidden" th:value="${#authentication.principal.userName}" id="loginId">
                     <input type="hidden" th:value="${#authentication.principal.userId}" id="userNumericId">
 
-                    <table>
-                        <tr>
-                            <th>작성자</th>
-                                <td>
-                                <span th:text="${community.userName}"></span>
-                                </td>
-                        </tr>
+                    <table class="board-table">
+
                         <tr>
                             <th>글제목</th>
                                 <td>
                                 <span id="communityTitle" th:text="${community.title}"></span>
                                 </td>
+                            <th >작성일</th>
+                            <td>
+                                <span th:text="${#temporals.format(community.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+                            </td>
                         </tr>
                         <tr>
-                            <th>작성일</th>
-                                <td>
-                                <span th:text="${#temporals.format(community.createDate, 'yyyy-MM-dd HH:mm')}"></span>
-                                </td>
+                            <th>작성자</th>
+                            <td>
+                                <span colspan="3" th:text="${community.userName}"></span>
+                            </td>
+                            <th>첨부파일</th>
+                            <td>
+                                <span th:if="${community.originalFileName} != null">
+                                    <a th:href="@{/community/download(boardId=${community.boardId})}" th:text="${community.originalFileName}"></a>
+                                </span>
+                                <!-- 쓰레기통: 1. 파일이 있으면서 2. 게시글을 쓴 사람만 보여야한다.-->
+                                <th:block th:if="${community.originalFileName != null}">
+                                    <span class="deleteFile" th:data-seq="${community.boardId}" th:data-searchItem="${searchItem}"
+                                        th:data-searchWord="${searchWord}">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </span>
+                                </th:block>
+                                <th:block th:unless="${community.originalFileName != null}">
+                                    첨부파일이 없습니다.
+                                </th:block>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">
+                                <!-- 글을 쓴 주인과 로그인한 사람이 같아야만 수정 삭제 버튼이 보이게~ (나중에 구현) -->
+                                <th:block th:if="${community.userName == #authentication.principal.userName}">
+                                    <!-- 수정 버튼 -->
+                                    <a th:href="@{/community/communityUpdate(boardId=${community.boardId}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-warning">수정</a>&nbsp;
+                                    <!-- 삭제 버튼 -->                    
+                                    <a th:href="@{/community/communityDelete(boardId=${community.boardId}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-danger">삭제</a>&nbsp;
+                                </th:block>
+                                <!-- 목록 버튼 -->                    
+                                <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록</a>&nbsp;
+                                <button id="likeButton" class="btn btn-outline-primary"
+                                    th:attr="data-board-id=${community.boardId}, data-login-id=${#authentication.name}">
+                                    <!-- 좋아요 상태에 따른 이미지 표시 -->
+                                    <th:block th:if="${isLikedByMe}">
+                                        <img id="likeImg" th:src="@{/images/heart.png}" alt="like" width="24" height="24">
+                                    </th:block>
+                                    <th:block th:unless="${isLikedByMe}">
+                                        <img id="likeImg" th:src="@{/images/empty.png}" alt="like" width="24" height="24">
+                                    </th:block>
+                                </button>
+                                (<span id="likeCount" th:text="${community.likeCount != null ? community.likeCount : 0}">0</span>)
+
+                            </th>
+                            <!-- 좋아요 버튼 -->
+                            <!-- <td colspan="2" style="text-align: center;">
+                                
+                            </td> -->
                         </tr>
                         <tr>
                             <th>글내용</th>
-                                <td>
+                            <td colspan="4">
                                 <pre>[[ ${community.boardContent} ]]</pre>
-                                </td>
+                            </td>
                         </tr>
-                            <tr>
-                                <th>첨부파일</th>
-                                <td>
-                                    <span th:if="${community.originalFileName} != null">
-                                        <a th:href="@{/community/download(boardId=${community.boardId})}" th:text="${community.originalFileName}"></a>
-                                    </span>
-                                    <!-- 쓰레기통: 1. 파일이 있으면서 2. 게시글을 쓴 사람만 보여야한다.-->
-                                    <th:block th:if="${community.originalFileName != null}">
-                                        <span class="deleteFile" th:data-seq="${community.boardId}" th:data-searchItem="${searchItem}" th:data-searchWord="${searchWord}">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </span>
-                                    </th:block>
-                                    <th:block th:unless="${community.originalFileName != null}">
-                                        첨부파일이 없습니다.
-                                    </th:block>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th colspan="2">
-                                    <!-- 글을 쓴 주인과 로그인한 사람이 같아야만 수정 삭제 버튼이 보이게~ (나중에 구현) -->
-                                    <th:block th:if="${community.userName == #authentication.principal.userName}">
-                                        <!-- 수정 버튼 -->
-                                        <a th:href="@{/community/communityUpdate(boardId=${community.boardId}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-warning">수정</a>&nbsp;
-                                        <!-- 삭제 버튼 -->                    
-                                        <a th:href="@{/community/communityDelete(boardId=${community.boardId}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-danger">삭제</a>&nbsp;
-                                    </th:block>
-                                    <!-- 목록 버튼 -->                    
-                                    <a th:href="@{/community/communityBoardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-success">목록</a>&nbsp;
-                                    <button id="likeButton" class="btn btn-outline-primary"
-                                        th:attr="data-board-id=${community.boardId}, data-login-id=${#authentication.name}">
-                                        <!-- 좋아요 상태에 따른 이미지 표시 -->
-                                        <th:block th:if="${isLikedByMe}">
-                                            <img id="likeImg" th:src="@{/images/heart.png}" alt="like" width="24" height="24">
-                                        </th:block>
-                                        <th:block th:unless="${isLikedByMe}">
-                                            <img id="likeImg" th:src="@{/images/empty.png}" alt="like" width="24" height="24">
-                                        </th:block>
-                                    </button>
-                                    (<span id="likeCount" th:text="${community.likeCount != null ? community.likeCount : 0}">0</span>)
-
-                                </th>
-                            </tr>
-                            <tr>
-                                <!-- 좋아요 버튼 -->
-                                <td colspan="2" style="text-align: center;">
-                                    
-                                </td>
-                            </tr>
                                         
                     </table>
                     <!-- 댓글 목록 처리 -->
