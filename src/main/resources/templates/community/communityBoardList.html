@@ -69,6 +69,10 @@
                                             : (secondarySortField=='views' ? (secondarySortOrder=='asc' ? '▲' : '▼') : '' )
                                         }"></span>
                         </a>
+                        <!-- 정렬 초기화 버튼 -->
+                        <a href="/community/communityBoardList?searchItem=title&searchWord=&primarySortField=createDate&primarySortOrder=desc&secondarySortField=&secondarySortOrder=">
+                            정렬 초기화
+                        </a>                        
                     </div>
                     
 
@@ -112,7 +116,7 @@
                                 </th:block>   
                                 <!-- 첨부파일이 있으면 클립표시 -->
                                 <th:block th:if="${community.originalFileName != null}">
-                                    <i class="fa-solid fa-paperclip" style="color:red;"></i>
+                                    <i class="fa-solid fa-paperclip" style="color:rgb(0, 138, 23);"></i>
                                 </th:block>
                             </td>
                             <td th:text="${community.userName}">이몽룡</td>
