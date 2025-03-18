@@ -247,7 +247,7 @@
     cursor: pointer;
   }
   
-  .pagination .page-no:hover {
+  .pagination a.page-no:hover {
     background-color: var(--pastel-primary);
   }
   
