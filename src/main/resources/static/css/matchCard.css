@@ -112,5 +112,5 @@
 
 /* 흔들림 효과는 .container.shake에서 적용 */
 .container.shake {
-  animation: shake 0.5s;
+  animation: shake 2s;
 }

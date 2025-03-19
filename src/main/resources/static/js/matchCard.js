@@ -214,6 +214,8 @@ function showRestartButton() {
   restartBtn.style.display = "block";
   restartBtn.style.marginLeft = "auto";
   restartBtn.style.marginRight = "auto";
+  restartBtn.style.marginBottom = "20px";
+  restartBtn.style.padding = "5px 12px";
 
   // 프레임 바로 아래에 버튼을 삽입 (원하는 위치에 배치)
   $frame.parentNode.insertBefore(restartBtn, $frame.nextSibling);
