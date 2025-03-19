@@ -54,9 +54,15 @@
                 <button class="answerBtn center" type="button" onclick="showAnswer()">정답 보기</button>
             </div>
             <div class="backBtn" style="display: none;">
-                <button class="circleBtn" type="button"><i class="fa-regular fa-circle"></i></button>
-                <button class="triangleBtn" type="button"><i class="fa-solid fa-triangle-exclamation"></i></button>
-                <button class="xBtn" type="button"><i class="fa-solid fa-x"></i></button>
+                <button class="circleBtn" type="button">
+                    <img th:src="@{/images/circle.png}" alt="circle button">
+                </button>
+                <button class="triangleBtn" type="button">
+                    <img th:src="@{/images/triangle.png}" alt="triangle button">
+                </button>
+                <button class="xBtn" type="button">
+                    <img th:src="@{/images/x_mark.png}" alt="x button">
+                </button>
             </div>
         </div>
         <div class="study-timer" id="studyTimer">00:00</div>
