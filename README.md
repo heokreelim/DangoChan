@@ -56,7 +56,7 @@
 - 카드 편집 버튼 기능
    - 카드 오류 발견 시 즉시 수정 가능
   
-## 플래시 카드 페이지 뒷면 주요 기능
+## 플래시 카드 페이지 뒷면
 ### 주요 기능
 - 해당 단어의 히라가나, 품사, 뜻, 예문 표시
 - O △ X 버튼 기능 (학습 레벨)
@@ -65,6 +65,12 @@
   - X : 모르는 단어 - 오늘 학습 중 다시 나와 복습
 - 하단 우측 타이머
   - 학습 타이머 시간이 1분을 넘으면 타이머 색상이 빨간색으로 변경되고 "○" 버튼을 비활성화
+
+## 기술 스택
+- Backend: Spring Boot, JPA
+- Frontend: Thymeleaf, HTML, CSS, JavaScript, jQuery (AJAX)
+- Database: MySQL
+- Build Tool: IntelliJ
 
 # 실시간 채팅
 ### Spring Security 환경에서 Redis + WebSocket(STOMP) 기반 채팅을 구현해두었습니다.
