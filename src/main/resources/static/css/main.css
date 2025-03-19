@@ -425,8 +425,6 @@ body {
     background: #f2f4f8;
 }
 
-
-
 .right-wrap .logo {
     display: none;
 }
@@ -666,13 +664,12 @@ body {
 }
 
 .deck-wrap {
-    background: #f9f9fb;
-    box-shadow: 8px 8px 16px #d1d9e6,
-        -8px -8px 16px #ffffff;
-    border-radius: 20px;
-    padding: 16px;
-    margin: 10px 0;
-    transition: all 0.2s ease;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .deck-wrap:hover {
@@ -685,9 +682,21 @@ body {
     align-items: center;
 }
 
+.deck-wrap>.deck-top .deck-title-wrapper {
+    padding: 5px 12px;
+    border-radius: 12px;
+}
+
+.deck-wrap>.deck-top .deck-title {
+    font-size: 1.85em;
+    font-weight: 700;
+    color: #232323;
+}
+
+
 .deck-wrap>.deck-top span b {
     font-size: 1.38em;
-    color: #121511;
+    color: #232323;
     font-weight: 700;
 }
 
@@ -720,7 +729,26 @@ body {
 .deck-wrap>.deck-bottom .icon-box {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    background-color: #FAFAFA;
+    border-radius: 4px;
+    padding: 8px 12px;
+    transition: background-color 0.3s ease;
+}
+
+.deck-wrap>.deck-bottom .icon-box:hover {
+    background-color: #eeeeee;
+}
+
+.deck-wrap>.deck-bottom .icon-box img {
+    width: 24px;
+    height: 24px;
+}
+
+.deck-wrap>.deck-bottom .icon-box span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #232323;
 }
 
 /* ============= 진행도 원 ============= */

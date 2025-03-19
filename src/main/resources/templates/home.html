@@ -53,7 +53,11 @@
                       <div class="deck-wrap">
                         <div class="deck-top">
                           <input type="hidden" class="dekcId" th:value="${deck.deckId}">
-                          <span><a class="flashcard-link" th:href="@{flashcard/flashcard(deckId=${deck.deckId})}"><b th:text="${deck.deckName}"></b></a></span>
+                          <div class="deck-title-wrapper">
+                            <a class="flashcard-link" th:href="@{flashcard/flashcard(deckId=${deck.deckId})}">
+                              <span class="deck-title" th:text="${deck.deckName}"></span>
+                            </a>
+                          </div>
                           <div class="dropdown">
                             <i class="fa-solid fa-ellipsis-vertical menu-icon"></i>
                             <div class="dropdown-menu">
@@ -68,20 +72,25 @@
                         <div class="deck-bottom">
                           <div class="deckCount-wrap">
                             <div class="icon-box">
-                              <i class="fa-regular fa-circle"></i>
+                              <img th:src="@{/images/circle.png}" alt="circle">
                               <span>([[${deck.studiedCardCountOk}]])</span>
                             </div>
                             <div class="icon-box">
-                              <i class="fa-solid fa-triangle-exclamation"></i>
+                              <img th:src="@{/images/triangle.png}" alt="triangle">
                               <span>([[${deck.studiedCardCountYet}]])</span>
                             </div>
                             <div class="icon-box">
-                              <i class="fa-solid fa-x"></i>
+                              <img th:src="@{/images/x_mark.png}" alt="x mark">
                               <span>([[${deck.studiedCardCountNo}]])</span>
                             </div>
                             <div class="icon-box">
-                              <i class="fa-solid fa-question"></i>
+                              <img th:src="@{/images/question.png}" alt="question mark">
                               <span>([[${deck.newCard}]])</span>
+                            </div>
+                            <div class="icon-box">
+                              <!-- <i class="fa-solid fa-equals"></i> -->
+                               <b>TOTAL</b>
+                              <span>[[${deck.deckCardCount}]]</span>
                             </div>
                           </div>
                           <div class="percentage-box">
