@@ -275,11 +275,16 @@ input {
 .triangleBtn,
 .xBtn {
     background-color: #a5bcde;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border-radius: 5px;
     font-size: 32px;
     cursor: pointer;
     border: none;
+}
+.circleBtn img,
+.triangleBtn img,
+.xBtn img{
+    width: 66px;
 }
 
 /* ✅ "편집" 버튼 */
