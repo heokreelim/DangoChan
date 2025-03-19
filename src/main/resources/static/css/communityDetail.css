@@ -78,7 +78,11 @@
   }
   /* 게시글 본문 */
     .content .board-table pre {
+        width: 100%;
         min-height: 150px;
+        font-style: normal;
+        font-family: "Noto sans KR";
+        font-size: 16px;
     }
   /*******************************************************
    * 첨부파일 링크 및 삭제 아이콘
@@ -224,7 +228,7 @@
       box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
   }
   .childReplyInputRow input.childReplyContent {
-      width: 100%;
+      width: calc(80% - 12px) !important;
       max-width: 500px;
       padding: 6px;
       border: 1px solid var(--pastel-primary);
@@ -232,6 +236,7 @@
       box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
   }
   .childReplyInputRow button {
+    margin-top: 5px;
       margin-left: 5px;
       padding: 6px 10px;
       border: none;
