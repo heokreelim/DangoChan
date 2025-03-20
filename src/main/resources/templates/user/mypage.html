@@ -33,6 +33,12 @@
             </div> <!-- nickname end -->
         </div>
         <div class="achievement-wrap">
+            <div class="trophy-wrap">
+                <div class="trophy">
+                    <div class="trophy-img"></div>
+                    <div class="trophy-name"></div>
+                </div>
+            </div>
             <div class="achievement-notice">
                 <h4><b>[[${#authentication.principal.userName}]]</b>님의 최근 달성한 업적</h4>
                 <ul class="achievement-list">
@@ -48,7 +54,7 @@
         <div class="calendar-wrap">
             <div class="calendar-controls">
                 <button id="prevMonth" class="calendar-btn"><i class="fa-solid fa-caret-left"></i></button>
-                <div id="currentMonth" class="mypage-currentMonth gradient-text"></div>
+                <div id="currentMonth" class="mypage-currentMonth"></div>
                 <button id="nextMonth" class="calendar-btn"><i class="fa-solid fa-caret-right"></i></button>
             </div>
             <table class="mypage-calendar">
@@ -66,12 +72,7 @@
                 <tbody id="calendarBody"></tbody>
             </table>
         </div>
-        <div class="trophy-wrap">
-            <div class="trophy">
-                <div class="trophy-img"></div>
-                <div class="trophy-name"></div>
-            </div>
-        </div>
+
     </div>
 </div>
 <!-- modal -->
