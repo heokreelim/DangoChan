@@ -17,14 +17,14 @@ import net.scit.DangoChan.entity.DeckEntity;
 public interface CardRepository extends JpaRepository<CardEntity, Long> {
 
     // ✅ 새로운 카드 목록 가져오기
-    @Query("SELECT c FROM CardEntity c " +
-            "WHERE (c.studyLevel = 0 AND c.deckEntity.deckId = :deckId) " +
-            "OR (c.studyLevel = 2 AND c.deckEntity.deckId = :deckId AND c.studiedAt = :threeDaysLater) " +
-            "OR (c.studyLevel = 1 AND c.deckEntity.deckId = :deckId)")
-    List<CardEntity> findNewCardsByDeckId(@Param("deckId") Long deckId,
-                                          @Param("threeDaysLater") LocalDate threeDaysLater);
+	@Query("SELECT c FROM CardEntity c " +
+			"WHERE (c.studyLevel = 0 AND c.deckEntity.deckId = :deckId) " +
+			"OR (c.studyLevel = 1 AND c.deckEntity.deckId = :deckId) " +
+			"OR (c.studyLevel = 2 AND c.deckEntity.deckId = :deckId AND c.studiedAt <= :threeDaysAgo)")
+	List<CardEntity> findNewCardsByDeckId(@Param("deckId") Long deckId,
+										  @Param("threeDaysAgo") LocalDate threeDaysAgo);
 
-    // 🔹 특정 덱의 총 카드 개수 조회
+	// 🔹 특정 덱의 총 카드 개수 조회
     int countByDeckEntity_DeckId(Long deckId);
 
     // 🔹 특정 덱에서 studyLevel = 3인 카드 개수 조회
