@@ -358,10 +358,10 @@ public class FlashCardService {
 	@Transactional
 	public Optional<CardDTO> getRandomNewCard(Long deckId) {
 		LocalDate today = LocalDate.now();
-		LocalDate threeDaysLater = today.plusDays(3); // 3일 후 날짜 계산
+		LocalDate threeDaysAgo = today.minusDays(3); // 오늘 기준 3일 전 날짜
 
 		// JPQL에서 날짜 필터링 후 가져오기
-		List<CardEntity> newCards = cardRepository.findNewCardsByDeckId(deckId, threeDaysLater);
+		List<CardEntity> newCards = cardRepository.findNewCardsByDeckId(deckId, threeDaysAgo);
 
 		if (newCards.isEmpty()) {
 			return Optional.empty();
@@ -384,9 +384,9 @@ public class FlashCardService {
 	// true 반환 → studyLevel == 0인 카드가 없음
 	// false 반환 → studyLevel == 0인 카드가 하나라도 있음
 	public boolean isNoStudyLevelZeroCards(Long deckId) {
-		LocalDate threeDaysLater = LocalDate.now().plusDays(3);
+		LocalDate threeDaysLater = LocalDate.now().minusDays(3);
 		List<CardEntity> cards = cardRepository.findNewCardsByDeckId(deckId, threeDaysLater);
-
+		log.info("------------- cards={}", cards.size());
 		// studyLevel이 0인 카드가 하나도 없는지 확인
 		return (cards.size() <= 0);
 	}
