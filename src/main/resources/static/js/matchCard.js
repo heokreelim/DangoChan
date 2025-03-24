@@ -2,6 +2,10 @@
 const $frame = document.querySelector('#frame');
 let gameActive = false; // 초기에는 비활성 (카운트다운이 끝날 때까지)
 let pairs = [];
+// 한자 감지 정규식 (유니코드 범위)
+const hiraganaRegex = /[\u3040-\u309F]/;
+const katakanaRegex = /[\u30A0-\u30FF]/;
+
 
 $(function () {
   $.ajax({
@@ -21,6 +25,70 @@ $(function () {
     }
   });
 });
+
+// Ruby 추가 
+// ✅ 한자인지 체크하는 함수
+function isKanji(char) {
+  const code = char.charCodeAt(0);
+  return (
+    (code >= 0x4E00 && code <= 0x9FFF) || // 기본 한자
+    (code >= 0x3400 && code <= 0x4DBF)    // 확장 한자
+  );
+}
+
+
+// 한자 및 후리가나 분리용 함수
+
+function createRubyFromWord(word) {
+  if (!word || typeof word !== 'string') {
+    console.error('❌ createRubyFromWord: 유효하지 않은 word 값입니다.', word);
+    return document.createTextNode('');
+  }
+
+  const ruby = document.createElement('ruby');
+  const kanjiFuriganaPattern = /(.)\[([^\]]*)\]/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = kanjiFuriganaPattern.exec(word)) !== null) {
+    const [fullMatch, kanjiChar, furigana] = match;
+    const index = match.index;
+
+    // 남은 텍스트 처리
+    const plainText = word.slice(lastIndex, index);
+    for (const char of plainText) {
+      const rb = document.createElement('rb');
+      const rt = document.createElement('rt');
+      rt.textContent = '\u00a0'; // 빈 공간 추가
+      rb.appendChild(rt);
+      rb.appendChild(document.createTextNode(char));
+      ruby.appendChild(rb);
+    }
+
+    // 매칭된 한자+후리가나
+    const rb = document.createElement('rb');
+    const rt = document.createElement('rt');
+    rt.textContent = furigana || '\u00a0'; // 후리가나가 없으면 공백 추가
+    rb.appendChild(rt);
+    rb.appendChild(document.createTextNode(kanjiChar));
+    ruby.appendChild(rb);
+
+    lastIndex = kanjiFuriganaPattern.lastIndex;
+  }
+
+  // 마지막 남은 텍스트 처리
+  const remainingText = word.slice(lastIndex);
+  for (const char of remainingText) {
+    const rb = document.createElement('rb');
+    const rt = document.createElement('rt');
+    rt.textContent = '\u00a0'; // 빈 공간 추가
+    rb.appendChild(rt);
+    rb.appendChild(document.createTextNode(char));
+    ruby.appendChild(rb);
+  }
+
+  return ruby;
+}
 
 
 
@@ -44,22 +112,38 @@ function createCard(data) {
   const container = document.createElement('div');
   container.className = 'container';
   container.dataset.cardId = data.id;
-  
+
   const card = document.createElement('div');
   card.className = 'card';
-  
+
   const cardFront = document.createElement('div');
   cardFront.className = 'card-front';
-  // 앞면은 일반적으로 카드 뒷면(=뒤집힌 상태)로 보이기 전 디자인
-  cardFront.innerText = ''; // 혹은 이미지, 로고 등을 넣을 수 있음
-  
+
   const cardBack = document.createElement('div');
   cardBack.className = 'card-back';
-  cardBack.innerText = data.content;
-  
+
+  if (data.word) {
+    // ✅ word가 있는 경우: ruby 생성
+    console.log("✅ 단어 카드 생성: ", data);
+    const ruby = createRubyFromWord(data.word);
+    cardBack.appendChild(ruby);
+  } else if (data.content) {
+    // ✅ meaning 카드일 경우: 평문 텍스트 출력
+    console.log("✅ 뜻 카드 생성: ", data);
+    const span = document.createElement('span');
+    span.textContent = data.content;
+    cardBack.appendChild(span);
+  } else {
+    console.warn("⚠️ 데이터가 없습니다: ", data);
+    const span = document.createElement('span');
+    span.textContent = '?';
+    cardBack.appendChild(span);
+  }
+
   card.appendChild(cardFront);
   card.appendChild(cardBack);
   container.appendChild(card);
+
   return container;
 }
 
