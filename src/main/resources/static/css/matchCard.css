@@ -29,19 +29,18 @@ body{
  *******************************************************/
 #frame {
   display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(4, 140px);
-  grid-gap: 5px;
-  margin: 10px auto;
-  max-width: 800px;
+  justify-content: center;                /* 가운데 정렬 */
+  grid-template-columns: repeat(4, 152px);/* 4열, 각 100px 너비 */
+  grid-gap: 20px;                         /* 카드 간격 */
+  margin: 10px;
 }
 
 /*******************************************************
  * 3) 카드 컨테이너 및 기본 카드 스타일
  *******************************************************/
 .container {
-  width: 140px;         /* 카드 실제 너비 */
-  height: 175px;        /* 카드 실제 높이 */
+  width: 152px;         /* 카드 실제 너비 */
+  height: 190px;        /* 카드 실제 높이 */
   perspective: 1000px;  /* 3D 뒤집기 효과를 위한 원근감 */
   cursor: pointer;
   /* 필요하면 display: inline-block; 등으로 조정 가능 */
