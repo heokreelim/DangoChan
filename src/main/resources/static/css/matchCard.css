@@ -15,6 +15,14 @@
   --radius: 12px;              /* 공통 모서리 둥글기 */
   --transition: 0.2s ease-in-out;
 }
+body{
+  background: #f2f4f8;
+}
+.page-wrap {
+  height: 100%;
+  max-height: 100vh; 
+  min-height: fit-content;
+} 
 
 /*******************************************************
  * 2) 카드 배치 영역 (#frame)
@@ -22,7 +30,7 @@
 #frame {
   display: grid;
   justify-content: center;                /* 가운데 정렬 */
-  grid-template-columns: repeat(4, 100px);/* 4열, 각 100px 너비 */
+  grid-template-columns: repeat(4, 152px);/* 4열, 각 100px 너비 */
   grid-gap: 20px;                         /* 카드 간격 */
   margin: 10px;
 }
@@ -31,8 +39,8 @@
  * 3) 카드 컨테이너 및 기본 카드 스타일
  *******************************************************/
 .container {
-  width: 120px;         /* 카드 실제 너비 */
-  height: 150px;        /* 카드 실제 높이 */
+  width: 152px;         /* 카드 실제 너비 */
+  height: 190px;        /* 카드 실제 높이 */
   perspective: 1000px;  /* 3D 뒤집기 효과를 위한 원근감 */
   cursor: pointer;
   /* 필요하면 display: inline-block; 등으로 조정 가능 */
@@ -78,6 +86,11 @@
   transform: rotateY(180deg);
   box-shadow: inset 2px 2px 4px var(--shadow-dark),
               inset -2px -2px 4px var(--shadow-light);
+  /* ruby 추가 */
+  flex-direction: column;
+  padding: 2px;
+  text-align: center;
+  color: #121511;
 }
 
 /*******************************************************
@@ -113,4 +126,40 @@
 /* 흔들림 효과는 .container.shake에서 적용 */
 .container.shake {
   animation: shake 2s;
+}
+/********************************************************
+ 2025-03-24 Card Ruby 추가가 
+ ********************************************************/
+/* ruby 스타일 조정 */
+.card-back ruby {
+  display: flex;
+  /* 가로 정렬 유지 */
+  flex-wrap: nowrap;
+  /* 줄바꿈 방지 */
+  justify-content: center;
+  /* 가운데 정렬 */
+  align-items: center;
+  font-size: 1.06em;
+}
+
+/* 한자를 포함한 rb 조정 */
+.card-back rb {
+  display: inline-flex;
+  /* 가로 정렬 유지 */
+  flex-direction: column;
+  /* 세로 방향 배치 */
+  align-items: center;
+  min-width: 1em;
+  /* 한자 크기 고정 */
+  padding: 0 0.1em;
+}
+
+/* 후리가나 (rt) 조정 */
+.card-back rt {
+  display: block;
+  font-size: 0.68em;
+  color: #888;
+  text-align: center;
+  min-height: 0.6em;
+  /* 후리가나 높이 유지 */
 }
